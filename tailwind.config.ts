@@ -8,10 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      fontFamily: {
+        inter: ["var(--font-inter)"],
+        ubuntu: ["var(--font-ubuntu)"],
+        spaceGrotesk: ["var(--font-spaceGrotesk)"],
+      },
+      colors: {
+        primary: "#86EE60",
+        secondary: "#2E6E65",
+        tertiary: "#F4F7ED",
+        shadow: "#2B3752",
       },
     },
   },

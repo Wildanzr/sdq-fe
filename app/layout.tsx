@@ -1,10 +1,26 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Ubuntu, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import Web3Provider from "@/providers/Web3Provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-inter",
+});
+
+const ubuntu = Ubuntu({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-ubuntu",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+});
 
 export const metadata: Metadata = {
   title: "SDQ | Social Good",
@@ -56,7 +72,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+      <body
+        className={`${inter.variable} ${ubuntu.variable} ${spaceGrotesk.variable}`}
+      >
         <Web3Provider>{children}</Web3Provider>
       </body>
     </html>

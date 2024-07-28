@@ -3,6 +3,9 @@ interface Navigation {
   href: string;
 }
 
+export const CHECK_IN_ADDRESS = "0xC19c451acEBD8761329F3f8BAFCd6B3f1fd304fb";
+export const SHODAQO_ADDRESS = "0xe13DFf45ee9bB1A02Ae15632e4FF971819954b86";
+
 const navigations: Navigation[] = [
   {
     label: "Home",

@@ -1,10 +1,12 @@
 "use client";
 
+import { checkIn } from "@/web3/checkin";
 import React from "react";
 
 const Calendar = () => {
-  const handleCheckIn = () => {
-    console.log("Handle Check IN");
+  const handleCheckIn = async () => {
+    const res = await checkIn();
+    console.log(res);
   };
   return (
     <div className="grid grid-cols-3 gap-4">

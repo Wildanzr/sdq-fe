@@ -2,8 +2,8 @@ import Connect from "@/components/shared/Connect";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-blue-400">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-blue-400">
       <Connect />
-    </main>
+    </div>
   );
 }

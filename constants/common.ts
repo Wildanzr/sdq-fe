@@ -5,6 +5,10 @@ interface Navigation {
 
 const navigations: Navigation[] = [
   {
+    label: "Home",
+    href: "/",
+  },
+  {
     label: "Check In",
     href: "/check-in",
   },
@@ -18,4 +22,11 @@ const navigations: Navigation[] = [
   },
 ];
 
-export { navigations };
+const userColors = {
+  primary: "#86EE60",
+  secondary: "#2E6E65",
+  tertiary: "#F4F7ED",
+  shadow: "#2B3752",
+};
+
+export { navigations, userColors };

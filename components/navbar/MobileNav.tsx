@@ -49,7 +49,7 @@ const MobileNav = () => {
     <Sheet>
       <SheetTrigger asChild>
         <FaBars
-          className="hidden max-md:flex"
+          className="hidden cursor-pointer max-md:flex"
           size={30}
           color={userColors.tertiary}
         />

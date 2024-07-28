@@ -7,7 +7,7 @@ import BigNav from "./BigNav";
 
 const Navbar = () => {
   return (
-    <nav className="flex flex-row w-full h-full items-center justify-between p-5">
+    <nav className="flex flex-row w-full h-full items-center justify-between pb-10">
       <MobileNav />
       <Link href="/" className="flex items-center gap-1 max-md:hidden">
         <Image

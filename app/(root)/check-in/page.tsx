@@ -23,7 +23,7 @@ import Product from "@/components/shared/Product";
 
 const CheckInPage = () => {
   return (
-    <div className="flex flex-col space-y-6 w-full h-full items-center justify-center">
+    <div className="flex flex-col space-y-6 w-full h-full items-center justify-center p-5">
       <Card className="w-full bg-secondary-100/50 rounded-xl border-primary-90">
         <CardHeader>
           <CardTitle className="w-full text-center text-neutral-base m-title-page">

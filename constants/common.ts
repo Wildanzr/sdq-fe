@@ -110,4 +110,32 @@ const checkInProducts: Product[] = [
   },
 ];
 
-export { navigations, userColors, checkInLists, checkInProducts };
+const homeProducts: Product[] = [
+  {
+    image: "/images/earn.png",
+    label: "Earn",
+    description: "Transparent transactions, trackable contributions.",
+  },
+  {
+    image: "/images/collect.png",
+    label: "Collect",
+    description: "Secure, tamper-proof blockchain system.",
+  },
+  {
+    image: "/images/level.png",
+    label: "Level",
+    description: "Shariah-aligned ethical giving.",
+  },
+  {
+    image: "/images/bonus.png",
+    label: "Earn",
+    description: "Global reach through Web3 technology.",
+  },
+  {
+    image: "/images/reward.png",
+    label: "Earn",
+    description: "User-friendly, seamless donation experience.",
+  },
+];
+
+export { navigations, userColors, checkInLists, checkInProducts, homeProducts };

@@ -9,6 +9,12 @@ interface CheckIn {
   image: string;
 }
 
+interface Product {
+  image: string;
+  label: string;
+  description: string;
+}
+
 export const CHECK_IN_ADDRESS = "0xC19c451acEBD8761329F3f8BAFCd6B3f1fd304fb";
 export const SHODAQO_ADDRESS = "0xe13DFf45ee9bB1A02Ae15632e4FF971819954b86";
 
@@ -76,4 +82,32 @@ const checkInLists: CheckIn[] = [
   },
 ];
 
-export { navigations, userColors, checkInLists };
+const checkInProducts: Product[] = [
+  {
+    image: "/images/earn.png",
+    label: "Earn",
+    description: "Earn Coins Every Day!",
+  },
+  {
+    image: "/images/collect.png",
+    label: "Collect",
+    description: "Collect Coins and Exchange for Attractive Rewards",
+  },
+  {
+    image: "/images/level.png",
+    label: "Level",
+    description: "Level Up and Unlock Exclusive Surprises",
+  },
+  {
+    image: "/images/bonus.png",
+    label: "Earn",
+    description: "Earn Bonus Coins for Consecutive Check-ins",
+  },
+  {
+    image: "/images/reward.png",
+    label: "Earn",
+    description: "Don't Miss Daily Check-ins for Special Rewards!",
+  },
+];
+
+export { navigations, userColors, checkInLists, checkInProducts };

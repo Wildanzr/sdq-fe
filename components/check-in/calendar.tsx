@@ -5,7 +5,7 @@ import { checkIn, getMyStats } from "@/web3/checkin";
 import React, { useEffect } from "react";
 import { Address } from "viem";
 import { useAccount } from "wagmi";
-import Item from "./item";
+import Item from "./Item";
 import { checkInLists } from "@/constants/common";
 import { Button } from "../ui/button";
 import emoji from "react-easy-emoji";

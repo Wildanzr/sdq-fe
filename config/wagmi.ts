@@ -32,14 +32,3 @@ export const config = createConfig({
   connectors,
   ssr: true,
 });
-
-// export const config = getDefaultConfig({
-//   ...connector,
-//   appName: "SDQ",
-//   projectId: WALLETCONNECT_ID,
-//   chains:
-//     process.env.NEXT_PUBLIC_NETWORK === "mainnet"
-//       ? [haqqMainnet]
-//       : [haqqTestedge2],
-//   ssr: true,
-// });

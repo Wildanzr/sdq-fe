@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Calendar from "@/components/check-in/Calendar";
+import Calendar from "@/components/check-in/Ccalendar";
 import { checkInProducts } from "@/constants/common";
 import Product from "@/components/shared/Product";
 

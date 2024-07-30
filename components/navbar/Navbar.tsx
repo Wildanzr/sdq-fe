@@ -8,8 +8,7 @@ import BigNav from "./BigNav";
 const Navbar = () => {
   return (
     <nav className="flex flex-row w-full h-full items-center justify-between pb-10">
-      <MobileNav />
-      <Link href="/" className="flex items-center gap-1 max-md:hidden">
+      <Link href="/" className="flex items-center gap-1">
         <Image
           src="/images/icon.png"
           width={30}
@@ -17,7 +16,7 @@ const Navbar = () => {
           alt="Haqq Wallet"
         />
 
-        <p className="font-ubuntu text-3xl text-primary">
+        <p className="font-ubuntu text-2xl text-primary">
           SDQ
           <span className="text-tertiary pl-1">Charity</span>
         </p>
@@ -27,7 +26,10 @@ const Navbar = () => {
         <BigNav />
       </div>
 
-      <Connect />
+      <div className="flex flex-row items-center space-x-2 justify-center">
+        <Connect />
+        <MobileNav />
+      </div>
     </nav>
   );
 };

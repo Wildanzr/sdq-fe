@@ -7,6 +7,8 @@ import { Address } from "viem";
 import { useAccount } from "wagmi";
 import Item from "./item";
 import { checkInLists } from "@/constants/common";
+import { Button } from "../ui/button";
+import emoji from "react-easy-emoji";
 
 const Calendar = () => {
   const { isConnected } = useWalletStore((state) => ({
@@ -37,12 +39,22 @@ const Calendar = () => {
         <Item
           key={idx}
           amount={item.amount}
+          currentDay={3}
           day={item.day}
-          image="/images/coin.png"
+          image={item.image}
           onClick={handleCheckIn}
-          className={item.className}
+          className={item.day === 7 ? "col-span-3" : ""}
         />
       ))}
+
+      <Button
+        onClick={handleCheckIn}
+        className="flex h-16 flex-row items-center justify-center col-span-3 bg-gradient-to-r from-brand-60 to-primary-80 rounded-xl"
+      >
+        <p className="flex flex-row items-center justify-center space-x-2 font-manrope text-2xl text-neutral-base font-semibold">
+          Claim {emoji("✨")}
+        </p>
+      </Button>
     </div>
   );
 };

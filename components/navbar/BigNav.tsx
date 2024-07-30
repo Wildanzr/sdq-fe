@@ -21,8 +21,8 @@ const BigNav = () => {
             href={item.href}
             className={`${
               isActive
-                ? "text-primary font-semibold text-xl"
-                : "text-tertiary font-light text-base"
+                ? "text-brand-base font-semibold text-xl"
+                : "text-neutral-base font-light text-base"
             } flex items-center justify-start p-3`}
           >
             <p>{item.label}</p>

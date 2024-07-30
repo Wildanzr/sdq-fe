@@ -22,6 +22,7 @@ const config = {
         inter: ["var(--font-inter)"],
         ubuntu: ["var(--font-ubuntu)"],
         spaceGrotesk: ["var(--font-spaceGrotesk)"],
+        manrope: ["var(--font-manrope)"],
       },
       colors: {
         primary: {
@@ -89,7 +90,6 @@ const config = {
           20: "#fbfcf9",
           10: "#fdfdfb",
         },
-        shadow: "#2B3752",
       },
       keyframes: {
         "accordion-down": {

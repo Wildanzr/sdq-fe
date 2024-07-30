@@ -16,9 +16,9 @@ const Navbar = () => {
           alt="Haqq Wallet"
         />
 
-        <p className="font-ubuntu text-2xl text-primary">
+        <p className="font-ubuntu text-2xl text-brand-base">
           SDQ
-          <span className="text-tertiary pl-1">Charity</span>
+          <span className="text-neutral-base pl-1">Charity</span>
         </p>
       </Link>
 

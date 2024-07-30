@@ -21,20 +21,19 @@ import Calendar from "@/components/check-in/calendar";
 
 const CheckInPage = () => {
   return (
-    <div className="flex flex-col w-full h-full items-center justify-center">
-      <Card className="w-full bg-shadow rounded-xl">
+    <div className="flex flex-col space-y-6 w-full h-full items-center justify-center">
+      <Card className="w-full bg-secondary-100/50 rounded-xl border-primary-90">
         <CardHeader>
-          <CardTitle className="w-full text-center font-ubuntu text-primary text-2xl">
+          <CardTitle className="w-full text-center text-neutral-base m-title-page">
             Daily Check In
           </CardTitle>
-          <CardDescription className="w-full text-center font-ubuntu text-tertiary">
-            Login every day to claim your daily reward.
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <Calendar />
         </CardContent>
       </Card>
+
+      <h2 className="text-neutral-base m-title-page">Benefit of Check In</h2>
     </div>
   );
 };

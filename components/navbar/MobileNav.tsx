@@ -54,7 +54,7 @@ const MobileNav = () => {
           color={userColors.tertiary}
         />
       </SheetTrigger>
-      <SheetContent side="left" className="bg-shadow border-none">
+      <SheetContent side="left" className="bg-secondary-100 border-none">
         <SheetHeader>
           <Link href="/" className="flex items-center gap-1">
             <Image

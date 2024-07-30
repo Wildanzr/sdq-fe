@@ -6,7 +6,7 @@ interface Navigation {
 interface CheckIn {
   day: number;
   amount: number;
-  className?: string;
+  image: string;
 }
 
 export const CHECK_IN_ADDRESS = "0xC19c451acEBD8761329F3f8BAFCd6B3f1fd304fb";
@@ -42,31 +42,37 @@ const checkInLists: CheckIn[] = [
   {
     amount: 1.25,
     day: 1,
+    image: "/images/coin-1.png",
   },
   {
     amount: 1.5,
     day: 2,
+    image: "/images/coin-2.png",
   },
   {
     amount: 2,
     day: 3,
+    image: "/images/coin-3.png",
   },
   {
     amount: 3,
     day: 4,
+    image: "/images/coin-4.png",
   },
   {
     amount: 5,
     day: 5,
+    image: "/images/coin-5.png",
   },
   {
     amount: 7,
     day: 6,
+    image: "/images/coin-6.png",
   },
   {
     amount: 10,
     day: 7,
-    className: "col-span-3",
+    image: "/images/coin-7.png",
   },
 ];
 

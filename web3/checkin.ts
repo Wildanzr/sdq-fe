@@ -4,7 +4,7 @@ import { CHECK_IN_ADDRESS } from "@/constants/common";
 import { config } from "@/config/wagmi";
 import { Address } from "viem";
 
-interface GetMyStatsResponse {
+export interface GetMyStatsResponse {
   consecutiveDays: number;
   isBlacklisted: boolean;
   lastClaimed: bigint;

@@ -14,7 +14,7 @@ const connectors = connectorsForWallets(
   [
     {
       groupName: "Recommended",
-      wallets: [haqqWallet, rainbowWallet, metaMaskWallet, walletConnectWallet],
+      wallets: [haqqWallet, metaMaskWallet, rainbowWallet, walletConnectWallet],
     },
   ],
   {

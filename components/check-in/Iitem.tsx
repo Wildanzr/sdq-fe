@@ -8,23 +8,23 @@ interface ItemProps {
   currentDay: number;
   amount: number;
   image: string;
-  onClick: () => void;
   className?: string;
 }
 
 const Item = ({ className, amount, day, image, currentDay }: ItemProps) => {
+  currentDay %= 7;
   const isNotPassed = day > currentDay ? "opacity-40" : "";
   const isPassed =
     day < currentDay
-      ? "bg-brand-80"
+      ? "bg-primary-60 border-4 border-brand-40 "
       : day === currentDay
-      ? "bg-transparent"
-      : "bg-brand-90";
+      ? "bg-primary-90 border-4 border-primary-10"
+      : "bg-primary-90/40";
 
   return (
     <div
       className={cn(
-        "relative flex flex-col space-y-2 items-center justify-center text-tertiary border-4 border-brand-40 rounded-xl h-36",
+        "relative flex flex-col space-y-2 items-center justify-center text-tertiary rounded-xl h-36",
         isNotPassed,
         isPassed,
         className

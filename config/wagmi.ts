@@ -1,4 +1,4 @@
-import { connectorsForWallets, getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
 import {
   walletConnectWallet,

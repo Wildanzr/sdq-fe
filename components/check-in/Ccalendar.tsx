@@ -12,18 +12,35 @@ import { Button } from "../ui/button";
 import emoji from "react-easy-emoji";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { isAlreadyClaimed } from "@/lib/utils";
+import useWaitForTxAction from "@/hooks/useWaitForTx";
 
 const Calendar = () => {
   const { isConnected } = useWalletStore((state) => ({
     isConnected: state.isConnected,
   }));
   const { address, status } = useAccount();
+  const [refetch, setRefetch] = useState(false);
   const [stats, setStats] = useState<GetMyStatsResponse | null>(null);
+  const [txHash, setTxHash] = useState<Address | undefined>(undefined);
+
+  const action = () => {
+    if (txHash !== undefined) {
+      console.log("Tx Done");
+      setTxHash(undefined);
+      setRefetch(true);
+    }
+  };
+
+  useWaitForTxAction({
+    txHash: txHash,
+    action: action,
+  });
 
   const handleCheckIn = async () => {
     try {
       const res = await checkIn();
       console.log("Check In", res);
+      setTxHash(res);
     } catch (error) {
       console.error("Error in handleCheckIn", error);
       throw error;
@@ -35,15 +52,16 @@ const Calendar = () => {
       const result = await getMyStats(address);
       setStats(result);
       console.log("Result", result);
+      setRefetch(false);
     };
 
-    if (isConnected && status === "connected") {
+    if ((isConnected && status === "connected") || refetch) {
       getStats(address);
     } else {
       setStats(null);
       console.log("No need to check");
     }
-  }, [address, isConnected, status]);
+  }, [address, isConnected, refetch, status]);
   return (
     <>
       {stats !== null && (

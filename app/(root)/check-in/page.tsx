@@ -1,6 +1,5 @@
 import React from "react";
 import Checkin from "@/components/views/Checkin";
-import ToastTx from "@/components/shared/ToastTx";
 
 const CheckInPage = () => {
   return (

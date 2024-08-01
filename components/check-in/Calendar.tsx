@@ -1,9 +1,8 @@
 "use client";
 
-import { useWalletStore } from "@/store/wallet";
-import { checkIn, getMyStats } from "@/web3/checkin";
+import { checkIn } from "@/web3/checkin";
 import type { GetMyStatsResponse } from "@/web3/checkin";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Address, formatUnits } from "viem";
 import { useAccount } from "wagmi";
 import Item from "./Item";
@@ -16,14 +15,14 @@ import useWaitForTxAction from "@/hooks/useWaitForTx";
 import { useToast } from "../ui/use-toast";
 import ToastTx from "../shared/ToastTx";
 
-const Calendar = () => {
+interface CalendarProps {
+  setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
+  stats: GetMyStatsResponse | null;
+}
+
+const Calendar = ({ setRefetch, stats }: CalendarProps) => {
   const { toast } = useToast();
-  const { isConnected } = useWalletStore((state) => ({
-    isConnected: state.isConnected,
-  }));
-  const { address, status, chainId } = useAccount();
-  const [refetch, setRefetch] = useState(false);
-  const [stats, setStats] = useState<GetMyStatsResponse | null>(null);
+  const { chainId } = useAccount();
   const [txHash, setTxHash] = useState<Address | undefined>(undefined);
   const [disabledButton, setDisabledButton] = useState(false);
   const etherscan = getExplorerDetails(chainId);
@@ -78,21 +77,6 @@ const Calendar = () => {
     }
   };
 
-  useEffect(() => {
-    const getStats = async (address: Address | undefined) => {
-      const result = await getMyStats(address);
-      setStats(result);
-      console.log("Result", result);
-      setRefetch(false);
-    };
-
-    if ((isConnected && status === "connected") || refetch) {
-      getStats(address);
-    } else {
-      setStats(null);
-      console.log("No need to check");
-    }
-  }, [address, isConnected, refetch, status]);
   return (
     <>
       {stats !== null && (

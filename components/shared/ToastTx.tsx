@@ -15,11 +15,14 @@ const ToastTx = ({
   txHash,
 }: ToastTransactionProps) => {
   return (
-    <ToastAction altText={`View on ${explorerName}`} className="">
+    <ToastAction
+      altText={`View on ${explorerName}`}
+      className="bg-transparent hover:bg-transparent focus:bg-transparent border border-brand-60"
+    >
       <Link
         href={`${explorerLink}/tx/${txHash}`}
         passHref
-        className="text-blue-500 underline"
+        className="underline"
         target="_blank"
       >
         {" "}

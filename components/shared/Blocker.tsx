@@ -1,29 +1,8 @@
-"use client";
-
 import Image from "next/image";
 import React from "react";
 import Connect from "./Connect";
-import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
-import ToastTx from "./ToastTx";
 
 const Blocker = () => {
-  const { toast } = useToast();
-
-  const click = () => {
-    toast({
-      title: "Please connect your wallet",
-      duration: 3000,
-      variant: "destructive",
-      action: (
-        <ToastTx
-          explorerLink="https://etherscan.io"
-          explorerName="Etherscan"
-          txHash="0x1234567890123456789012345678901234567890123456789012345678901234"
-        />
-      ),
-    });
-  };
   return (
     <div className="flex flex-col items-center justify-center space-y-5 w-full h-1/2 bg-secondary-100 border-[1px] border-primary-50 p-5 rounded-2xl">
       <Image src="/images/wallet.png" alt="wallet" width={100} height={100} />
@@ -37,7 +16,6 @@ const Blocker = () => {
         </p>
       </div>
 
-      <Button onClick={click}>Click</Button>
       <Connect />
     </div>
   );

@@ -3,6 +3,8 @@ import { Inter, Ubuntu, Space_Grotesk, Manrope } from "next/font/google";
 import "./globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import Web3Provider from "@/providers/Web3Provider";
+import { Toaster } from "@/components/ui/toaster";
+import { ToastProvider } from "@/components/ui/toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -81,7 +83,12 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${ubuntu.variable} ${spaceGrotesk.variable} ${manrope.variable}`}
       >
-        <Web3Provider>{children}</Web3Provider>
+        <Web3Provider>
+          <ToastProvider duration={3000}>
+            {children}
+            <Toaster />
+          </ToastProvider>
+        </Web3Provider>
       </body>
     </html>
   );

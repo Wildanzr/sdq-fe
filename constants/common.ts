@@ -1,3 +1,5 @@
+import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
+
 interface Navigation {
   label: string;
   href: string;
@@ -138,4 +140,13 @@ const homeProducts: Product[] = [
   },
 ];
 
-export { navigations, userColors, checkInLists, checkInProducts, homeProducts };
+const CHAIN_EXPLORERS = [haqqMainnet, haqqTestedge2];
+
+export {
+  navigations,
+  userColors,
+  checkInLists,
+  checkInProducts,
+  homeProducts,
+  CHAIN_EXPLORERS,
+};

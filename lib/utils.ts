@@ -1,3 +1,4 @@
+import { CHAIN_EXPLORERS } from "@/constants/common";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -10,4 +11,13 @@ export const isAlreadyClaimed = (lastClaimed: bigint) => {
   const lastClaimedDay = Math.trunc((Number(lastClaimed) * 1000) / oneDay);
   const now = Math.trunc(Date.now() / oneDay);
   return lastClaimedDay === now;
+};
+
+export const getExplorerDetails = (chainId: number | undefined) => {
+  if (chainId === undefined) return CHAIN_EXPLORERS[0];
+  const blockExplorer = CHAIN_EXPLORERS.find((item) => {
+    if (item.id === chainId) return item;
+  });
+
+  return blockExplorer || CHAIN_EXPLORERS[0];
 };

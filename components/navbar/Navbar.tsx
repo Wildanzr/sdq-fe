@@ -7,7 +7,7 @@ import BigNav from "./BigNav";
 
 const Navbar = () => {
   return (
-    <nav className="flex flex-row w-full h-full items-center justify-between pb-10 p-5">
+    <nav className="flex flex-row w-full h-full items-center justify-between p-5">
       <Link href="/" className="flex items-center gap-1">
         <Image
           src="/images/icon.png"

@@ -326,6 +326,25 @@ export const checkinAbi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "claimer",
+        type: "address",
+      },
+    ],
+    name: "blacklisted",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "isBlacklisted",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "checkIn",
     outputs: [],
@@ -356,11 +375,6 @@ export const checkinAbi = [
         internalType: "uint256",
         name: "totalClaimed",
         type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "isBlacklisted",
-        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -466,11 +480,6 @@ export const checkinAbi = [
             internalType: "uint256",
             name: "totalClaimed",
             type: "uint256",
-          },
-          {
-            internalType: "bool",
-            name: "isBlacklisted",
-            type: "bool",
           },
         ],
         internalType: "struct SDQCheckIn.ClaimData",

@@ -1,3 +1,5 @@
+import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
+
 interface Navigation {
   label: string;
   href: string;
@@ -15,8 +17,8 @@ interface Product {
   description: string;
 }
 
-export const CHECK_IN_ADDRESS = "0xC19c451acEBD8761329F3f8BAFCd6B3f1fd304fb";
-export const SHODAQO_ADDRESS = "0xe13DFf45ee9bB1A02Ae15632e4FF971819954b86";
+export const CHECK_IN_ADDRESS = "0x286b9d5Cc7d24115141Ae950282FD1514671D902";
+export const SHODAQO_ADDRESS = "0x040EAdcaF7450609358047b7eF3Bef37E45D39D5";
 
 const navigations: Navigation[] = [
   {
@@ -110,4 +112,41 @@ const checkInProducts: Product[] = [
   },
 ];
 
-export { navigations, userColors, checkInLists, checkInProducts };
+const homeProducts: Product[] = [
+  {
+    image: "/icons/home-1.svg",
+    label: "Earn",
+    description: "Transparent transactions, trackable contributions.",
+  },
+  {
+    image: "/icons/home-2.svg",
+    label: "Collect",
+    description: "Secure, tamper-proof blockchain system.",
+  },
+  {
+    image: "/icons/home-3.svg",
+    label: "Level",
+    description: "Shariah-aligned ethical giving.",
+  },
+  {
+    image: "/icons/home-4.svg",
+    label: "Earn",
+    description: "Global reach through Web3 technology.",
+  },
+  {
+    image: "/icons/home-5.svg",
+    label: "Earn",
+    description: "User-friendly, seamless donation experience.",
+  },
+];
+
+const CHAIN_EXPLORERS = [haqqMainnet, haqqTestedge2];
+
+export {
+  navigations,
+  userColors,
+  checkInLists,
+  checkInProducts,
+  homeProducts,
+  CHAIN_EXPLORERS,
+};

@@ -13,6 +13,7 @@ import { navigations, userColors } from "@/constants/common";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const NavContent = () => {
   const pathname = usePathname();
@@ -23,15 +24,15 @@ const NavContent = () => {
         const isActive =
           (pathname.includes(item.href) && item.href.length > 1) ||
           pathname === item.href;
+        const active = isActive ? "primary-gradient rounded-lg" : "";
         return (
           <SheetClose asChild key={item.href}>
             <Link
               href={item.href}
-              className={`${
-                isActive
-                  ? "primary-gradient rounded-lg text-tertiary"
-                  : "text-primary"
-              } flex items-center justify-start gap-4 bg-transparent p-4`}
+              className={cn(
+                "flex items-center justify-start text-neutral-base gap-4 bg-transparent p-4",
+                active
+              )}
             >
               <p className={`${isActive ? "text-xl" : "text-base"}`}>
                 {item.label}
@@ -64,9 +65,9 @@ const MobileNav = () => {
               alt="Haqq Wallet"
             />
 
-            <p className="font-ubuntu text-3xl text-primary">
+            <p className="font-ubuntu text-3xl text-brand-base">
               SDQ
-              <span className="text-tertiary pl-1">Charity</span>
+              <span className="text-neutral-base pl-1">Charity</span>
             </p>
           </Link>
 

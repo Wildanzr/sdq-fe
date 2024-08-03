@@ -1,4 +1,4 @@
-import { connectorsForWallets, getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
 import {
   walletConnectWallet,
@@ -14,7 +14,7 @@ const connectors = connectorsForWallets(
   [
     {
       groupName: "Recommended",
-      wallets: [haqqWallet, rainbowWallet, metaMaskWallet, walletConnectWallet],
+      wallets: [haqqWallet, metaMaskWallet, rainbowWallet, walletConnectWallet],
     },
   ],
   {

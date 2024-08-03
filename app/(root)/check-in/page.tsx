@@ -1,51 +1,16 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Calendar from "@/components/check-in/Ccalendar";
-import { checkInProducts } from "@/constants/common";
-import Product from "@/components/shared/Product";
+import Checkin from "@/components/views/Checkin";
+import NavBreadcrumb from "@/components/shared/NavBreadcrumb";
+import { navigations } from "@/constants/common";
 
 const CheckInPage = () => {
   return (
-    <div className="flex flex-col space-y-6 w-full h-full items-center justify-center">
-      <Card className="w-full bg-secondary-100/50 rounded-xl border-primary-90">
-        <CardHeader>
-          <CardTitle className="w-full text-center text-neutral-base m-title-page">
-            Daily Check In
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Calendar />
-        </CardContent>
-      </Card>
-
-      <h2 className="text-neutral-base m-title-page">Benefit of Check In</h2>
-
-      <div className="flex flex-col space-y-3 w-full h-full items-center justify-center">
-        {checkInProducts.map((item, idx) => (
-          <Product
-            key={idx}
-            description={item.description}
-            image={item.image}
-            label={item.label}
-          />
-        ))}
+    <div className="flex flex-col items-start justify-start space-y-5">
+      <div className="flex flex-col px-5 w-full items-start justify-start">
+        <NavBreadcrumb navigations={[navigations[0], navigations[1]]} />
+      </div>
+      <div className="flex flex-col space-y-6 px-5 w-full min-h-screen items-start justify-start bg-meteor-stars bg-no-repeat bg-cover">
+        <Checkin />
       </div>
     </div>
   );

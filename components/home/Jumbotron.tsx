@@ -23,7 +23,7 @@ const Jumbotron = () => {
           can create positive change with the Islamic values we cherish.
         </p>
         <Button className="flex w-5/12 flex-row space-x-3 text-neutral-base z-10 bg-primary-60 border-2 border-brand-70 rounded-xl">
-          <p className="text-brand-50 m-body-base">Discover Campaign</p>
+          <p className="m-body-base">Discover Campaign</p>
         </Button>
       </div>
     </div>

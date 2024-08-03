@@ -14,6 +14,7 @@ import { getExplorerDetails, isAlreadyClaimed } from "@/lib/utils";
 import useWaitForTxAction from "@/hooks/useWaitForTx";
 import { useToast } from "../ui/use-toast";
 import ToastTx from "../shared/ToastTx";
+import Loader from "../shared/Loader";
 
 interface CalendarProps {
   setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +26,7 @@ const Calendar = ({ setRefetch, stats }: CalendarProps) => {
   const { chainId } = useAccount();
   const [txHash, setTxHash] = useState<Address | undefined>(undefined);
   const [disabledButton, setDisabledButton] = useState(false);
+  const [loadingTx, setLoadingTx] = useState(false);
   const etherscan = getExplorerDetails(chainId);
 
   const action = () => {
@@ -41,6 +43,8 @@ const Calendar = ({ setRefetch, stats }: CalendarProps) => {
       });
       console.log("Tx Done");
       setTxHash(undefined);
+      setLoadingTx(false);
+      setDisabledButton(false);
       setRefetch(true);
     }
   };
@@ -52,6 +56,7 @@ const Calendar = ({ setRefetch, stats }: CalendarProps) => {
 
   const handleCheckIn = async () => {
     try {
+      setLoadingTx(true);
       setDisabledButton(true);
       const res = await checkIn();
       setTxHash(res);
@@ -67,13 +72,13 @@ const Calendar = ({ setRefetch, stats }: CalendarProps) => {
       });
     } catch (error: any) {
       console.error("Error in handleCheckIn", error);
+      setLoadingTx(false);
+      setDisabledButton(false);
       toast({
         title: "Transaction failed",
         description: error.message || "Failed to claim",
         variant: "destructive",
       });
-    } finally {
-      setDisabledButton(false);
     }
   };
 
@@ -112,14 +117,22 @@ const Calendar = ({ setRefetch, stats }: CalendarProps) => {
                 disabled={isAlreadyClaimed(stats.lastClaimed) || disabledButton}
                 className="flex h-16 flex-row items-center space-x-2 justify-center col-span-3 bg-gradient-to-r from-brand-60 to-secondary-base rounded-3xl"
               >
-                <p className="m-body-strong text-neutral-base">
-                  {isAlreadyClaimed(stats.lastClaimed) ? "Claimed " : `Claim `}
-                </p>
-                <p className="m-body-strong text-neutral-base">
-                  {isAlreadyClaimed(stats.lastClaimed)
-                    ? emoji("🔐")
-                    : emoji("✨")}
-                </p>
+                {loadingTx ? (
+                  <Loader />
+                ) : (
+                  <>
+                    <p className="m-body-strong text-neutral-base">
+                      {isAlreadyClaimed(stats.lastClaimed)
+                        ? "Claimed "
+                        : `Claim `}
+                    </p>
+                    <p className="m-body-strong text-neutral-base">
+                      {isAlreadyClaimed(stats.lastClaimed)
+                        ? emoji("🔐")
+                        : emoji("✨")}
+                    </p>
+                  </>
+                )}
               </Button>
             </div>
           </CardContent>

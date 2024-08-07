@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,8 +15,9 @@ import {
 import { Input } from "@/components/ui/input";
 import UploadImages from "./UploadImages";
 import { Editor } from "@tinymce/tinymce-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DollarSign } from "lucide-react";
+import { uploadImage } from "@/actions/bucket";
 
 const formSchema = z.object({
   title: z
@@ -40,6 +40,7 @@ const formSchema = z.object({
 });
 
 const FormCampaign = () => {
+  const [files, setFiles] = useState<File[] | null>([]);
   const editorRef = useRef<any>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +53,25 @@ const FormCampaign = () => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
+    console.log(files);
+
+    let images: string[] = [];
+    if (files) {
+      const uploadPromises = files.map(async (file) => {
+        const formData = new FormData();
+        formData.append("image", file);
+        return uploadImage(formData);
+      });
+      images = await Promise.all(uploadPromises);
+    }
   };
+
+  const handleFileChange = async (files: File[] | null) => {
+    if (!files) return;
+    console.log(files);
+    setFiles(files);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -153,7 +172,7 @@ const FormCampaign = () => {
             </FormItem>
           )}
         />
-        <UploadImages />
+        <UploadImages files={files} onFilesChange={handleFileChange} />
         <Button
           type="submit"
           className="flex flex-row space-x-3 text-neutral-base z-10 bg-primary-60 border-2 border-brand-70 rounded-xl"

@@ -10,9 +10,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { DropzoneOptions } from "react-dropzone";
 
-const UploadImages = () => {
-  const [files, setFiles] = useState<File[] | null>([]);
+interface UploadImagesProps {
+  files: File[] | null;
+  onFilesChange: (files: File[] | null) => void;
+}
 
+const UploadImages = ({ files, onFilesChange }: UploadImagesProps) => {
   const dropzone = {
     accept: {
       "image/*": [".jpg", ".jpeg", ".png"],
@@ -25,7 +28,7 @@ const UploadImages = () => {
   return (
     <FileUploader
       value={files}
-      onValueChange={setFiles}
+      onValueChange={onFilesChange}
       dropzoneOptions={dropzone}
     >
       <p className="m-body-base text-neutral-base mb-2">Campaign Images</p>

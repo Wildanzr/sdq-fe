@@ -6,7 +6,7 @@ import { homeProducts } from "@/constants/common";
 
 export default function Home() {
   return (
-    <div className="flex flex-col space-y-6 w-full h-full">
+    <div className="flex flex-col space-y-6 w-full h-full bg-meteor-stars">
       <Jumbotron />
       <div className="flex flex-col w-full h-full space-y-5 p-5">
         <h2 className="text-neutral-base text-center m-title-page p-5">

@@ -20,7 +20,7 @@ interface Product {
 export const CHECK_IN_ADDRESS = "0x286b9d5Cc7d24115141Ae950282FD1514671D902";
 export const SHODAQO_ADDRESS = "0x040EAdcaF7450609358047b7eF3Bef37E45D39D5";
 
-const navigations: Navigation[] = [
+export const navigations: Navigation[] = [
   {
     label: "Home",
     href: "/",
@@ -38,19 +38,23 @@ const navigations: Navigation[] = [
     href: "/create-a-campaign",
   },
   {
+    label: "My Campaigns",
+    href: "/my-campaigns",
+  },
+  {
     label: "Account",
     href: "/account",
   },
 ];
 
-const userColors = {
+export const userColors = {
   primary: "#86EE60",
   secondary: "#2E6E65",
   tertiary: "#F4F7ED",
   shadow: "#2B3752",
 };
 
-const checkInLists: CheckIn[] = [
+export const checkInLists: CheckIn[] = [
   {
     amount: 1.25,
     day: 1,
@@ -88,7 +92,7 @@ const checkInLists: CheckIn[] = [
   },
 ];
 
-const checkInProducts: Product[] = [
+export const checkInProducts: Product[] = [
   {
     image: "/images/earn.png",
     label: "Earn",
@@ -116,7 +120,7 @@ const checkInProducts: Product[] = [
   },
 ];
 
-const homeProducts: Product[] = [
+export const homeProducts: Product[] = [
   {
     image: "/icons/home-1.svg",
     label: "Earn",
@@ -144,13 +148,16 @@ const homeProducts: Product[] = [
   },
 ];
 
-const CHAIN_EXPLORERS = [haqqMainnet, haqqTestedge2];
+export const CHAIN_EXPLORERS = [haqqMainnet, haqqTestedge2];
 
-export {
-  navigations,
-  userColors,
-  checkInLists,
-  checkInProducts,
-  homeProducts,
-  CHAIN_EXPLORERS,
-};
+export const campaignStatus = [
+  "All",
+  "Active",
+  "Finished",
+]
+
+export const campaignFilter = [
+  "Last Updated",
+  "Most Popular",
+  "Most Raised",
+]

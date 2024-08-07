@@ -34,6 +34,10 @@ const navigations: Navigation[] = [
     href: "/loyalty-program",
   },
   {
+    label: "Create a Campaign",
+    href: "/create-a-campaign",
+  },
+  {
     label: "Account",
     href: "/account",
   },

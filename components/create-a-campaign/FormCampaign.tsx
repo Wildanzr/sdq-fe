@@ -15,30 +15,48 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import UploadImages from "./UploadImages";
+import { Editor } from "@tinymce/tinymce-react";
+import { useRef } from "react";
+import { DollarSign } from "lucide-react";
 
 const formSchema = z.object({
-  title: z.string().min(3).max(100),
-  target: z.number().min(1),
+  title: z
+    .string()
+    .min(3)
+    .max(100)
+    .refine((val) => val.trim() !== "", {
+      message: "Title is required",
+    }),
+  details: z
+    .string()
+    .min(3)
+    .max(50000)
+    .refine((val) => val.trim() !== "", {
+      message: "Details is required",
+    }),
+  target: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    message: "Expected number, received a string",
+  }),
 });
 
 const FormCampaign = () => {
+  const editorRef = useRef<any>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      target: 0,
+      details: "",
+      target: "0",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-  }
+  };
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col space-y-3 w-full h-full"
       >
         <h2 className="m-heading text-neutral-base py-3 mb-0">
@@ -64,6 +82,55 @@ const FormCampaign = () => {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="details"
+          render={({ field }) => (
+            <FormItem className="flex w-full flex-col gap-3">
+              <FormControl className="mt-3.5">
+                <Editor
+                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_KEY}
+                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  onBlur={field.onBlur}
+                  onEditorChange={(content) => {
+                    field.onChange(content);
+                  }}
+                  init={{
+                    height: 350,
+                    menubar: false,
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      "codesample",
+                      "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      "table",
+                    ],
+                    toolbar:
+                      "undo redo | " +
+                      "bold italic forecolor | alignleft aligncenter |" +
+                      "alignright alignjustify | bullist numlist",
+                    content_style: "body { font-family:Inter; font-size:16px }",
+                    skin: "oxide-dark",
+                    content_css: "dark",
+                  }}
+                />
+              </FormControl>
+              <FormMessage className="text-red-500" />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="target"
@@ -75,9 +142,10 @@ const FormCampaign = () => {
               </FormLabel>
               <FormControl>
                 <Input
+                  startIcon={DollarSign}
                   type="number"
                   className="bg-primary-100 border border-primary-90 text-neutral-base"
-                  placeholder="Help Us to Stop War ...."
+                  placeholder="10000"
                   {...field}
                 />
               </FormControl>

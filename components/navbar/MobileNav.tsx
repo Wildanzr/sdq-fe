@@ -58,14 +58,9 @@ const MobileNav = () => {
       <SheetContent side="left" className="bg-secondary-100 border-none">
         <SheetHeader>
           <Link href="/" className="flex items-center gap-1">
-            <Image
-              src="/images/icon.png"
-              width={30}
-              height={30}
-              alt="Haqq Wallet"
-            />
+            <Image src="/icon.svg" width={30} height={30} alt="Haqq Wallet" />
 
-            <p className="font-ubuntu text-3xl text-brand-base">
+            <p className="pl-1 font-ubuntu text-3xl text-brand-base">
               SDQ
               <span className="text-neutral-base pl-1">Charity</span>
             </p>

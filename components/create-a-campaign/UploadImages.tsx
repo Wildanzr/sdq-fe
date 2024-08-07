@@ -28,10 +28,7 @@ const UploadImages = () => {
       onValueChange={setFiles}
       dropzoneOptions={dropzone}
     >
-      <p className="m-body-base text-neutral-base mb-2">
-        Campaign Images
-        <span className="pl-1 text-red-500">*</span>
-      </p>
+      <p className="m-body-base text-neutral-base mb-2">Campaign Images</p>
       <FileInput>
         <div className="flex items-center justify-center h-32 w-full bg-primary-100 border border-primary-90 rounded-md">
           <div className="flex flex-col items-center justify-center">

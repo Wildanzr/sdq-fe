@@ -17,7 +17,16 @@ import UploadImages from "./UploadImages";
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef, useState } from "react";
 import { DollarSign } from "lucide-react";
-import { uploadImage } from "@/actions/bucket";
+import { States } from "@/components/create-a-campaign/FormState";
+import { getFromIPFS } from "@/actions/ipfs";
+
+interface FormCampaignProps {
+  children: React.ReactNode;
+  handleUploadImages: (files: File[]) => Promise<string[]>;
+  handleUploadIPFS: (content: string) => Promise<string>;
+  formStates: States;
+  setFormStates: (value: React.SetStateAction<States>) => void;
+}
 
 const formSchema = z.object({
   title: z
@@ -34,12 +43,23 @@ const formSchema = z.object({
     .refine((val) => val.trim() !== "", {
       message: "Details is required",
     }),
-  target: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
-    message: "Expected number, received a string",
-  }),
+  target: z
+    .string()
+    .refine(
+      (val) => !Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) > 0,
+      {
+        message: "Expected positive non-zero number, received a string",
+      }
+    ),
 });
 
-const FormCampaign = () => {
+const FormCampaign = ({
+  children,
+  handleUploadIPFS,
+  handleUploadImages,
+  formStates,
+  setFormStates,
+}: FormCampaignProps) => {
   const [files, setFiles] = useState<File[] | null>([]);
   const editorRef = useRef<any>(null);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -52,18 +72,29 @@ const FormCampaign = () => {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    console.log(files);
+    console.log("Submitting");
+    setFormStates((prev) => ({ ...prev, isSubmitting: true }));
 
-    let images: string[] = [];
-    if (files) {
-      const uploadPromises = files.map(async (file) => {
-        const formData = new FormData();
-        formData.append("image", file);
-        return uploadImage(formData);
-      });
-      images = await Promise.all(uploadPromises);
-    }
+    const imageList = await handleUploadImages(files!);
+    console.log("Image List", imageList);
+    const metadata: Object = {
+      title: values.title,
+      details: values.details,
+      target: values.target,
+      images: imageList,
+      previous: "",
+    };
+    console.log("Metadata", metadata);
+    const ipfsHash = await handleUploadIPFS(JSON.stringify(metadata));
+    console.log("IPFS Hash", ipfsHash);
+
+    // reset state
+    setFormStates((prev) => ({
+      isSubmitting: false,
+      first: false,
+      second: false,
+      third: false,
+    }));
   };
 
   const handleFileChange = async (files: File[] | null) => {
@@ -163,6 +194,7 @@ const FormCampaign = () => {
                 <Input
                   startIcon={DollarSign}
                   type="number"
+                  min={0}
                   className="bg-primary-100 border border-primary-90 text-neutral-base"
                   placeholder="10000"
                   {...field}
@@ -173,11 +205,20 @@ const FormCampaign = () => {
           )}
         />
         <UploadImages files={files} onFilesChange={handleFileChange} />
+
+        {children}
         <Button
           type="submit"
+          disabled={formStates.isSubmitting}
           className="flex flex-row space-x-3 text-neutral-base z-10 bg-primary-60 border-2 border-brand-70 rounded-xl"
         >
-          Submit Campaign
+          {formStates.isSubmitting === false
+            ? "Submit Campaign"
+            : formStates.first === false
+            ? "Uploading Images"
+            : formStates.second === false
+            ? "Uploading to IPFS"
+            : "Sign Transaction"}
         </Button>
       </form>
     </Form>

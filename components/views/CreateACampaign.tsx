@@ -30,7 +30,6 @@ const CreateACampaign = () => {
       images = await Promise.all(uploadPromises);
     }
     setFormStates((prev) => ({ ...prev, first: true }));
-
     return images;
   };
 
@@ -40,6 +39,7 @@ const CreateACampaign = () => {
     setFormStates((prev) => ({ ...prev, second: true }));
     return result;
   };
+
   return (
     <>
       {isConnected ? (

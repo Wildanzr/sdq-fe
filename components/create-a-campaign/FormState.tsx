@@ -30,7 +30,7 @@ const FormState = ({ formStates }: FormStatesProps) => {
   return (
     <>
       {isSubmitting && (
-        <div className="flex flex-col space-y-3 w-full h-full">
+        <div className="flex flex-col space-y-3 w-full h-full py-3">
           <div className="flex flex-row items-start justify-start space-x-3">
             <StatusView status={first} />
             <span className="m-body-base text-neutral-base">

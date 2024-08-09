@@ -26,3 +26,8 @@ export const formatterUSD = new Intl.NumberFormat("default", {
   style: "currency",
   currency: "USD",
 });
+
+export const truncateAddress = (address: string | undefined) => {
+  if (!address) return "";
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};

@@ -2,47 +2,80 @@
 
 import React, { useEffect, useState } from "react";
 import {
+  getAvailableTokens,
   getCampaignDetails,
   getCampaignDonations,
+  getCampaignDonationsLog,
   CampaignDetails as TypeCampaignDetails,
 } from "@/web3/charity";
 import { useRouter } from "next/navigation";
 import { getFromIPFS, IPFSResponse } from "@/actions/ipfs";
 import { Button } from "../ui/button";
-import { useWalletStore } from "@/store/wallet";
 import Creator from "../projects/Creator";
-import Donors from "../projects/Donors";
+import Donors, { Donator } from "../projects/Donors";
 import ItemDetails from "../projects/ItemDetails";
 import Overview from "../projects/Overview";
 import { PiShareFatThin } from "react-icons/pi";
 import { DonateDialog } from "../projects/DonateDialog";
+import { useAccount } from "wagmi";
+import { getExplorerDetails } from "@/lib/utils";
+import { tokenIcons } from "@/constants/common";
+import { formatUnits } from "viem";
 
 interface CampaignDetailsProps {
   campaignId: number;
 }
 
 const CampaignDetails = ({ campaignId }: CampaignDetailsProps) => {
-  const { isConnected } = useWalletStore((state) => ({
-    isConnected: state.isConnected,
-  }));
   const router = useRouter();
+  const { chainId, address } = useAccount();
   const [details, setDetails] = useState<IPFSResponse | undefined>();
   const [campaign, setCampaign] = useState<TypeCampaignDetails | undefined>();
+  const [donators, setDonators] = useState<Donator[]>([]);
+  const etherscan = getExplorerDetails(chainId);
+  const [tokens, setTokens] = useState<
+    readonly [readonly `0x${string}`[], readonly string[]] | undefined
+  >();
   const [donations, setDonations] = useState<
     readonly [readonly `0x${string}`[], readonly bigint[]] | undefined
   >();
 
   useEffect(() => {
+    const fetchTokens = async () => {
+      const res = await getAvailableTokens();
+      setTokens(res);
+    };
+
     const fetchCampaign = async () => {
       try {
-        const [cam, don] = await Promise.all([
+        const [cam, don, tor, _] = await Promise.all([
           getCampaignDetails(campaignId),
           getCampaignDonations(campaignId),
+          getCampaignDonationsLog(campaignId),
+          fetchTokens(),
         ]);
         const result = await getFromIPFS(cam.details);
         setCampaign(cam);
         setDetails(result);
         setDonations(don);
+        const donators: Donator[] = [];
+
+        console.log("Don", don);
+
+        for (const item of tor) {
+          const icon = tokenIcons.find((i) => i.address === item.token)?.icon!;
+          const decimal = tokenIcons.find((i) => i.address === item.token)
+            ?.decimals!;
+
+          donators.push({
+            token: icon,
+            amount: formatUnits(BigInt(item.amount.toString()), decimal),
+            message: item.message,
+            name: item.name,
+            tx: `${etherscan.blockExplorers.default.url}/tx/${item.tx}`,
+          });
+        }
+        setDonators(donators);
       } catch (error) {
         console.error("Error in fetchCampaign", error);
         router.push("/not-found");
@@ -70,7 +103,7 @@ const CampaignDetails = ({ campaignId }: CampaignDetailsProps) => {
           </div>
           <Creator address={campaign.owner} verified={true} />
           <Overview content={details.details} />
-          <Donors />
+          <Donors donators={donators} />
         </div>
       )}
     </>

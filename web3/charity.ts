@@ -33,6 +33,17 @@ export interface CampaignDetails {
   claimed: boolean;
 }
 
+export interface CampaignDonation {
+  donor: Address;
+  campaignId: bigint;
+  amount: bigint;
+  token: Address;
+  name: string;
+  message: string;
+  timestamp: bigint;
+  tx: string;
+}
+
 // Write Contracts
 export const createCampaign = async (
   title: string,
@@ -156,32 +167,33 @@ export const getMyCampaigns = async (address: Address | undefined) => {
   }
 }
 
-export const getCampaignDetailsLog = async (address: Address | undefined, campaignId: number) => {
+export const getCampaignDonationsLog = async (campaignId: number) => {
   try {
-    const campaigns: CampaignCreatedEvent[] = [];
+    const donations: CampaignDonation[] = [];
+    // TODO: Should optimize only get the logs for the specific campaignId
     const res = await publicClient.getContractEvents({
       address: CHARITY_ADDRESS,
       abi: charityAbi,
-      eventName: "CampaignCreated",
-      args: {
-        owner: address,
-
-      },
+      eventName: "CampaignDonation",
       fromBlock: CHARITY_FIRST_BLOCK
     })
 
     for (const event of res) {
-      campaigns.push({
-        campaignId: event.args.campaignId!,
-        description: event.args.description!,
-        details: event.args.details!,
-        owner: event.args.owner!,
-        timestamp: event.args.timestamp!,
-        title: event.args.title!,
-      });
+      if (event.args.campaignId === BigInt(campaignId)) {
+        donations.push({
+          donor: event.args.donor!,
+          campaignId: event.args.campaignId!,
+          amount: event.args.amount!,
+          token: event.args.token!,
+          name: event.args.name!,
+          message: event.args.message!,
+          timestamp: event.args.timestamp!,
+          tx: event.transactionHash,
+        });
+      }
     }
 
-    return campaigns;
+    return donations;
   } catch (error) {
     console.error("Error in getMyCampaigns", error);
     throw error;

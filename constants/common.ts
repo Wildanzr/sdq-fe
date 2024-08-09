@@ -168,21 +168,31 @@ export const tokenIcons = [
   {
     label: "native",
     icon: "/icons/islamic.svg",
+    address: "0x0000000000000000000000000000000000000000",
+    decimals: 18
   },
   {
     label: "usdc",
     icon: "/icons/usdc.svg",
+    address: "0x45E9E9D65E9C7Dd7B87E1b9d9DD97940e82b8D41",
+    decimals: 6
   },
   {
     label: "tether",
     icon: "/icons/usdt.svg",
+    address: "0x5ebfa790f12077ab35C647cD83359Cd42221F2bf",
+    decimals: 6
   },
   {
     label: "bridged-tether-axelar",
     icon: "/icons/usdt.svg",
+    address: "0x781686accFB1330Fb8c3bE86a82ADf225686bC84",
+    decimals: 6
   },
   {
     label: "bridged-usd-coin-axelar",
     icon: "/icons/usdc.svg",
+    address: "0x76874a926C19d23C8Ce0677A531Fe6f0157E3F6F",
+    decimals: 6
   },
 ]

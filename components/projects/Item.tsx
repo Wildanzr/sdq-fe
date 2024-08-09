@@ -11,7 +11,6 @@ import ImageCarousel from "./ImageCarousel";
 import {
   CampaignDetails,
   getCampaignDetails,
-  getCampaignDetailsLog,
   getCampaignDonations,
 } from "@/web3/charity";
 import { Separator } from "../ui/separator";

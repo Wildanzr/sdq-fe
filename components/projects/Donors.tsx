@@ -13,6 +13,8 @@ import {
 import Message from "./Message";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from "next/link";
+import { Address } from "viem";
+import Image from "next/image";
 
 const invoices = [
   {
@@ -21,45 +23,21 @@ const invoices = [
     totalAmount: "$250.00",
     paymentMethod: "Anonymous",
   },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "Ahmad Bukhori Muslim",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
 ];
 
-const Donors = () => {
+export interface Donator {
+  token: string;
+  amount: string;
+  name: string;
+  message: string;
+  tx: string;
+}
+
+interface DonorsProps {
+  donators: Donator[];
+}
+
+const Donors = ({ donators }: DonorsProps) => {
   return (
     <div className="flex flex-col w-full h-full text-neutral-base">
       <h2 className="m-title-page text-start">Donors</h2>
@@ -74,16 +52,20 @@ const Donors = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
+          {donators.map((item, idx) => (
+            <TableRow key={idx}>
+              <TableCell className="font-medium">
+                <Image src={item.token} width={20} height={20} alt="Token" />
+              </TableCell>
+              <TableCell>{item.amount}</TableCell>
+              <TableCell>{item.name}</TableCell>
               <TableCell>
-                <Message from="Adam" message="I have sent you the payment" />
+                {item.message && (
+                  <Message from={item.name} message={item.message} />
+                )}
               </TableCell>
               <TableCell className="flex items-center justify-end">
-                <Link href="#">
+                <Link href={item.tx} target="_blank">
                   <FaExternalLinkAlt
                     className="text-neutral-base cursor-pointer"
                     size={20}

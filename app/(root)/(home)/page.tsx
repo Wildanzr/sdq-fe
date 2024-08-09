@@ -1,8 +1,9 @@
+import HomeProjects from "@/components/home/HomeProjects";
 import Jumbotron from "@/components/home/Jumbotron";
-import Item from "@/components/projects/Item";
 import Product from "@/components/shared/Product";
 import { Button } from "@/components/ui/button";
 import { homeProducts } from "@/constants/common";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -28,13 +29,14 @@ export default function Home() {
         <h2 className="text-neutral-base m-title-page text-start">
           Featured Projects
         </h2>
-        <Item />
-        <Item />
-        <Item />
+        <HomeProjects />
 
-        <Button className="flex w-5/12 flex-row space-x-3 text-neutral-base z-10 bg-primary-60 border-2 border-brand-70 rounded-xl">
+        <Link
+          href="/campaigns"
+          className="flex flex-row space-x-3 text-neutral-base z-10 bg-primary-60 border-2 border-brand-70 rounded-xl p-2"
+        >
           <p className="m-body-base">See all projects</p>
-        </Button>
+        </Link>
       </div>
     </div>
   );

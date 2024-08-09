@@ -141,6 +141,7 @@ const FormCampaign = ({
       const imageList = await handleUploadImages(files!);
       const metadata: Object = {
         title: values.title,
+        description: values.shortDescription,
         details: values.details,
         target: values.target,
         images: imageList,

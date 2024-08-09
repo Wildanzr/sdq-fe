@@ -58,6 +58,34 @@ export const createCampaign = async (
 }
 
 // Read Contracts
+export const getCampaigns = async () => {
+  try {
+    const campaigns: CampaignCreatedEvent[] = [];
+    const res = await publicClient.getContractEvents({
+      address: CHARITY_ADDRESS,
+      abi: charityAbi,
+      eventName: "CampaignCreated",
+      fromBlock: CHARITY_FIRST_BLOCK
+    })
+
+    for (const event of res) {
+      campaigns.push({
+        campaignId: event.args.campaignId!,
+        description: event.args.description!,
+        details: event.args.details!,
+        owner: event.args.owner!,
+        timestamp: event.args.timestamp!,
+        title: event.args.title!,
+      });
+    }
+
+    return campaigns;
+  } catch (error) {
+    console.error("Error in getMyCampaigns", error);
+    throw error;
+  }
+}
+
 export const getMyCampaigns = async (address: Address | undefined) => {
   try {
     const campaigns: CampaignCreatedEvent[] = [];
@@ -88,6 +116,39 @@ export const getMyCampaigns = async (address: Address | undefined) => {
     throw error;
   }
 }
+
+export const getCampaignDetailsLog = async (address: Address | undefined, campaignId: number) => {
+  try {
+    const campaigns: CampaignCreatedEvent[] = [];
+    const res = await publicClient.getContractEvents({
+      address: CHARITY_ADDRESS,
+      abi: charityAbi,
+      eventName: "CampaignCreated",
+      args: {
+        owner: address,
+
+      },
+      fromBlock: CHARITY_FIRST_BLOCK
+    })
+
+    for (const event of res) {
+      campaigns.push({
+        campaignId: event.args.campaignId!,
+        description: event.args.description!,
+        details: event.args.details!,
+        owner: event.args.owner!,
+        timestamp: event.args.timestamp!,
+        title: event.args.title!,
+      });
+    }
+
+    return campaigns;
+  } catch (error) {
+    console.error("Error in getMyCampaigns", error);
+    throw error;
+  }
+}
+
 
 export const getCampaignDetails = async (campaignId: number) => {
   try {

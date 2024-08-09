@@ -13,7 +13,7 @@ const ManageCampaignDetails = () => {
     <>
       {isConnected ? (
         <div className="flex flex-col space-y-5 w-full h-full min-h-screen items-start justify-start">
-          <Item />
+          {/* <Item /> */}
           <div className="flex flex-row space-x-3 items-center justify-center w-full h-full">
             <Button
               onClick={() => {}}

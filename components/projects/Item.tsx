@@ -11,18 +11,21 @@ import ImageCarousel from "./ImageCarousel";
 import {
   CampaignDetails,
   getCampaignDetails,
+  getCampaignDetailsLog,
   getCampaignDonations,
 } from "@/web3/charity";
 import { Separator } from "../ui/separator";
 import { formatterUSD } from "@/lib/utils";
+import Link from "next/link";
+import { getFromIPFS, IPFSResponse } from "@/actions/ipfs";
 
 interface ItemProps {
   campaignId: number;
-  description: string;
 }
 
-const Item = ({ campaignId, description }: ItemProps) => {
+const Item = ({ campaignId }: ItemProps) => {
   const [campaign, setCampaign] = useState<CampaignDetails | undefined>();
+  const [details, setDetails] = useState<IPFSResponse | undefined>();
   const [donations, setDonations] = useState<
     readonly [readonly `0x${string}`[], readonly bigint[]] | undefined
   >();
@@ -34,10 +37,10 @@ const Item = ({ campaignId, description }: ItemProps) => {
           getCampaignDetails(Number(campaignId)),
           getCampaignDonations(Number(campaignId)),
         ]);
+        const ipfsDetails = await getFromIPFS(cam.details);
         setCampaign(cam);
         setDonations(don);
-        console.log("Campaign", cam);
-        console.log("Donations", don);
+        setDetails(ipfsDetails);
       } catch (error) {
         console.error("Error in fetchCampaignDetails", error);
       }
@@ -49,19 +52,22 @@ const Item = ({ campaignId, description }: ItemProps) => {
     <Card className="w-full bg-secondary-100/50 rounded-2xl border-primary-90">
       <CardHeader className="flex flex-col space-y-3 p-4 w-full">
         <div className="flex relative h-60 w-full">
-          <ImageCarousel />
+          <ImageCarousel imageSources={details?.images} />
         </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col space-y-3 w-full h-full">
-          <h2 className="text-neutral-base m-heading">
+          <Link
+            href={`/campaigns/${campaignId}?title=${campaign?.title}`}
+            className="text-brand-60 m-heading"
+          >
             {campaign ? campaign.title : ""}
-          </h2>
+          </Link>
 
           <Separator className="my-4 bg-primary-90" />
 
           <p className="text-neutral-base m-body-small line-clamp-3">
-            {description}
+            {details?.description}
           </p>
           <div className="w-full h-2 bg-primary-90 rounded-xl">
             <div className="w-2/5 h-full bg-brand-60 rounded-xl" />

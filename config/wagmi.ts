@@ -1,4 +1,4 @@
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import { connectorsForWallets, WalletList } from "@rainbow-me/rainbowkit";
 import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
 import {
   walletConnectWallet,
@@ -6,22 +6,22 @@ import {
   metaMaskWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { haqqWallet } from "./haqq-wallet";
-import { createConfig, http } from "wagmi";
+import { cookieStorage, createConfig, createStorage, http } from "wagmi";
 
 const WALLETCONNECT_ID = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!;
 const NETWORK = process.env.NEXT_PUBLIC_NETWORK as "mainnet" | "testnet";
-const connectors = connectorsForWallets(
-  [
-    {
-      groupName: "Recommended",
-      wallets: [haqqWallet, metaMaskWallet, rainbowWallet, walletConnectWallet],
-    },
-  ],
+const walletList: WalletList = [
   {
-    appName: "SDQ",
-    projectId: WALLETCONNECT_ID,
+    groupName: "Recommended",
+    wallets: [haqqWallet, metaMaskWallet, rainbowWallet, walletConnectWallet]
   }
-);
+]
+const connectors = connectorsForWallets(
+  walletList, {
+  appName: "SDQ",
+  projectId: WALLETCONNECT_ID,
+}
+)
 
 export const config = createConfig({
   chains: NETWORK === "mainnet" ? [haqqMainnet] : [haqqTestedge2],
@@ -31,4 +31,7 @@ export const config = createConfig({
   },
   connectors,
   ssr: true,
+  storage: createStorage({
+    storage: cookieStorage
+  })
 });

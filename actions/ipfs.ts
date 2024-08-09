@@ -4,6 +4,15 @@ import axios from 'axios';
 const TATUM_API_KEY = process.env.TATUM_API_KEY;
 const URL_ENDPOINT = 'https://api.tatum.io/v3/ipfs';
 
+export interface IPFSResponse {
+  details: string
+  description: string
+  images: string[]
+  previous: string
+  target: string;
+  title: string;
+}
+
 
 export const uploadToIPFS = async (content: string) => {
   try {
@@ -35,7 +44,7 @@ export const getFromIPFS = async (hash: string) => {
       }
     });
     console.log("Response", response.data);
-    return response.data;
+    return response.data as IPFSResponse;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to get from IPFS');

@@ -9,7 +9,11 @@ import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 import Image from "next/image";
 
-const ImageCarousel = () => {
+interface ImageCarouselProps {
+  imageSources?: string[];
+}
+
+const ImageCarousel = ({ imageSources }: ImageCarouselProps) => {
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
   return (
     <Carousel
@@ -19,18 +23,33 @@ const ImageCarousel = () => {
       onMouseLeave={plugin.current.reset}
     >
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index}>
-            <Image
-              src={"/images/campaign-1.jpg"}
-              width="0"
-              height="0"
-              sizes="100vw"
-              className="w-full h-auto rounded-xl"
-              alt="Campaign 1"
-            />
+        {imageSources?.length === 0 || imageSources === undefined ? (
+          <CarouselItem>
+            <div className="h-60 w-full relative">
+              <Image
+                src={"/images/campaign-1.jpg"}
+                alt="campaign image"
+                layout="fill"
+                objectFit="cover"
+                className="w-full h-auto rounded-xl"
+              />
+            </div>
           </CarouselItem>
-        ))}
+        ) : (
+          imageSources?.map((image, index) => (
+            <CarouselItem key={index}>
+              <div className="h-60 w-full relative">
+                <Image
+                  src={image}
+                  alt="campaign image"
+                  layout="fill"
+                  objectFit="cover"
+                  className="w-full h-auto rounded-xl"
+                />
+              </div>
+            </CarouselItem>
+          ))
+        )}
       </CarouselContent>
     </Carousel>
   );

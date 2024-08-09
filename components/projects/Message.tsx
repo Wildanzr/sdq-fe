@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { MdOutlineMessage } from "react-icons/md";
 import {
@@ -5,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Button } from "../ui/button";
 
 interface MessageProps {
   from: string;
@@ -15,10 +18,12 @@ const Message = ({ from, message }: MessageProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <MdOutlineMessage
-          className="text-neutral-base cursor-pointer"
-          size={20}
-        />
+        <Button variant="link">
+          <MdOutlineMessage
+            className="text-neutral-base cursor-pointer"
+            size={20}
+          />
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">

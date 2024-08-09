@@ -43,7 +43,6 @@ export const getFromIPFS = async (hash: string) => {
         'Accept': 'application/json'
       }
     });
-    console.log("Response", response.data);
     return response.data as IPFSResponse;
   } catch (error) {
     console.error(error);

@@ -21,3 +21,8 @@ export const getExplorerDetails = (chainId: number | undefined) => {
 
   return blockExplorer || CHAIN_EXPLORERS[0];
 };
+
+export const formatterUSD = new Intl.NumberFormat("default", {
+  style: "currency",
+  currency: "USD",
+});

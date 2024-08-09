@@ -19,7 +19,8 @@ interface Product {
 
 export const CHECK_IN_ADDRESS = "0xB6dD6284Ff5b7A9d28994a5C12309e5E6d956c21";
 export const SHODAQO_ADDRESS = "0x040EAdcaF7450609358047b7eF3Bef37E45D39D5";
-export const CHARITY_ADDRESS = "0xcdF7d1F52BfFE87651593Be855E314Ed256e607d";
+export const CHARITY_ADDRESS = "0xb37bfD19Cf90804D5483848Ce59e3cd0C96E47E9";
+export const CHARITY_FIRST_BLOCK = BigInt(10558853);
 
 export const navigations: Navigation[] = [
   {

@@ -181,14 +181,14 @@ export const charityAbi = [
       {
         "indexed": false,
         "internalType": "string",
-        "name": "details",
+        "name": "description",
         "type": "string"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "target",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "details",
+        "type": "string"
       },
       {
         "indexed": false,
@@ -682,6 +682,11 @@ export const charityAbi = [
       {
         "internalType": "string",
         "name": "title",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
         "type": "string"
       },
       {

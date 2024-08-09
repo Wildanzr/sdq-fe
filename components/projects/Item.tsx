@@ -1,57 +1,83 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import Image from "next/image";
+import ImageCarousel from "./ImageCarousel";
+import {
+  CampaignDetails,
+  getCampaignDetails,
+  getCampaignDonations,
+} from "@/web3/charity";
+import { Separator } from "../ui/separator";
+import { formatterUSD } from "@/lib/utils";
 
-const Item = () => {
+interface ItemProps {
+  campaignId: number;
+  description: string;
+}
+
+const Item = ({ campaignId, description }: ItemProps) => {
+  const [campaign, setCampaign] = useState<CampaignDetails | undefined>();
+  const [donations, setDonations] = useState<
+    readonly [readonly `0x${string}`[], readonly bigint[]] | undefined
+  >();
+
+  useEffect(() => {
+    const fetchCampaignDetails = async () => {
+      try {
+        const [cam, don] = await Promise.all([
+          getCampaignDetails(Number(campaignId)),
+          getCampaignDonations(Number(campaignId)),
+        ]);
+        setCampaign(cam);
+        setDonations(don);
+        console.log("Campaign", cam);
+        console.log("Donations", don);
+      } catch (error) {
+        console.error("Error in fetchCampaignDetails", error);
+      }
+    };
+
+    fetchCampaignDetails();
+  }, [campaignId]);
   return (
     <Card className="w-full bg-secondary-100/50 rounded-2xl border-primary-90">
-      <CardHeader className="flex flex-col space-y-3 p-4">
+      <CardHeader className="flex flex-col space-y-3 p-4 w-full">
         <div className="flex relative h-60 w-full">
-          <Image
-            src={"/images/campaign-1.jpg"}
-            width="0"
-            height="0"
-            sizes="100vw"
-            className="w-full h-auto rounded-3xl"
-            alt="Campaign 1"
-          />
-        </div>
-        <div className="flex flex-row items-center justify-between">
-          <p className="text-brand-50 bg-primary-50/30 p-2 m-body-link rounded-xl">
-            Housing Assistance
-          </p>
-          <p className="text-neutral-base m-label">Last update: 2 months ago</p>
+          <ImageCarousel />
         </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col space-y-3 w-full h-full">
           <h2 className="text-neutral-base m-heading">
-            Building Homes for the Needy
+            {campaign ? campaign.title : ""}
           </h2>
 
+          <Separator className="my-4 bg-primary-90" />
+
           <p className="text-neutral-base m-body-small line-clamp-3">
-            Help provide safe and secure housing for families in need. Your
-            donation will support the construction of homes for those without
-            shelter
+            {description}
           </p>
           <div className="w-full h-2 bg-primary-90 rounded-xl">
-            <div className="w-2/5 h-full bg-brand-60 rounded-xl"></div>
+            <div className="w-2/5 h-full bg-brand-60 rounded-xl" />
           </div>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col w-full items-start justify-start space-y-1">
         <div className="flex flex-row w-full items-center justify-between">
-          <p className="text-neutral-base m-subheading">$4,000</p>
+          <p className="text-neutral-base m-subheading">
+            {campaign ? Number(campaign.donators) : 0}
+          </p>
           <p className="text-neutral-base m-subheading">40%</p>
         </div>
-        <p className="text-neutral-70 m-body-small">raised of $10,000</p>
+        <p className="text-neutral-70 m-body-small">
+          raised of {formatterUSD.format(Number(campaign?.target))}
+        </p>
       </CardFooter>
     </Card>
   );

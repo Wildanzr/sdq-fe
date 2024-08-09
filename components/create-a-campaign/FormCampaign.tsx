@@ -26,6 +26,7 @@ import { getExplorerDetails } from "@/lib/utils";
 import useWaitForTxAction from "@/hooks/useWaitForTx";
 import ToastTx from "../shared/ToastTx";
 import { useRouter } from "next/navigation";
+import { Textarea } from "../ui/textarea";
 
 interface FormCampaignProps {
   children: React.ReactNode;
@@ -42,6 +43,13 @@ const formSchema = z.object({
     .max(100)
     .refine((val) => val.trim() !== "", {
       message: "Title is required",
+    }),
+  shortDescription: z
+    .string()
+    .min(50)
+    .max(180)
+    .refine((val) => val.trim() !== "", {
+      message: "Short description is required",
     }),
   details: z
     .string()
@@ -112,6 +120,7 @@ const FormCampaign = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
+      shortDescription: "",
       details: "",
       target: "0",
     },
@@ -140,6 +149,7 @@ const FormCampaign = ({
       const ipfsHash = await handleUploadIPFS(JSON.stringify(metadata));
       const res = await createCampaign(
         values.title,
+        values.shortDescription,
         ipfsHash.ipfsHash,
         values.target
       );
@@ -193,7 +203,29 @@ const FormCampaign = ({
               <FormControl>
                 <Input
                   className="bg-primary-100 border border-primary-90 text-neutral-base"
-                  placeholder="Help Us to Stop War ...."
+                  placeholder="Building Homes for ...."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="shortDescription"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="m-body-base text-neutral-base">
+                Short Description
+                <span className="pl-1 text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <Textarea
+                  className="bg-primary-100 border border-primary-90 text-neutral-base"
+                  placeholder="Explain your campaign in a few words"
+                  maxLength={180}
                   {...field}
                 />
               </FormControl>
@@ -207,6 +239,17 @@ const FormCampaign = ({
           name="details"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-3">
+              <FormLabel className="flex flex-col space-y-3">
+                <div className="flex flex-row">
+                  <p className="m-body-base text-neutral-base">
+                    Campaign Details
+                  </p>
+                  <span className="pl-1 text-red-500">*</span>
+                </div>
+                <p className="m-body-link text-neutral-base/50">
+                  More details about your campaign
+                </p>
+              </FormLabel>
               <FormControl className="mt-3.5">
                 <Editor
                   apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_KEY}

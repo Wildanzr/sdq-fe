@@ -163,3 +163,26 @@ export const campaignFilter = [
   "Most Popular",
   "Most Raised",
 ]
+
+export const tokenIcons = [
+  {
+    label: "native",
+    icon: "/icons/islamic.svg",
+  },
+  {
+    label: "usdc",
+    icon: "/icons/usdc.svg",
+  },
+  {
+    label: "tether",
+    icon: "/icons/usdt.svg",
+  },
+  {
+    label: "bridged-tether-axelar",
+    icon: "/icons/usdt.svg",
+  },
+  {
+    label: "bridged-usd-coin-axelar",
+    icon: "/icons/usdc.svg",
+  },
+]

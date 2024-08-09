@@ -26,9 +26,6 @@ export function DonateDialog() {
         <div className="grid gap-4 py-4">
           <FormDonation />
         </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

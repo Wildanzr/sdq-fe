@@ -33,6 +33,7 @@ export interface CampaignDetails {
   claimed: boolean;
 }
 
+// Write Contracts
 export const createCampaign = async (
   title: string,
   description: string,
@@ -53,6 +54,44 @@ export const createCampaign = async (
     return result;
   } catch (error) {
     console.error("Error in createCampaign", error);
+    throw error;
+  }
+}
+
+export const donateNative = async (campaignId: number, name: string, message: string, amount: bigint) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "donate",
+      args: [campaignId, name, message],
+      value: amount,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in donateNative", error);
+    throw error;
+  }
+}
+
+export const donateToken = async (campaignId: number, name: string, message: string, amount: bigint, token: Address) => {
+  console.log("Campaign ID", campaignId);
+  console.log("Name", name);
+  console.log("Message", message);
+  console.log("Amount", amount);
+  console.log("Token", token);
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "donateWithToken",
+      args: [campaignId, amount, token, name, message],
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in donateToken", error);
     throw error;
   }
 }
@@ -182,4 +221,18 @@ export const getCampaignDonations = async (campaignId: number) => {
   }
 }
 
+export const getAvailableTokens = async () => {
+  try {
+    const result = await readContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "getAvailableTokens",
+      args: [],
+    });
 
+    return result;
+  } catch (error) {
+    console.error("Error in getAvailableTokens", error);
+    throw error;
+  }
+}

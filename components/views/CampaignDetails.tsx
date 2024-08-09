@@ -15,6 +15,7 @@ import Donors from "../projects/Donors";
 import ItemDetails from "../projects/ItemDetails";
 import Overview from "../projects/Overview";
 import { PiShareFatThin } from "react-icons/pi";
+import { DonateDialog } from "../projects/DonateDialog";
 
 interface CampaignDetailsProps {
   campaignId: number;
@@ -42,9 +43,6 @@ const CampaignDetails = ({ campaignId }: CampaignDetailsProps) => {
         setCampaign(cam);
         setDetails(result);
         setDonations(don);
-        console.log("Campaign Details", cam);
-        console.log("Details", result);
-        console.log("Donations", don);
       } catch (error) {
         console.error("Error in fetchCampaign", error);
         router.push("/not-found");
@@ -68,9 +66,7 @@ const CampaignDetails = ({ campaignId }: CampaignDetailsProps) => {
             <Button className="border border-brand-base rounded-lg bg-primary-100">
               <PiShareFatThin className="text-brand-base" />
             </Button>
-            <Button className="flex w-full flex-row space-x-3 text-neutral-base z-10 bg-primary-100 border border-brand-base rounded-lg p-2">
-              <p className="m-body-base">Donate Now</p>
-            </Button>
+            <DonateDialog campaignId={campaignId} title={campaign.title} />
           </div>
           <Creator address={campaign.owner} verified={true} />
           <Overview content={details.details} />

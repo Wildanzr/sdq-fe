@@ -3,28 +3,32 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import FormDonation from "./FormDonation";
 
-export function DonateDialog() {
+interface DonateDialogProps {
+  campaignId: number;
+  title: string;
+}
+
+export function DonateDialog({ campaignId, title }: DonateDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        <Button className="flex w-full flex-row space-x-3 text-neutral-base z-10 bg-primary-100 border border-brand-base rounded-lg p-2">
+          <p className="m-body-base">Donate Now</p>
+        </Button>
       </DialogTrigger>
       <DialogContent className="w-full sm:max-w-sm bg-primary-100 border border-primary-90 rounded-2xl">
         <DialogHeader className="flex flex-col items-start justify-start text-neutral-base">
           <DialogTitle>Donate to</DialogTitle>
-          <DialogDescription>This is campaign title</DialogDescription>
+          <DialogDescription>{title}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <FormDonation />
+          <FormDonation campaignId={campaignId} />
         </div>
       </DialogContent>
     </Dialog>

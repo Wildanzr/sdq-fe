@@ -55,7 +55,11 @@ interface SelectedToken {
   icon: string;
 }
 
-const FormDonation = () => {
+interface FormDonationProps {
+  campaignId: number;
+}
+
+const FormDonation = ({ campaignId }: FormDonationProps) => {
   const { toast } = useToast();
   const [tokens, setTokens] = useState<
     readonly [readonly `0x${string}`[], readonly string[]] | undefined
@@ -104,6 +108,8 @@ const FormDonation = () => {
       if (state === "approve") {
         setState("donate");
         setRefetch(true);
+      } else {
+        form.reset();
       }
     }
   };
@@ -126,7 +132,7 @@ const FormDonation = () => {
     try {
       const amount = parseEther(form.getValues("amount"));
       const txHash = await donateNative(
-        3,
+        campaignId,
         form.getValues("name")!,
         form.getValues("message")!,
         amount
@@ -183,7 +189,7 @@ const FormDonation = () => {
         const tokenAmount = Number(form.getValues("amount"));
         const amount = BigInt(tokenAmount * 10 ** tokenDecimals);
         txHash = await donateToken(
-          3,
+          campaignId,
           form.getValues("name")!,
           form.getValues("message")!,
           amount,
@@ -219,7 +225,6 @@ const FormDonation = () => {
       let tokenBalances: TokenBalance[] = [];
       for (const item of res[0]) {
         const balance = await getTokenBalance(item, address!, CHARITY_ADDRESS);
-        console.log(balance);
         tokenBalances.push(balance);
       }
       setWalletBalance(tokenBalances);

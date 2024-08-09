@@ -30,8 +30,7 @@ const ImageCarousel = ({ imageSources }: ImageCarouselProps) => {
                 src={"/images/campaign-1.jpg"}
                 alt="campaign image"
                 layout="fill"
-                objectFit="cover"
-                className="w-full h-auto rounded-xl"
+                className="w-full h-auto rounded-xl object-cover"
               />
             </div>
           </CarouselItem>
@@ -43,8 +42,7 @@ const ImageCarousel = ({ imageSources }: ImageCarouselProps) => {
                   src={image}
                   alt="campaign image"
                   layout="fill"
-                  objectFit="cover"
-                  className="w-full h-auto rounded-xl"
+                  className="w-full h-auto rounded-xl object-cover"
                 />
               </div>
             </CarouselItem>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 const Jumbotron = () => {
   return (
@@ -23,9 +24,12 @@ const Jumbotron = () => {
             Join us on a journey towards blessings and prosperity. Together, we
             can create positive change with the Islamic values we cherish.
           </p>
-          <Button className="flex w-5/12 flex-row space-x-3 text-neutral-base z-10 bg-primary-60 border-2 border-brand-70 rounded-xl">
+          <Link
+            href="/campaigns"
+            className="flex flex-row space-x-3 text-neutral-base z-10 bg-primary-60 border-2 border-brand-70 rounded-xl p-2"
+          >
             <p className="m-body-base">Discover Campaign</p>
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

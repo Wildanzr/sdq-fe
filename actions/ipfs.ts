@@ -46,6 +46,6 @@ export const getFromIPFS = async (hash: string) => {
     return response.data as IPFSResponse;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to get from IPFS');
+    return {} as IPFSResponse;
   }
 }

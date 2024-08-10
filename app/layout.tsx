@@ -5,6 +5,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import Web3Provider from "@/providers/Web3Provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ToastProvider } from "@/components/ui/toast";
+import { headers } from "next/headers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -78,6 +79,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookie = headers().get("cookie");
   return (
     <html lang="en">
       <body

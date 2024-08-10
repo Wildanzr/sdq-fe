@@ -1,39 +1,22 @@
-"use client";
+import Item from "../campaigns/Item";
 
-import React, { useEffect, useState } from "react";
-import CampaignFilter, { QueryFilterProps } from "../shared/CampaignFilter";
-import { campaignFilter, campaignStatus } from "@/constants/common";
-import { CampaignCreatedEvent, getCampaigns } from "@/web3/charity";
-import Item from "../projects/Item";
+interface CampaignsProps {
+  campaigns: MinimumCampaign[];
+}
 
-const Campaigns = () => {
-  const [campaigns, setCampaigns] = useState<
-    CampaignCreatedEvent[] | undefined
-  >();
-  const [queryFilter, setQueryFilter] = useState<QueryFilterProps>({
-    query: "",
-    filter: campaignFilter[0],
-    status: campaignStatus[0],
-  });
-
-  useEffect(() => {
-    const fetchCampaigns = async () => {
-      const res = await getCampaigns();
-      setCampaigns(res);
-    };
-
-    fetchCampaigns();
-  }, []);
-
+const Campaigns = ({ campaigns }: CampaignsProps) => {
   return (
     <div className="flex space-y-5 flex-col w-full h-full items-center justify-start py-3">
       <h2 className="text-neutral-base m-title-page text-center">
         Featured Campaigns
       </h2>
-      <CampaignFilter values={queryFilter} setValues={setQueryFilter} />
-      {campaigns?.map((item, idx) => (
-        <Item campaignId={Number(item.campaignId)} key={idx} />
-      ))}
+      {campaigns.length === 0 ? (
+        <div className="flex">
+          <p className="m-body-base text-neutral-base">No campaigns found</p>
+        </div>
+      ) : (
+        campaigns.map((item, idx) => <Item key={idx} campaign={item} />)
+      )}
     </div>
   );
 };

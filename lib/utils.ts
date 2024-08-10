@@ -1,6 +1,7 @@
 import { CHAIN_EXPLORERS } from "@/constants/common";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { formatUnits } from "viem";
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -31,3 +32,14 @@ export const truncateAddress = (address: string | undefined) => {
   if (!address) return "";
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
+
+export const countTotalRaised = (values: bigint[], prices: number[], decimals: number[]) => {
+
+  let raised = 0;
+  for (let i = 0; i < values.length; i++) {
+    const value = Number(formatUnits(values[i], decimals[i])) * prices[i];
+    raised += value;
+  }
+
+  return raised;
+}

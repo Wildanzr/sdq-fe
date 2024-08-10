@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { formatterUSD } from "@/lib/utils";
 import { Separator } from "@radix-ui/react-separator";
-import ImageCarousel from "./ImageCarousel";
+import ImageCarousel from "../shared/ImageCarousel";
 
 interface ItemDetailsProps {
   title: string;

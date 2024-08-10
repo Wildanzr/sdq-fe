@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import ImageCarousel from "./ImageCarousel";
+import ImageCarousel from "../shared/ImageCarousel";
 import {
   CampaignDetails,
   getCampaignDetails,

@@ -1,11 +1,10 @@
 import HomeProjects from "@/components/home/HomeProjects";
 import Jumbotron from "@/components/home/Jumbotron";
 import Product from "@/components/shared/Product";
-import { Button } from "@/components/ui/button";
 import { homeProducts } from "@/constants/common";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="flex flex-col space-y-6 w-full h-full bg-meteor-stars">
       <Jumbotron />
@@ -29,7 +28,7 @@ export default function Home() {
         <h2 className="text-neutral-base m-title-page text-start">
           Featured Projects
         </h2>
-        <HomeProjects />
+        {/* <HomeProjects /> */}
 
         <Link
           href="/campaigns"

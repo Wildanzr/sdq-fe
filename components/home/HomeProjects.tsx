@@ -21,11 +21,7 @@ const HomeProjects = () => {
   return (
     <>
       {campaigns?.map((item, idx) => (
-        <Item
-          campaignId={Number(item.campaignId)}
-          description={item.description}
-          key={idx}
-        />
+        <Item campaignId={Number(item.campaignId)} key={idx} />
       ))}
     </>
   );

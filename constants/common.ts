@@ -20,7 +20,7 @@ interface Product {
 export const SHODAQO_ADDRESS = "0x040EAdcaF7450609358047b7eF3Bef37E45D39D5";
 export const CHECK_IN_ADDRESS = "0xA5bE51D8b8BE47A5517658c3cB401EBeC7C4F086";
 export const CHARITY_ADDRESS = "0x1a24D7B5dE26Dba2629959dCaCf4b26fB5F93e17";
-export const CHARITY_FIRST_BLOCK = BigInt(10558853);
+export const CHARITY_FIRST_BLOCK = BigInt(10582418);
 
 export const navigations: Navigation[] = [
   {

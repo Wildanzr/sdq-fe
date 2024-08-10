@@ -22,6 +22,18 @@ interface AvailableTokens {
   price: number[];
 }
 
+interface CampaignDetails {
+  owner: `0x${string}`;
+  title: string;
+  details: string;
+  target: bigint;
+  donators: bigint;
+  created: bigint;
+  updated: bigint;
+  paused: boolean;
+  claimed: boolean;
+}
+
 const NETWORK = process.env.NEXT_PUBLIC_NETWORK as "mainnet" | "testnet";
 const serverConfig = createConfig({
   chains: NETWORK === "mainnet" ? [haqqMainnet] : [haqqTestedge2],
@@ -56,7 +68,7 @@ export const getCampaignDetails = async (id: number) => {
       args: [id],
     });
 
-    return result;
+    return result as CampaignDetails;
   } catch (error) {
     console.error("Error in getCampaignDetails", error);
     return false;
@@ -131,7 +143,7 @@ export const paginateCampaigns = async (page: number, limit: number) => {
       const [details, donations] = await Promise.all([
         getCampaignDetails(i),
         getCampaignDonations(i),
-      ])
+      ]) as [CampaignDetails, CampaignDonations];
       if (!details || !donations) {
         break;
       }
@@ -152,5 +164,41 @@ export const paginateCampaigns = async (page: number, limit: number) => {
   } catch (error) {
     console.error("Error in paginateCampaigns", error);
     throw error;
+  }
+}
+
+export const getMinimumCampaignDetails = async (id: number) => {
+  try {
+    let [details, donations] = await Promise.all([
+      getCampaignDetails(id),
+      getCampaignDonations(id),
+    ]) as [CampaignDetails, CampaignDonations];
+
+    if (!details || !donations) {
+      return false;
+    }
+    const [ipfs, tokens, islm] = await Promise.all([
+      getFromIPFS(details.details),
+      getAvailableTokens(),
+      getCoinLatestPrice("islamic-coin"),
+    ]) as [IPFSResponse, AvailableTokens, number];
+
+    tokens.decimals.push(18);
+    tokens.price.push(islm);
+
+    const campaign: MinimumCampaign = {
+      id,
+      owner: details.owner,
+      description: ipfs.description,
+      images: ipfs.images,
+      title: ipfs.title,
+      raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
+      target: Number(details.target),
+    }
+
+    return campaign;
+  } catch (error) {
+    console.error("Error in getMinimumCampaignDetails", error);
+    return false;
   }
 }

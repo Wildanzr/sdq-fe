@@ -1,15 +1,15 @@
-export const checkinAbi = [
+export const soulboundAbi = [
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "sdq",
+        "name": "_admin",
         "type": "address"
       },
       {
-        "internalType": "address[3]",
-        "name": "_soulbound",
-        "type": "address[3]"
+        "internalType": "string",
+        "name": "_baseURI",
+        "type": "string"
       }
     ],
     "stateMutability": "nonpayable",
@@ -40,38 +40,103 @@ export const checkinAbi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "claimer",
+        "name": "sender",
         "type": "address"
       },
       {
-        "internalType": "string",
-        "name": "reason",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
       }
     ],
-    "name": "AccountError",
+    "name": "ERC721IncorrectOwner",
     "type": "error"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "target",
+        "name": "operator",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "AddressEmptyCode",
+    "name": "ERC721InsufficientApproval",
     "type": "error"
   },
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "account",
+        "name": "approver",
         "type": "address"
       }
     ],
-    "name": "AddressInsufficientBalance",
+    "name": "ERC721InvalidApprover",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "ERC721InvalidOperator",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "ERC721InvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "name": "ERC721InvalidReceiver",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "ERC721InvalidSender",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "ERC721NonexistentToken",
     "type": "error"
   },
   {
@@ -85,45 +150,19 @@ export const checkinAbi = [
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "FailedInnerCall",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "claimer",
+        "name": "from",
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "available",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "required",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "reason",
+        "type": "string"
       }
     ],
-    "name": "InsufficientBalance",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ReentrancyGuardReentrantCall",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "SafeERC20FailedOperation",
+    "name": "TransferFailed",
     "type": "error"
   },
   {
@@ -132,11 +171,23 @@ export const checkinAbi = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "claimer",
+        "name": "owner",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "approved",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "Ban",
+    "name": "Approval",
     "type": "event"
   },
   {
@@ -145,17 +196,55 @@ export const checkinAbi = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "claimer",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
         "type": "address"
       },
       {
         "indexed": false,
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
+      }
+    ],
+    "name": "ApprovalForAll",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "_fromTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_toTokenId",
         "type": "uint256"
       }
     ],
-    "name": "CheckIn",
+    "name": "BatchMetadataUpdate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "MetadataUpdate",
     "type": "event"
   },
   {
@@ -252,11 +341,23 @@ export const checkinAbi = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "claimer",
+        "name": "from",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "Unban",
+    "name": "Transfer",
     "type": "event"
   },
   {
@@ -270,25 +371,6 @@ export const checkinAbi = [
       }
     ],
     "name": "Unpaused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Withdrawal",
     "type": "event"
   },
   {
@@ -321,11 +403,16 @@ export const checkinAbi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "claimer",
+        "name": "to",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "banClaimer",
+    "name": "approve",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -334,16 +421,16 @@ export const checkinAbi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "claimer",
+        "name": "owner",
         "type": "address"
       }
     ],
-    "name": "blacklisted",
+    "name": "balanceOf",
     "outputs": [
       {
-        "internalType": "bool",
-        "name": "isBlacklisted",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -351,35 +438,12 @@ export const checkinAbi = [
   },
   {
     "inputs": [],
-    "name": "checkIn",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "claimer",
-        "type": "address"
-      }
-    ],
-    "name": "claimData",
+    "name": "baseURI",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "lastClaimed",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint32",
-        "name": "consecutiveDays",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "totalClaimed",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -388,17 +452,17 @@ export const checkinAbi = [
   {
     "inputs": [
       {
-        "internalType": "uint32",
-        "name": "day",
-        "type": "uint32"
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "dailyClaimAmount",
+    "name": "getApproved",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -418,19 +482,6 @@ export const checkinAbi = [
         "internalType": "bytes32",
         "name": "",
         "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getSoulboundContracts",
-    "outputs": [
-      {
-        "internalType": "address[3]",
-        "name": "",
-        "type": "address[3]"
       }
     ],
     "stateMutability": "view",
@@ -479,51 +530,56 @@ export const checkinAbi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "mintMyFirstSBT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "mintMyOneMonthSBT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "mintMyOneWeekSBT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "myCheckInStats",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "isApprovedForAll",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "lastClaimed",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint32",
-            "name": "consecutiveDays",
-            "type": "uint32"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalClaimed",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct SDQCheckIn.ClaimData",
+        "internalType": "bool",
         "name": "",
-        "type": "tuple"
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "ownerOf",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -586,35 +642,85 @@ export const checkinAbi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "sdqToken",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "contract IERC20",
-        "name": "",
+        "internalType": "address",
+        "name": "to",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "safeMint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
-        "name": "",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
-    "name": "soulboundContract",
-    "outputs": [
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "from",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
       }
     ],
-    "stateMutability": "view",
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
+      }
+    ],
+    "name": "setApprovalForAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -637,14 +743,69 @@ export const checkinAbi = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenIdCounter",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "tokenURI",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "claimer",
+        "name": "from",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "unbanClaimer",
+    "name": "transferFrom",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -652,19 +813,6 @@ export const checkinAbi = [
   {
     "inputs": [],
     "name": "unpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

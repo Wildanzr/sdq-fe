@@ -1,6 +1,12 @@
 export const charityAbi = [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address[8]",
+        "name": "_soulbound",
+        "type": "address[8]"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -512,6 +518,11 @@ export const charityAbi = [
         "internalType": "string",
         "name": "name",
         "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "decimal",
+        "type": "uint8"
       }
     ],
     "name": "addToken",
@@ -546,6 +557,25 @@ export const charityAbi = [
         "internalType": "bool",
         "name": "isBlacklisted",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "campaignCount",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "count",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -762,6 +792,25 @@ export const charityAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "donationCount",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "count",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "getAvailableTokens",
     "outputs": [
@@ -774,6 +823,11 @@ export const charityAbi = [
         "internalType": "string[]",
         "name": "_names",
         "type": "string[]"
+      },
+      {
+        "internalType": "uint8[]",
+        "name": "_decimals",
+        "type": "uint8[]"
       }
     ],
     "stateMutability": "view",
@@ -889,6 +943,19 @@ export const charityAbi = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getSoulboundContracts",
+    "outputs": [
+      {
+        "internalType": "address[8]",
+        "name": "",
+        "type": "address[8]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -947,6 +1014,62 @@ export const charityAbi = [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyFifthDonationSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyFiftyDonationSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyFirstCampaignSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyFirstDonationSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyHundredDonationSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyTenCampaignSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyTenDonationSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintMyThirdCampaignSBT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1047,6 +1170,25 @@ export const charityAbi = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "soulboundContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes4",
         "name": "interfaceId",
         "type": "bytes4"
@@ -1120,6 +1262,11 @@ export const charityAbi = [
         "internalType": "string",
         "name": "name",
         "type": "string"
+      },
+      {
+        "internalType": "uint8",
+        "name": "decimals",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",

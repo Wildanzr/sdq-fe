@@ -35,3 +35,7 @@ export const config = createConfig({
     storage: cookieStorage
   })
 });
+
+export const getExplorer = NETWORK === "mainnet"
+  ? haqqMainnet.blockExplorers.default
+  : haqqTestedge2.blockExplorers.default;

@@ -1,7 +1,7 @@
 "use server";
 
 import { charityAbi } from "@/constants/abis/charity";
-import { CHARITY_ADDRESS } from "@/constants/common";
+import { CHARITY_ADDRESS, tokenIcon } from "@/constants/common";
 import { readContract } from "@wagmi/core";
 import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
 import { createConfig, http } from "wagmi";
@@ -13,13 +13,6 @@ import { countTotalRaised } from "@/lib/utils";
 interface CampaignDonations {
   address: `0x${string}`[];
   values: bigint[];
-}
-
-interface AvailableTokens {
-  address: `0x${string}`[];
-  coinIds: string[];
-  decimals: number[];
-  price: number[];
 }
 
 interface CampaignDetails {
@@ -107,8 +100,10 @@ export const getAvailableTokens = async () => {
       address: result[0] as `0x${string}`[],
       coinIds: result[1] as string[],
       decimals: result[2] as number[],
-      price: []
+      price: [],
+      icon: result[1].map(label => tokenIcon.find(item => item.label === label)?.image || tokenIcon[0].image),
     }
+
     const prices: number[] = [];
     const latestPrice = await Promise.all(availableTokens.coinIds.map((item) => getCoinLatestPrice(item)));
     latestPrice.forEach((price, idx) => {

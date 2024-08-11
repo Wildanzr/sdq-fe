@@ -25,7 +25,7 @@ export function DonateDialog({ campaignId, title }: DonateDialogProps) {
       <DialogContent className="w-full sm:max-w-sm bg-primary-100 border border-primary-90 rounded-2xl">
         <DialogHeader className="flex flex-col items-start justify-start text-neutral-base">
           <DialogTitle>Donate to</DialogTitle>
-          <DialogDescription>{title}</DialogDescription>
+          <DialogDescription className="m-body-base">{title}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <FormDonation campaignId={campaignId} />

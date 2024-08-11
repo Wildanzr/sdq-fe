@@ -196,3 +196,39 @@ export const tokenIcons = [
     decimals: 6
   },
 ]
+
+export const tokenIcon: TokenIcon[] = [
+  {
+    label: "native",
+    image: "/coins/islamic.png",
+  },
+  {
+    label: "axlusdc",
+    image: "/coins/axlusdc.png",
+  },
+  {
+    label: "axelar-usdt",
+    image: "/coins/axlusdt.png",
+  },
+  {
+    label: "axelar",
+    image: "/coins/axelar.jpeg",
+  },
+  {
+    label: "cosmos",
+    image: "/coins/cosmos.png",
+  },
+  {
+    label: "axlwbtc",
+    image: "/coins/axlwbtc.png",
+  },
+  {
+    label: "axlweth",
+    image: "/coins/axlweth.png",
+  },
+  {
+    label: "dai",
+    image: "/coins/dai.png",
+  },
+
+]

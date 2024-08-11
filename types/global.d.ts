@@ -15,6 +15,14 @@ declare global {
     searchParams: { [key: string]: string | undefined };
   }
 
+  interface AvailableTokens {
+    address: `0x${string}`[];
+    coinIds: string[];
+    decimals: number[];
+    price: number[];
+    icon: string[];
+  }
+
   interface MinimumCampaign {
     id: number;
     owner: Address
@@ -36,5 +44,16 @@ declare global {
     target: number;
     raised: number;
     updated: Date;
+  }
+
+  interface TokenIcon {
+    label: string;
+    image: string;
+  }
+
+  interface TokenBalance {
+    value: bigint;
+    allowance: bigint;
+    ticker: string;
   }
 }

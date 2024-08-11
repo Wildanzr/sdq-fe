@@ -5,14 +5,6 @@ import { tokenAbi } from "@/constants/abis/token";
 import { CHARITY_ADDRESS } from "@/constants/common";
 import { writeContract } from "@wagmi/core";
 
-export interface TokenBalance {
-  value: bigint;
-  decimals: number;
-  symbol: string;
-  allowance: bigint;
-  address: Address;
-}
-
 // Write Contracts
 export const approveSpending = async (token: Address) => {
   const maxAmount = BigInt("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -41,13 +33,6 @@ export const getTokenBalance = async (token: Address, owner: Address, spender: A
       args: [owner]
     })
 
-    const decimal = readContract(config, {
-      abi: tokenAbi,
-      address: token,
-      functionName: "decimals",
-      args: []
-    })
-
     const symbol = readContract(config, {
       abi: tokenAbi,
       address: token,
@@ -62,14 +47,12 @@ export const getTokenBalance = async (token: Address, owner: Address, spender: A
       args: [owner, spender]
     })
 
-    const result = await Promise.all([balance, decimal, symbol, allowance]);
+    const result = await Promise.all([balance, allowance, symbol]);
 
     return {
       value: result[0],
-      decimals: result[1],
-      symbol: result[2],
-      allowance: result[3],
-      address: token
+      allowance: result[1],
+      ticker: result[2]
     } as TokenBalance;
   } catch (error) {
     console.error("Error in getMyStats", error);

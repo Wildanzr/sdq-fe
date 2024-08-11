@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,65 +20,68 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { donateNative, donateToken, getAvailableTokens } from "@/web3/charity";
-import { CHARITY_ADDRESS, tokenIcons } from "@/constants/common";
 import Image from "next/image";
 import { Address, formatUnits, parseEther } from "viem";
-import { approveSpending, getTokenBalance } from "@/web3/token";
-import { useAccount, useBalance } from "wagmi";
 import { Input } from "../ui/input";
 import Loader from "../shared/Loader";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { formatterUSD, getExplorer } from "@/lib/utils";
+import { donateNative, donateToken } from "@/web3/charity";
 import { useToast } from "../ui/use-toast";
-import { getExplorerDetails } from "@/lib/utils";
 import ToastTx from "../shared/ToastTx";
+import { approveSpending } from "@/web3/token";
 import useWaitForTxAction from "@/hooks/useWaitForTx";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().max(100).optional(),
   message: z.string().max(100).optional(),
   token: z.string(),
-  amount: z
-    .string()
-    .refine(
-      (val) => !Number.isNaN(parseInt(val, 10)) && parseInt(val, 10) > 0,
-      {
-        message: "Expected positive non-zero number, received a string",
-      }
-    ),
+  amount: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    message: "Expected positive non-zero number, received a string",
+  }),
 });
 
 interface SelectedToken {
   label: string;
   address: Address;
   icon: string;
+  ticker: string;
+  dollarValue: number;
+  index: number;
 }
 
 interface FormDonationProps {
-  campaignId: number;
+  id: number;
+  balances: TokenBalance[];
+  availableTokens: AvailableTokens;
+  nativeBalance: AvailableTokens;
+  nativeAmount: bigint;
 }
 
-const FormDonation = ({ campaignId }: FormDonationProps) => {
+const FormDonation = ({
+  id,
+  availableTokens,
+  balances,
+  nativeBalance,
+  nativeAmount,
+}: FormDonationProps) => {
+  const etherscan = getExplorer();
+  const router = useRouter();
   const { toast } = useToast();
-  const [tokens, setTokens] = useState<
-    readonly [readonly `0x${string}`[], readonly string[]] | undefined
-  >();
-  const { address, chainId } = useAccount();
-  const { data, isLoading } = useBalance({
-    address,
-  });
-  const [walletBalance, setWalletBalance] = useState<TokenBalance[]>([]);
   const [disabledButton, setDisabledButton] = useState(false);
-  const [selected, setSelected] = useState<SelectedToken>({
-    label: "native",
-    address: "0x0",
-    icon: "/icons/islamic.svg",
-  });
   const [txHash, setTxHash] = useState<Address | undefined>(undefined);
   const [state, setState] = useState<"approve" | "donate">("donate");
-  const [refetch, setRefetch] = useState(true);
-  const etherscan = getExplorerDetails(chainId);
+  const [selected, setSelected] = useState<SelectedToken>({
+    label: "native",
+    address: nativeBalance.address[0],
+    icon: nativeBalance.icon[0],
+    ticker: "ISLM",
+    dollarValue: nativeBalance.price[0],
+    index: -1,
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -95,8 +98,8 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
         title: "Transaction Done",
         action: (
           <ToastTx
-            explorerLink={etherscan.blockExplorers.default.url}
-            explorerName={etherscan.blockExplorers.default.name}
+            explorerLink={etherscan.url}
+            explorerName={etherscan.name}
             txHash={txHash}
           />
         ),
@@ -107,9 +110,12 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
 
       if (state === "approve") {
         setState("donate");
-        setRefetch(true);
+        balances[selected.index].allowance = BigInt(
+          "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        );
       } else {
         form.reset();
+        router.push("/account");
       }
     }
   };
@@ -132,7 +138,7 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
     try {
       const amount = parseEther(form.getValues("amount"));
       const txHash = await donateNative(
-        campaignId,
+        id,
         form.getValues("name")!,
         form.getValues("message")!,
         amount
@@ -142,8 +148,8 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
         title: "Transaction submitted",
         action: (
           <ToastTx
-            explorerLink={etherscan.blockExplorers.default.url}
-            explorerName={etherscan.blockExplorers.default.name}
+            explorerLink={etherscan.url}
+            explorerName={etherscan.name}
             txHash={txHash}
           />
         ),
@@ -161,14 +167,9 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
 
   const handleDonateToken = async () => {
     setDisabledButton(true);
-    // Check if allowance is 0
-    const index = walletBalance.findIndex(
-      (item) => item.address === selected.address
-    );
-
     try {
       let txHash: Address | undefined = undefined;
-      if (walletBalance[index].allowance === BigInt(0)) {
+      if (balances[selected.index].allowance === BigInt(0)) {
         // Approve Spending
         setState("approve");
         txHash = await approveSpending(selected.address);
@@ -178,18 +179,18 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
           title: "Transaction submitted",
           action: (
             <ToastTx
-              explorerLink={etherscan.blockExplorers.default.url}
-              explorerName={etherscan.blockExplorers.default.name}
+              explorerLink={etherscan.url}
+              explorerName={etherscan.name}
               txHash={txHash}
             />
           ),
         });
       } else {
-        const tokenDecimals = walletBalance[index].decimals;
+        const tokenDecimals = availableTokens.decimals[selected.index];
         const tokenAmount = Number(form.getValues("amount"));
         const amount = BigInt(tokenAmount * 10 ** tokenDecimals);
         txHash = await donateToken(
-          campaignId,
+          id,
           form.getValues("name")!,
           form.getValues("message")!,
           amount,
@@ -200,8 +201,8 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
           title: "Transaction submitted",
           action: (
             <ToastTx
-              explorerLink={etherscan.blockExplorers.default.url}
-              explorerName={etherscan.blockExplorers.default.name}
+              explorerLink={etherscan.url}
+              explorerName={etherscan.name}
               txHash={txHash}
             />
           ),
@@ -217,24 +218,6 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
       });
     }
   };
-
-  useEffect(() => {
-    const fetchTokens = async () => {
-      const res = await getAvailableTokens();
-      setTokens(res);
-      let tokenBalances: TokenBalance[] = [];
-      for (const item of res[0]) {
-        const balance = await getTokenBalance(item, address!, CHARITY_ADDRESS);
-        tokenBalances.push(balance);
-      }
-      setWalletBalance(tokenBalances);
-      setRefetch(false);
-    };
-
-    if (refetch) {
-      fetchTokens();
-    }
-  }, [refetch]);
 
   return (
     <Form {...form}>
@@ -257,18 +240,11 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
                     type="number"
                     max={
                       selected.label === "native"
-                        ? Number(
-                            // @ts-ignore
-                            formatUnits(data?.value, data?.decimals)
-                          )
+                        ? Number(formatUnits(nativeAmount, 18))
                         : Number(
                             formatUnits(
-                              walletBalance.find(
-                                (item) => item.address === selected.address
-                              )!.value,
-                              walletBalance.find(
-                                (item) => item.address === selected.address
-                              )!.decimals
+                              balances[selected.index].value,
+                              availableTokens.decimals[selected.index]
                             )
                           )
                     }
@@ -280,13 +256,29 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
                 <Select
                   value={selected.label}
                   onValueChange={(value) => {
-                    const index = tokens?.[1].indexOf(value)!;
-                    const address = tokens?.[0][index] || "0x0";
-                    // @ts-ignore
-                    const icon =
-                      tokenIcons.find((item) => item.label === value)?.icon ||
-                      "/icons/islamic.svg";
-                    setSelected({ label: value, address, icon });
+                    if (value === "native") {
+                      setSelected({
+                        address: nativeBalance.address[0],
+                        icon: nativeBalance.icon[0],
+                        label: value,
+                        ticker: "ISLM",
+                        dollarValue: nativeBalance.price[0],
+                        index: -1,
+                      });
+                      return;
+                    }
+
+                    const index = availableTokens.coinIds.findIndex(
+                      (item) => item === value
+                    );
+                    setSelected({
+                      address: availableTokens.address[index],
+                      icon: availableTokens.icon[index],
+                      label: value,
+                      ticker: balances[index].ticker,
+                      dollarValue: availableTokens.price[index],
+                      index,
+                    });
                   }}
                 >
                   <SelectTrigger className="w-1/6 bg-primary-100 border border-primary-90 text-neutral-base">
@@ -296,46 +288,32 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
                         width={20}
                         height={20}
                         alt={selected.label}
+                        className="rounded-full object-cover"
                       />
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="native">ISLM</SelectItem>
-                    {tokens?.[0].map((address, index) => (
-                      <SelectItem key={index} value={tokens?.[1][index]}>
-                        {tokens?.[1][index]}
+                    {availableTokens.coinIds.map((item, idx) => (
+                      <SelectItem key={idx} value={item}>
+                        {item}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-              {selected.label === "native" ? (
-                isLoading || data === undefined ? (
-                  <Loader size="20" speed="1.75" color="white" />
-                ) : (
-                  <span className="text-neutral-base m-body-link">
-                    {Number(formatUnits(data.value, 18))} {data.symbol}
-                  </span>
-                )
-              ) : (
-                <span className="text-neutral-base m-body-link">
-                  {Number(
-                    formatUnits(
-                      walletBalance.find(
-                        (item) => item.address === selected.address
-                      )!.value,
-                      walletBalance.find(
-                        (item) => item.address === selected.address
-                      )!.decimals
-                    )
-                  )}{" "}
-                  {
-                    walletBalance.find(
-                      (item) => item.address === selected.address
-                    )!.symbol
-                  }
-                </span>
-              )}
+              <div className="flex flex-col items-start justify-start text-neutral-base">
+                <p className="m-body-small text-neutral-base/50">
+                  Available:{" "}
+                  {selected.label === "native"
+                    ? formatUnits(nativeAmount, 18)
+                    : formatUnits(
+                        balances[selected.index].value,
+                        availableTokens.decimals[selected.index]
+                      )}{" "}
+                  {selected.ticker}
+                </p>
+              </div>
               <FormMessage />
             </FormItem>
           )}
@@ -383,6 +361,30 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
           )}
         />
 
+        <div className="flex flex-col space-y-2 items-start justify-center text-neutral-base/80">
+          <p className="m-body-base">You will donate:</p>
+          <div className="flex flex-row space-x-2 w-full">
+            <Image
+              src={selected.icon}
+              width={20}
+              height={20}
+              alt={"Token"}
+              className="rounded-full object-cover"
+            />
+            <div className="flex flex-row items-center justify-between w-full">
+              <p className=" m-body-small ">
+                {form.watch("amount")} {selected.ticker}
+              </p>
+              <p className=" m-body-small ">
+                equivalent to{" "}
+                {formatterUSD.format(
+                  selected.dollarValue * Number(form.watch("amount"))
+                )}{" "}
+                USD
+              </p>
+            </div>
+          </div>
+        </div>
         <Button
           type="submit"
           disabled={disabledButton}
@@ -391,8 +393,7 @@ const FormDonation = ({ campaignId }: FormDonationProps) => {
           <p>
             {selected.label === "native"
               ? "Donate Now"
-              : walletBalance.find((item) => item.address === selected.address)!
-                  .allowance === BigInt(0)
+              : balances[selected.index].allowance === BigInt(0)
               ? "Approve"
               : "Donate Now"}
           </p>

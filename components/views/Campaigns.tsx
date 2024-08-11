@@ -1,4 +1,5 @@
 import Item from "../campaigns/Item";
+import Footer from "../shared/Footer";
 
 interface CampaignsProps {
   campaigns: MinimumCampaign[];
@@ -19,6 +20,7 @@ const Campaigns = ({ campaigns }: CampaignsProps) => {
           <Item key={idx} campaign={item} showCreator={true} />
         ))
       )}
+      <Footer />
     </div>
   );
 };

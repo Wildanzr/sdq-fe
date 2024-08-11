@@ -4,6 +4,7 @@ import {
 } from "@/actions/readWeb3";
 import Item from "@/components/campaigns/Item";
 import Jumbotron from "@/components/home/Jumbotron";
+import Footer from "@/components/shared/Footer";
 import Product from "@/components/shared/Product";
 import { homeProducts } from "@/constants/common";
 import Link from "next/link";
@@ -61,6 +62,7 @@ export default async function Home({ params, searchParams }: URLProps) {
         >
           <p className="m-body-base">See all projects</p>
         </Link>
+        <Footer />
       </div>
     </div>
   );

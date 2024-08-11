@@ -7,6 +7,7 @@ import Overview from "../campaigns/Overview";
 import Donator from "../campaigns/Donator";
 import Management from "../campaigns/Management";
 import { useState } from "react";
+import Footer from "../shared/Footer";
 
 interface ManageCampaignDetailsProps {
   campaign: MaximumCampaign;
@@ -41,6 +42,7 @@ const ManageCampaignDetails = ({
           />
           <Overview content={campaign.details} />
           <Donator id={campaign.id} availableTokens={availableTokens} />
+          <Footer />
         </div>
       ) : (
         <Blocker />

@@ -49,6 +49,58 @@ export const navigations: Navigation[] = [
   },
 ];
 
+export const footerNavigations: Navigation[] = [
+  {
+    label: "Terms of Service",
+    href: "#",
+  },
+  {
+    label: "Privacy Policy",
+    href: "#",
+  },
+  {
+    label: "Contact Us",
+    href: "#",
+  },
+  {
+    label: "FAQ",
+    href: "#",
+  },
+]
+
+export const sponsors = [
+  {
+    image: "/icons/coinfest.svg",
+    url: "https://coinfest.asia/",
+    name: "Coinfest",
+    cls: "bg-white",
+  },
+  {
+    image: "/icons/ethsea.svg",
+    url: "https://www.ethsea.com/",
+    name: "ETHSEA",
+    cls: ""
+  },
+  {
+    image: "/icons/haqq.svg",
+    url: "https://haqq.network/",
+    name: "Haqq Network",
+    cls: ""
+  },
+  {
+    image: "/icons/islamic.svg",
+    url: "https://islamiccoin.net/",
+    name: "Islamic Coin",
+    cls: ""
+  },
+  {
+    image: "/icons/coingecko.svg",
+    url: "https://www.coingecko.com/",
+    name: "CoinGecko",
+    cls: ""
+  },
+]
+
 export const userColors = {
   primary: "#86EE60",
   secondary: "#2E6E65",

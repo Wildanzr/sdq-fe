@@ -3,6 +3,7 @@
 import { useWalletStore } from "@/store/wallet";
 import Blocker from "../shared/Blocker";
 import Item from "../campaigns/Item";
+import Footer from "../shared/Footer";
 
 interface MyCampaignProps {
   campaigns: MinimumCampaign[];
@@ -35,6 +36,8 @@ const MyCampaign = ({ campaigns }: MyCampaignProps) => {
               />
             ))
           )}
+
+          <Footer />
         </div>
       ) : (
         <Blocker />

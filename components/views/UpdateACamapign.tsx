@@ -7,6 +7,7 @@ import FormState, { States } from "@/components/create-a-campaign/FormState";
 import { uploadImage } from "@/actions/bucket";
 import { uploadToIPFS } from "@/actions/ipfs";
 import FormUpdateCampaign from "../update-a-campaign/FormUpdateCampaign";
+import Footer from "../shared/Footer";
 
 interface UpdateACampaignProps {
   campaign: MaximumCampaign;
@@ -56,6 +57,7 @@ const UpdateACampaign = ({ campaign }: UpdateACampaignProps) => {
           >
             <FormState formStates={formStates} />
           </FormUpdateCampaign>
+          <Footer />
         </div>
       ) : (
         <Blocker />

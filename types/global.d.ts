@@ -23,5 +23,18 @@ declare global {
     description: string;
     target: number;
     raised: number;
+    updated: Date;
+  }
+
+  interface MaximumCampaign {
+    id: number;
+    owner: Address
+    title: string;
+    images: string[];
+    description: string;
+    details: string;
+    target: number;
+    raised: number;
+    updated: Date;
   }
 }

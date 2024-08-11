@@ -11,11 +11,13 @@ const Campaigns = ({ campaigns }: CampaignsProps) => {
         Featured Campaigns
       </h2>
       {campaigns.length === 0 ? (
-        <div className="flex">
+        <div className="flex flex-col items-center justify-center">
           <p className="m-body-base text-neutral-base">No campaigns found</p>
         </div>
       ) : (
-        campaigns.map((item, idx) => <Item key={idx} campaign={item} />)
+        campaigns.map((item, idx) => (
+          <Item key={idx} campaign={item} showCreator={true} />
+        ))
       )}
     </div>
   );

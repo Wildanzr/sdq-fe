@@ -27,9 +27,9 @@ const ImageCarousel = ({ imageSources }: ImageCarouselProps) => {
           <CarouselItem>
             <div className="h-60 w-full relative">
               <Image
-                src={"/images/campaign-1.jpg"}
+                src={"/images/placeholder-img.png"}
                 alt="campaign image"
-                layout="fill"
+                fill
                 className="w-full h-auto rounded-xl object-cover"
               />
             </div>
@@ -41,7 +41,7 @@ const ImageCarousel = ({ imageSources }: ImageCarouselProps) => {
                 <Image
                   src={image}
                   alt="campaign image"
-                  layout="fill"
+                  fill
                   className="w-full h-auto rounded-xl object-cover"
                 />
               </div>

@@ -6,15 +6,18 @@ import {
 } from "@/components/ui/card";
 import ImageCarousel from "@/components/shared/ImageCarousel";
 import { Separator } from "../ui/separator";
-import { formatterUSD } from "@/lib/utils";
+import { formatterUSD, getTimestamp } from "@/lib/utils";
 import Link from "next/link";
+import Creator from "./Creator";
 
 interface ItemProps {
   campaign: MinimumCampaign;
+  showCreator?: boolean;
 }
 
-const Item = ({ campaign }: ItemProps) => {
+const Item = ({ campaign, showCreator }: ItemProps) => {
   const percentage = Math.floor((campaign.raised / campaign.target) * 100);
+  const lastUpdated = getTimestamp(campaign.updated);
   return (
     <Card className="w-full bg-secondary-100/50 rounded-2xl border-primary-90">
       <CardHeader className="flex flex-col space-y-3 p-4 w-full">
@@ -24,6 +27,9 @@ const Item = ({ campaign }: ItemProps) => {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col space-y-3 w-full h-full">
+          <p className="m-body-link text-neutral-base/50 mb-0">
+            Last update: {lastUpdated}
+          </p>
           <Link
             href={`/campaigns/${campaign.id}`}
             className="text-brand-60 m-heading"
@@ -57,6 +63,12 @@ const Item = ({ campaign }: ItemProps) => {
         <p className="text-neutral-70 m-body-small">
           raised of {formatterUSD.format(campaign.target)}
         </p>
+        {showCreator && (
+          <>
+            <Separator className="my-4 bg-primary-90" />
+            <Creator address={campaign.owner} />
+          </>
+        )}
       </CardFooter>
     </Card>
   );

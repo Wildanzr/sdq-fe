@@ -10,11 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Message from "./Message";
+import Message from "../projects/Message";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from "next/link";
 import { Address } from "viem";
 import Image from "next/image";
+import { Button } from "../ui/button";
 
 const invoices = [
   {
@@ -52,28 +53,38 @@ const Donors = ({ donators }: DonorsProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {donators.map((item, idx) => (
-            <TableRow key={idx}>
-              <TableCell className="font-medium">
-                <Image src={item.token} width={20} height={20} alt="Token" />
-              </TableCell>
-              <TableCell>{item.amount}</TableCell>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>
-                {item.message && (
-                  <Message from={item.name} message={item.message} />
-                )}
-              </TableCell>
-              <TableCell className="flex items-center justify-end">
-                <Link href={item.tx} target="_blank">
-                  <FaExternalLinkAlt
-                    className="text-neutral-base cursor-pointer"
-                    size={20}
-                  />
-                </Link>
+          {donators.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center">
+                <p className="m-body-base text-neutral-base">
+                  Be the first to donate 💖
+                </p>
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            donators.map((item, idx) => (
+              <TableRow key={idx}>
+                <TableCell className="font-medium">
+                  <Image src={item.token} width={20} height={20} alt="Token" />
+                </TableCell>
+                <TableCell>{item.amount}</TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>
+                  {item.message && (
+                    <Message from={item.name} message={item.message} />
+                  )}
+                </TableCell>
+                <TableCell className="flex items-center justify-end">
+                  <Link href={item.tx} target="_blank">
+                    <FaExternalLinkAlt
+                      className="text-neutral-base cursor-pointer"
+                      size={20}
+                    />
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>

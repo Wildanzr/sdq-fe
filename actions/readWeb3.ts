@@ -156,7 +156,8 @@ export const paginateCampaigns = async (page: number, limit: number) => {
         images: ipfs.images,
         title: ipfs.title,
         target: Number(details.target),
-        raised: countTotalRaised(donations.values, tokens.price, tokens.decimals)
+        raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
+        updated: new Date(Number(details.updated) * 1000),
       })
     }
 
@@ -194,11 +195,50 @@ export const getMinimumCampaignDetails = async (id: number) => {
       title: ipfs.title,
       raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
       target: Number(details.target),
+      updated: new Date(Number(details.updated) * 1000),
     }
 
     return campaign;
   } catch (error) {
     console.error("Error in getMinimumCampaignDetails", error);
+    return false;
+  }
+}
+
+export const getMaximumCampaignDetails = async (id: number) => {
+  try {
+    let [details, donations] = await Promise.all([
+      getCampaignDetails(id),
+      getCampaignDonations(id),
+    ]) as [CampaignDetails, CampaignDonations];
+
+    if (!details || !donations) {
+      return false;
+    }
+    const [ipfs, tokens, islm] = await Promise.all([
+      getFromIPFS(details.details),
+      getAvailableTokens(),
+      getCoinLatestPrice("islamic-coin"),
+    ]) as [IPFSResponse, AvailableTokens, number];
+
+    tokens.decimals.push(18);
+    tokens.price.push(islm);
+
+    const campaign: MaximumCampaign = {
+      id,
+      owner: details.owner,
+      description: ipfs.description,
+      details: ipfs.details,
+      images: ipfs.images,
+      title: ipfs.title,
+      raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
+      target: Number(details.target),
+      updated: new Date(Number(details.updated) * 1000),
+    }
+
+    return campaign;
+  } catch (error) {
+    console.error("Error in getMaximumCapaignDetails", error);
     return false;
   }
 }

@@ -152,7 +152,12 @@ export default async function CampaignDetailsPage({
             </PopoverContent>
           </Popover>
 
-          <DonateDialog id={campaign.id} title={campaign.title} />
+          <DonateDialog
+            id={campaign.id}
+            title={campaign.title}
+            paused={campaign.isPaused}
+            claimed={campaign.isClaimed}
+          />
         </div>
         <div className="flex flex-col w-full h-full">
           <h2 className="text-neutral-base m-title-page text-start">Creator</h2>

@@ -49,18 +49,12 @@ declare global {
     target: number;
     raised: number;
     updated: Date;
+    isPaused: boolean;
+    isClaimed: boolean;
   }
 
-  interface MaximumCampaign {
-    id: number;
-    owner: Address
-    title: string;
-    images: string[];
-    description: string;
+  interface MaximumCampaign extends MinimumCampaign {
     details: string;
-    target: number;
-    raised: number;
-    updated: Date;
   }
 
   interface TokenIcon {

@@ -107,66 +107,39 @@ export const donateToken = async (campaignId: number, name: string, message: str
   }
 }
 
+export const pauseCampaign = async (id: number) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "pauseCampaign",
+      args: [id],
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in pauseCampaign", error);
+    throw error;
+  }
+}
+
+export const unPauseCampaign = async (id: number) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "unpauseCampaign",
+      args: [id],
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in unPauseCampaign", error);
+    throw error;
+  }
+}
+
 // Read Contracts
-export const getCampaigns = async () => {
-  try {
-    const campaigns: CampaignCreatedEvent[] = [];
-    const res = await publicClient.getContractEvents({
-      address: CHARITY_ADDRESS,
-      abi: charityAbi,
-      eventName: "CampaignCreated",
-      fromBlock: CHARITY_FIRST_BLOCK
-    })
-
-    for (const event of res) {
-      campaigns.push({
-        campaignId: event.args.campaignId!,
-        description: event.args.description!,
-        details: event.args.details!,
-        owner: event.args.owner!,
-        timestamp: event.args.timestamp!,
-        title: event.args.title!,
-      });
-    }
-
-    return campaigns;
-  } catch (error) {
-    console.error("Error in getMyCampaigns", error);
-    throw error;
-  }
-}
-
-export const getMyCampaigns = async (address: Address | undefined) => {
-  try {
-    const campaigns: CampaignCreatedEvent[] = [];
-    const res = await publicClient.getContractEvents({
-      address: CHARITY_ADDRESS,
-      abi: charityAbi,
-      eventName: "CampaignCreated",
-      args: {
-        owner: address
-      },
-      fromBlock: CHARITY_FIRST_BLOCK
-    })
-
-    for (const event of res) {
-      campaigns.push({
-        campaignId: event.args.campaignId!,
-        description: event.args.description!,
-        details: event.args.details!,
-        owner: event.args.owner!,
-        timestamp: event.args.timestamp!,
-        title: event.args.title!,
-      });
-    }
-
-    return campaigns;
-  } catch (error) {
-    console.error("Error in getMyCampaigns", error);
-    throw error;
-  }
-}
-
 export const getCampaignDonationsLog = async (campaignId: number) => {
   try {
     const donations: CampaignDonation[] = [];
@@ -196,55 +169,6 @@ export const getCampaignDonationsLog = async (campaignId: number) => {
     return donations;
   } catch (error) {
     console.error("Error in getMyCampaigns", error);
-    throw error;
-  }
-}
-
-
-export const getCampaignDetails = async (campaignId: number) => {
-  try {
-    const result = await readContract(config, {
-      abi: charityAbi,
-      address: CHARITY_ADDRESS,
-      functionName: "getCampaignDetails",
-      args: [campaignId],
-    });
-
-    return result;
-  } catch (error) {
-    console.error("Error in getCampaignDetails", error);
-    throw error;
-  }
-}
-
-export const getCampaignDonations = async (campaignId: number) => {
-  try {
-    const result = await readContract(config, {
-      abi: charityAbi,
-      address: CHARITY_ADDRESS,
-      functionName: "getCampaignDonations",
-      args: [campaignId],
-    });
-
-    return result;
-  } catch (error) {
-    console.error("Error in getCampaignDonations", error);
-    throw error;
-  }
-}
-
-export const getAvailableTokens = async () => {
-  try {
-    const result = await readContract(config, {
-      abi: charityAbi,
-      address: CHARITY_ADDRESS,
-      functionName: "getAvailableTokens",
-      args: [],
-    });
-
-    return result;
-  } catch (error) {
-    console.error("Error in getAvailableTokens", error);
     throw error;
   }
 }

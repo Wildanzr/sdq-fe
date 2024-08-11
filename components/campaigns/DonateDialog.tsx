@@ -17,13 +17,16 @@ import { getTokenBalance } from "@/web3/token";
 import { CHARITY_ADDRESS } from "@/constants/common";
 import Loader from "../shared/Loader";
 import { getCoinLatestPrice } from "@/actions/coingecko";
+import { cn } from "@/lib/utils";
 
 interface DonateDialogProps {
   id: number;
   title: string;
+  claimed: boolean;
+  paused: boolean;
 }
 
-const DonateDialog = ({ id, title }: DonateDialogProps) => {
+const DonateDialog = ({ id, title, claimed, paused }: DonateDialogProps) => {
   const { address } = useAccount();
   const { data: nativeBalance, isLoading } = useBalance({
     address,
@@ -71,8 +74,20 @@ const DonateDialog = ({ id, title }: DonateDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="flex w-full flex-row space-x-3 text-neutral-base z-10 bg-primary-100 border border-brand-base rounded-lg p-2">
-          <p className="m-body-base">Donate Now</p>
+        <Button
+          disabled={paused || claimed}
+          className={cn(
+            "flex w-full flex-row space-x-3 text-neutral-base z-10 bg-primary-100 border border-brand-base rounded-lg p-2",
+            paused || claimed ? "opacity-50 cursor-not-allowed" : ""
+          )}
+        >
+          <p className="m-body-base">
+            {claimed
+              ? "Campaign done"
+              : paused
+              ? "Campaign paused"
+              : "Donate Now"}
+          </p>
         </Button>
       </DialogTrigger>
       <DialogContent className="w-full sm:max-w-sm bg-primary-100 border border-primary-90 rounded-2xl">

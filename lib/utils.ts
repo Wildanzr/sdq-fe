@@ -94,12 +94,6 @@ export const getAddressFromRegex = (input: string) => {
   const ethAddressRegex = /0x[a-fA-F0-9]{40}/g;
   const addresses = input.match(ethAddressRegex);
 
-  if (addresses) {
-    console.log('Ethereum Address(es) Found:', addresses);
-  } else {
-    console.log('No Ethereum Address Found.');
-  }
-
   if (!addresses) return;
   return addresses[0];
 }

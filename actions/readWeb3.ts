@@ -126,6 +126,8 @@ export const paginateCampaigns = async (page: number, limit: number) => {
         target: Number(details.target),
         raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
         updated: new Date(Number(details.updated) * 1000),
+        isPaused: details.paused,
+        isClaimed: details.claimed,
       })
     }
 
@@ -137,7 +139,6 @@ export const paginateCampaigns = async (page: number, limit: number) => {
 }
 
 export const paginateSomeCampaigns = async (ids: number[]) => {
-  console.log("Paginate some campaigns", ids);
   try {
     const numberOfCampaigns = await getNumberOfCampaigns();
     const campaigns: MinimumCampaign[] = [];
@@ -168,6 +169,8 @@ export const paginateSomeCampaigns = async (ids: number[]) => {
         target: Number(details.target),
         raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
         updated: new Date(Number(details.updated) * 1000),
+        isPaused: details.paused,
+        isClaimed: details.claimed,
       })
     }
 
@@ -206,6 +209,8 @@ export const getMinimumCampaignDetails = async (id: number) => {
       raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
       target: Number(details.target),
       updated: new Date(Number(details.updated) * 1000),
+      isPaused: details.paused,
+      isClaimed: details.claimed,
     }
 
     return campaign;
@@ -244,6 +249,8 @@ export const getMaximumCampaignDetails = async (id: number) => {
       raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
       target: Number(details.target),
       updated: new Date(Number(details.updated) * 1000),
+      isPaused: details.paused,
+      isClaimed: details.claimed,
     }
 
     return campaign;

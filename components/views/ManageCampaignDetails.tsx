@@ -5,6 +5,8 @@ import Blocker from "../shared/Blocker";
 import Item from "../campaigns/Item";
 import Overview from "../campaigns/Overview";
 import Donator from "../campaigns/Donator";
+import Management from "../campaigns/Management";
+import { useState } from "react";
 
 interface ManageCampaignDetailsProps {
   campaign: MaximumCampaign;
@@ -15,9 +17,12 @@ const ManageCampaignDetails = ({
   campaign,
   availableTokens,
 }: ManageCampaignDetailsProps) => {
+  const [paused, setPaused] = useState(campaign.isPaused);
+  const [claimed, setClaimed] = useState(campaign.isClaimed);
   const { isConnected } = useWalletStore((state) => ({
     isConnected: state.isConnected,
   }));
+
   return (
     <>
       {isConnected ? (
@@ -27,7 +32,13 @@ const ManageCampaignDetails = ({
             showCreator={false}
             customLink={`/my-campaigns/${campaign.id}`}
           />
-          <div className="flex flex-row space-x-5 w-full h-full"></div>
+          <Management
+            id={campaign.id}
+            paused={paused}
+            setPaused={setPaused}
+            claimed={claimed}
+            setClaimed={setClaimed}
+          />
           <Overview content={campaign.details} />
           <Donator id={campaign.id} availableTokens={availableTokens} />
         </div>

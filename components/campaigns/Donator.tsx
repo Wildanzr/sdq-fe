@@ -16,6 +16,8 @@ import { getCampaignDonationsLog } from "@/web3/charity";
 import React, { useCallback, useEffect, useState } from "react";
 import Loader from "../shared/Loader";
 import { getExplorer } from "@/lib/utils";
+import { formatUnits } from "viem";
+import { tokenIcon } from "@/constants/common";
 
 interface Donator {
   token: string;
@@ -27,25 +29,38 @@ interface Donator {
 
 interface DonatorProps {
   id: number;
+  availableTokens: AvailableTokens;
 }
 
-const Donator = ({ id }: DonatorProps) => {
+const Donator = ({ id, availableTokens }: DonatorProps) => {
   const [donators, setDonators] = useState<Donator[] | undefined>([]);
   const etherscan = getExplorer();
   const fetchDonators = useCallback(async () => {
     const result = await getCampaignDonationsLog(id);
-    console.log("Donators", result);
-
     const donators: Donator[] = [];
     for (const item of result) {
-      donators.push({
-        token: "/icons/atom.svg",
-        amount: "10",
-        message: item.message,
-        name: item.name,
-        tx: `${etherscan.url}/tx/${item.tx}`,
-      });
+      const index = availableTokens.address.findIndex(
+        (token) => token === item.token
+      );
+      if (index === -1) {
+        donators.push({
+          token: tokenIcon[0].image,
+          amount: formatUnits(item.amount, 18),
+          message: item.message,
+          name: item.name,
+          tx: `${etherscan.url}/tx/${item.tx}`,
+        });
+      } else {
+        donators.push({
+          token: availableTokens.icon[index],
+          amount: formatUnits(item.amount, availableTokens.decimals[index]),
+          message: item.message,
+          name: item.name,
+          tx: `${etherscan.url}/tx/${item.tx}`,
+        });
+      }
     }
+    donators.reverse();
     setDonators(donators);
   }, [etherscan.url, id]);
 
@@ -67,10 +82,10 @@ const Donator = ({ id }: DonatorProps) => {
           <Table className="overflow-scroll">
             <TableHeader>
               <TableRow>
-                <TableHead>Currency</TableHead>
+                <TableHead className="text-center">Currency</TableHead>
                 <TableHead>Amount</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Message</TableHead>
+                <TableHead className="text-center">Name</TableHead>
+                <TableHead className="text-center">Message</TableHead>
                 <TableHead className="text-right">Tx</TableHead>
               </TableRow>
             </TableHeader>
@@ -86,17 +101,20 @@ const Donator = ({ id }: DonatorProps) => {
               ) : (
                 donators.map((item, idx) => (
                   <TableRow key={idx}>
-                    <TableCell className="font-medium">
+                    <TableCell className="flex items-center justify-center">
                       <Image
                         src={item.token}
                         width={20}
                         height={20}
                         alt="Token"
+                        className="rounded-full"
                       />
                     </TableCell>
                     <TableCell>{item.amount}</TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
+                      {item.name === "" ? "Anonymous" : item.name}
+                    </TableCell>
+                    <TableCell className="text-center p-0 m-0">
                       {item.message && (
                         <Message from={item.name} message={item.message} />
                       )}

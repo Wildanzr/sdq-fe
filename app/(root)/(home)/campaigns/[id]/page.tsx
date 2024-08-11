@@ -1,4 +1,5 @@
 import {
+  getAvailableTokens,
   getMaximumCampaignDetails,
   getMinimumCampaignDetails,
   getNumberOfCampaigns,
@@ -10,9 +11,13 @@ import Item from "@/components/campaigns/Item";
 import Overview from "@/components/campaigns/Overview";
 import NavBreadcrumb from "@/components/shared/NavBreadcrumb";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent } from "@/components/ui/popover";
 import { navigations } from "@/constants/common";
+import { PopoverTrigger } from "@radix-ui/react-popover";
 import { Metadata, ResolvingMetadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { FaFacebook, FaTelegram, FaTwitter } from "react-icons/fa6";
 import { PiShareFatThin } from "react-icons/pi";
 
 export async function generateMetadata(
@@ -88,6 +93,7 @@ export default async function CampaignDetailsPage({
     return redirect("/not-found");
   }
   const campaign = (await getMaximumCampaignDetails(page)) as MaximumCampaign;
+  const availableTokens = (await getAvailableTokens()) as AvailableTokens;
   const navs = [
     {
       label: "All Campaigns",
@@ -106,9 +112,46 @@ export default async function CampaignDetailsPage({
       <div className="flex flex-col space-y-6 p-5 w-full min-h-screen items-start justify-start bg-meteor-stars bg-no-repeat bg-cover">
         <Item campaign={campaign} />
         <div className="flex flex-row space-x-5 w-full h-full">
-          <Button className="border border-brand-base rounded-lg bg-primary-100">
-            <PiShareFatThin className="text-brand-base" />
-          </Button>
+          <Popover>
+            <PopoverTrigger>
+              <Button className="border border-brand-base rounded-lg bg-primary-100">
+                <PiShareFatThin className="text-brand-base" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="flex max-w-36 flex-row items-start space-x-3 justify-start bg-primary-100 border border-brand-base rounded-lg">
+              <Link
+                target="_blank"
+                href={`https://twitter.com/share?text=${encodeURI(
+                  campaign.description
+                )}&url=${process.env.NEXT_PUBLIC_URL}/campaigns/${
+                  campaign.id
+                }?utm_source=twitter&utm_medium=post`}
+              >
+                <FaTwitter className="text-brand-base" size={30} />
+              </Link>
+              <Link
+                target="_blank"
+                href={`https://www.facebook.com/sharer.php?title=${encodeURI(
+                  campaign.description
+                )}&u=${process.env.NEXT_PUBLIC_URL}/campaigns/${
+                  campaign.id
+                }?utm_source=facebook&utm_medium=post`}
+              >
+                <FaFacebook className="text-brand-base" size={30} />
+              </Link>
+              <Link
+                target="_blank"
+                href={`https://t.me/share/url?text=${encodeURI(
+                  campaign.description
+                )}&url=${process.env.NEXT_PUBLIC_URL}/campaigns/${
+                  campaign.id
+                }?utm_source=telegram&utm_medium=message`}
+              >
+                <FaTelegram className="text-brand-base" size={30} />
+              </Link>
+            </PopoverContent>
+          </Popover>
+
           <DonateDialog id={campaign.id} title={campaign.title} />
         </div>
         <div className="flex flex-col w-full h-full">
@@ -116,7 +159,7 @@ export default async function CampaignDetailsPage({
           <Creator address={campaign.owner} verified={true} />
         </div>
         <Overview content={campaign.details} />
-        <Donator id={campaign.id} />
+        <Donator id={campaign.id} availableTokens={availableTokens} />
       </div>
     </div>
   );

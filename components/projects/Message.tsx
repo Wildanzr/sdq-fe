@@ -18,7 +18,7 @@ const Message = ({ from, message }: MessageProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="link">
+        <Button variant="link" className="m-0 p-0">
           <MdOutlineMessage
             className="text-neutral-base cursor-pointer"
             size={20}

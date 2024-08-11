@@ -5,7 +5,6 @@ import { CHARITY_ADDRESS, tokenIcon } from "@/constants/common";
 import { readContract } from "@wagmi/core";
 import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
 import { createConfig, http } from "wagmi";
-import { Address } from "viem";
 import { getFromIPFS, IPFSResponse } from "./ipfs";
 import { getCoinLatestPrice } from "./coingecko";
 import { countTotalRaised } from "@/lib/utils";

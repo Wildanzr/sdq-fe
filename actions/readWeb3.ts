@@ -3,11 +3,10 @@
 import { charityAbi } from "@/constants/abis/charity";
 import { CHARITY_ADDRESS, tokenIcon } from "@/constants/common";
 import { readContract } from "@wagmi/core";
-import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
-import { createConfig, http } from "wagmi";
 import { getFromIPFS, IPFSResponse } from "./ipfs";
 import { getCoinLatestPrice } from "./coingecko";
 import { countTotalRaised } from "@/lib/utils";
+import { serverConfig } from "@/config/server";
 
 interface CampaignDonations {
   address: `0x${string}`[];
@@ -26,14 +25,6 @@ interface CampaignDetails {
   claimed: boolean;
 }
 
-const NETWORK = process.env.NEXT_PUBLIC_NETWORK as "mainnet" | "testnet";
-const serverConfig = createConfig({
-  chains: NETWORK === "mainnet" ? [haqqMainnet] : [haqqTestedge2],
-  transports: {
-    [haqqMainnet.id]: http("https://rpc.eth.haqq.network"),
-    [haqqTestedge2.id]: http("https://rpc.eth.testedge2.haqq.network"),
-  },
-})
 
 export const getNumberOfCampaigns = async () => {
   try {
@@ -118,6 +109,7 @@ export const getAvailableTokens = async () => {
 }
 
 export const paginateCampaigns = async (page: number, limit: number) => {
+  console.log("Limit", limit);
   try {
     const numberOfCampaigns = await getNumberOfCampaigns();
     const campaigns: MinimumCampaign[] = [];
@@ -155,7 +147,7 @@ export const paginateCampaigns = async (page: number, limit: number) => {
       })
     }
 
-    return { campaigns, numberOfCampaigns };
+    return { campaigns };
   } catch (error) {
     console.error("Error in paginateCampaigns", error);
     throw error;
@@ -234,5 +226,22 @@ export const getMaximumCampaignDetails = async (id: number) => {
   } catch (error) {
     console.error("Error in getMaximumCapaignDetails", error);
     return false;
+  }
+}
+
+export const getPaginatedCampaignsIndex = async (page: number, limit: number) => {
+  try {
+    const result = await readContract(serverConfig, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "getPaginatedCampaignsIndex",
+      args: [page, limit],
+    })
+    const filtered = result.filter((item: number) => item !== 0);
+
+    return filtered;
+  } catch (error) {
+    console.error("Error in getPaginatedCampaignsIndex", error);
+    throw error;
   }
 }

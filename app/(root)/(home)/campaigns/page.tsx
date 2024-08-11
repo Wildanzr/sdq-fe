@@ -1,4 +1,7 @@
-import { paginateCampaigns } from "@/actions/readWeb3";
+import {
+  getPaginatedCampaignsIndex,
+  paginateCampaigns,
+} from "@/actions/readWeb3";
 import NavBreadcrumb from "@/components/shared/NavBreadcrumb";
 import Campaigns from "@/components/views/Campaigns";
 import { navigations } from "@/constants/common";
@@ -56,7 +59,15 @@ export default async function AllCampaignsPage({
   let limit = searchParams.limit ? +searchParams.limit : 10;
   if (limit > 20) limit = 20;
 
-  const { campaigns, numberOfCampaigns } = await paginateCampaigns(page, limit);
+  const nums = await getPaginatedCampaignsIndex(page, limit);
+  let currentMax =
+    nums[nums.length - 1] === 1
+      ? nums[nums.length - 1] + 1
+      : nums[nums.length - 1];
+
+  if (currentMax < limit) limit = currentMax;
+
+  const { campaigns } = await paginateCampaigns(page, limit);
 
   const nav = {
     label: "All Campaigns",

@@ -1,10 +1,27 @@
-import HomeProjects from "@/components/home/HomeProjects";
+import {
+  getPaginatedCampaignsIndex,
+  paginateCampaigns,
+} from "@/actions/readWeb3";
+import Item from "@/components/campaigns/Item";
 import Jumbotron from "@/components/home/Jumbotron";
 import Product from "@/components/shared/Product";
 import { homeProducts } from "@/constants/common";
 import Link from "next/link";
 
-export default async function Home() {
+export default async function Home({ params, searchParams }: URLProps) {
+  const page = searchParams.page ? +searchParams.page : 1;
+  let limit = searchParams.limit ? +searchParams.limit : 10;
+  if (limit > 20) limit = 10;
+
+  const nums = await getPaginatedCampaignsIndex(page, limit);
+  let currentMax =
+    nums[nums.length - 1] === 1
+      ? nums[nums.length - 1] + 1
+      : nums[nums.length - 1];
+
+  if (currentMax < limit) limit = currentMax;
+
+  const { campaigns } = await paginateCampaigns(page, limit);
   return (
     <div className="flex flex-col space-y-6 w-full h-full bg-meteor-stars">
       <Jumbotron />
@@ -28,7 +45,15 @@ export default async function Home() {
         <h2 className="text-neutral-base m-title-page text-start">
           Featured Projects
         </h2>
-        {/* <HomeProjects /> */}
+        {campaigns.length === 0 ? (
+          <div className="flex flex-col items-center justify-center">
+            <p className="m-body-base text-neutral-base">No campaigns found</p>
+          </div>
+        ) : (
+          campaigns.map((item, idx) => (
+            <Item key={idx} campaign={item} showCreator={true} />
+          ))
+        )}
 
         <Link
           href="/campaigns"

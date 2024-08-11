@@ -1,12 +1,10 @@
 "use server"
 
+import { getGCPCredentials } from "@/lib/utils";
 import { Storage } from "@google-cloud/storage"
 
-
-const storage = new Storage({
-  keyFilename: "credentials.json"
-})
-const bucket = storage.bucket("sdq-charity")
+const storageClient = new Storage(getGCPCredentials());
+const bucket = storageClient.bucket("sdq-charity")
 
 export const uploadImage = async (formData: FormData) => {
   const file = formData.get("image") as File;

@@ -5,6 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import Link from "next/link";
 
 interface Navigation {
   label: string;
@@ -27,16 +28,18 @@ const NavBreadcrumb = ({ navigations }: NavBreadcrumbProps) => {
             className="flex flex-row items-center justify-center space-x-1"
           >
             <BreadcrumbItem key={nav.href}>
-              <BreadcrumbLink
-                href={nav.href}
-                className={
-                  index === navigations.length - 1
-                    ? lastNav
-                    : "text-neutral-70 m-body-small hover:text-neutral-70 hover:underline"
-                }
-              >
-                {nav.label}
-              </BreadcrumbLink>
+              <Link href={nav.href} legacyBehavior>
+                <BreadcrumbLink
+                  href={nav.href}
+                  className={
+                    index === navigations.length - 1
+                      ? lastNav
+                      : "text-neutral-70 m-body-small hover:text-neutral-70 hover:underline"
+                  }
+                >
+                  {nav.label}
+                </BreadcrumbLink>
+              </Link>
             </BreadcrumbItem>
             {index !== navigations.length - 1 && (
               <BreadcrumbSeparator>{">"}</BreadcrumbSeparator>

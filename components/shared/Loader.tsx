@@ -21,7 +21,7 @@ const Loader = ({
     getLoader();
   }, []);
   return (
-    <div className="flex flex-col items-center justify-center py-5">
+    <div className="flex flex-col items-center justify-center">
       <l-tail-chase size={size} speed={speed} color={color} />
     </div>
   );

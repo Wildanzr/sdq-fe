@@ -5,7 +5,6 @@ const Layout = ({ children }: ChildrenProps) => {
   return (
     <main className="w-full min-h-screen items-center justify-center bg-secondary-100">
       <Navbar />
-
       {children}
     </main>
   );

@@ -139,6 +139,22 @@ export const unPauseCampaign = async (id: number) => {
   }
 }
 
+export const updateCampaign = async (id: number, title: string, details: string, target: string) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "updateCampaign",
+      args: [id, title, details, BigInt(target)],
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in updateCampaign", error);
+    throw error;
+  }
+}
+
 // Read Contracts
 export const getCampaignDonationsLog = async (campaignId: number) => {
   try {

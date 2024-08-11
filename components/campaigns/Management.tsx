@@ -15,6 +15,7 @@ import { getExplorer } from "@/lib/utils";
 import ToastTx from "../shared/ToastTx";
 import useWaitForTxAction from "@/hooks/useWaitForTx";
 import Loader from "../shared/Loader";
+import Link from "next/link";
 
 interface ManagementProps {
   id: number;
@@ -172,13 +173,15 @@ const Management = ({
             </>
           )}
         </Button>
-        <Button
-          disabled={disabledButton}
-          className="flex w-full flex-row space-x-2 z-10 bg-primary-100 border border-neutral-base rounded-lg p-2"
-        >
-          <FaPencil className="text-neutral-base" size={20} />
-          <p className="m-body-base text-neutral-base">Edit Campaign</p>
-        </Button>
+        <Link href={`/my-campaigns/${id}/edit`} className="flex w-full">
+          <Button
+            disabled={disabledButton}
+            className="flex w-full flex-row space-x-2 z-10 bg-primary-100 border border-neutral-base rounded-lg p-2"
+          >
+            <FaPencil className="text-neutral-base" size={20} />
+            <p className="m-body-base text-neutral-base">Edit Campaign</p>
+          </Button>
+        </Link>
       </div>
       <Button
         disabled={claimed || disabledButton}

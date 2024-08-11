@@ -2,13 +2,17 @@
 
 import { useWalletStore } from "@/store/wallet";
 import Blocker from "@/components/shared/Blocker";
-import FormCampaign from "@/components/create-a-campaign/FormCampaign";
 import { useState } from "react";
 import FormState, { States } from "@/components/create-a-campaign/FormState";
 import { uploadImage } from "@/actions/bucket";
 import { uploadToIPFS } from "@/actions/ipfs";
+import FormUpdateCampaign from "../update-a-campaign/FormUpdateCampaign";
 
-const CreateACampaign = () => {
+interface UpdateACampaignProps {
+  campaign: MaximumCampaign;
+}
+
+const UpdateACampaign = ({ campaign }: UpdateACampaignProps) => {
   const { isConnected } = useWalletStore((state) => ({
     isConnected: state.isConnected,
   }));
@@ -43,14 +47,15 @@ const CreateACampaign = () => {
     <>
       {isConnected ? (
         <div className="flex flex-col space-y-8 w-full h-full min-h-screen items-start justify-start">
-          <FormCampaign
+          <FormUpdateCampaign
             handleUploadImages={handleUploadImages}
             handleUploadIPFS={handleUploadIPFS}
             formStates={formStates}
             setFormStates={setFormStates}
+            campaign={campaign}
           >
             <FormState formStates={formStates} />
-          </FormCampaign>
+          </FormUpdateCampaign>
         </div>
       ) : (
         <Blocker />
@@ -59,4 +64,4 @@ const CreateACampaign = () => {
   );
 };
 
-export default CreateACampaign;
+export default UpdateACampaign;

@@ -251,6 +251,7 @@ export const getMaximumCampaignDetails = async (id: number) => {
       updated: new Date(Number(details.updated) * 1000),
       isPaused: details.paused,
       isClaimed: details.claimed,
+      pastMetadata: details.details
     }
 
     return campaign;

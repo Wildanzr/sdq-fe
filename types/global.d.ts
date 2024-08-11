@@ -55,6 +55,7 @@ declare global {
 
   interface MaximumCampaign extends MinimumCampaign {
     details: string;
+    pastMetadata: string;
   }
 
   interface TokenIcon {

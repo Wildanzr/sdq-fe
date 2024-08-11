@@ -111,11 +111,16 @@ export default async function CampaignDetailsPage({
       </div>
       <div className="flex flex-col space-y-6 p-5 w-full min-h-screen items-start justify-start bg-meteor-stars bg-no-repeat bg-cover">
         <Item campaign={campaign} />
-        <div className="flex flex-row space-x-5 w-full h-full">
+        <div className="flex flex-row w-full space-x-5 h-full items-center justify-between">
           <Popover>
             <PopoverTrigger>
-              <Button className="border border-brand-base rounded-lg bg-primary-100">
-                <PiShareFatThin className="text-brand-base" />
+              <Button
+                className="border border-brand-base rounded-lg bg-primary-100"
+                asChild
+              >
+                <div className="flex">
+                  <PiShareFatThin className="text-brand-base" />
+                </div>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="flex max-w-36 flex-row items-start space-x-3 justify-start bg-primary-100 border border-brand-base rounded-lg">

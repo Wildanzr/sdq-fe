@@ -155,6 +155,22 @@ export const updateCampaign = async (id: number, title: string, details: string,
   }
 }
 
+export const withdrawCampaign = async (id: number) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "withdrawCampaign",
+      args: [id],
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in withdrawCampaign", error);
+    throw error;
+  }
+}
+
 // Read Contracts
 export const getCampaignDonationsLog = async (campaignId: number) => {
   try {

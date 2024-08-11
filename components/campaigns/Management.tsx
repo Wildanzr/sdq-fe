@@ -2,20 +2,20 @@
 
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import {
-  FaGetPocket,
-  FaRegCirclePause,
-  FaRegCirclePlay,
-  FaPencil,
-} from "react-icons/fa6";
+import { FaRegCirclePause, FaRegCirclePlay, FaPencil } from "react-icons/fa6";
 import { useToast } from "../ui/use-toast";
-import { pauseCampaign, unPauseCampaign } from "@/web3/charity";
+import {
+  pauseCampaign,
+  unPauseCampaign,
+  withdrawCampaign,
+} from "@/web3/charity";
 import { Address } from "viem";
 import { getExplorer } from "@/lib/utils";
 import ToastTx from "../shared/ToastTx";
 import useWaitForTxAction from "@/hooks/useWaitForTx";
 import Loader from "../shared/Loader";
 import Link from "next/link";
+import WithdrawDialog from "./WithdrawDialog";
 
 interface ManagementProps {
   id: number;
@@ -145,6 +145,34 @@ const Management = ({
     }
   };
 
+  const handleWithdraw = async () => {
+    setDisabledButton(true);
+    try {
+      setState("withdraw");
+      const txHash = await withdrawCampaign(id);
+      setTxHash(txHash);
+
+      toast({
+        title: "Transaction submitted",
+        action: (
+          <ToastTx
+            explorerLink={etherscan.url}
+            explorerName={etherscan.name}
+            txHash={txHash}
+          />
+        ),
+      });
+    } catch (error: any) {
+      console.error(error);
+      setDisabledButton(false);
+      toast({
+        title: "Transaction failed",
+        description: error.message || "Failed to withdraw",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col space-y-5 w-full h-full items-center justify-center">
       <div className="flex flex-row w-full h-full items-center justify-center space-x-5">
@@ -153,7 +181,7 @@ const Management = ({
           onClick={handlePauseUnPause}
           className="flex w-full flex-row space-x-2 z-10 bg-primary-100 border border-neutral-base rounded-lg p-2"
         >
-          {paused ? (
+          {paused && state === "unpaused" ? (
             <>
               {disabledButton ? (
                 <Loader size="20" />
@@ -164,7 +192,7 @@ const Management = ({
             </>
           ) : (
             <>
-              {disabledButton ? (
+              {disabledButton && state === "paused" ? (
                 <Loader size="20" />
               ) : (
                 <FaRegCirclePause className="text-neutral-base" size={20} />
@@ -183,16 +211,12 @@ const Management = ({
           </Button>
         </Link>
       </div>
-      <Button
-        disabled={claimed || disabledButton}
-        className="flex w-full flex-row space-x-2 z-10 bg-primary-100 border border-brand-base rounded-lg p-2"
-      >
-        <FaGetPocket className="text-neutral-base" size={15} />
-        <p className="m-body-base text-neutral-base">
-          {claimed ? "Withdrawn" : "Withdraw"}
-        </p>
-        <FaGetPocket className="text-neutral-base" size={15} />
-      </Button>
+      <WithdrawDialog
+        claimed={claimed}
+        disabledButton={disabledButton}
+        handleWithdraw={handleWithdraw}
+        state={state}
+      />
     </div>
   );
 };

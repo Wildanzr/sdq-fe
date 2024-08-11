@@ -62,7 +62,13 @@ const Donator = ({ id, availableTokens }: DonatorProps) => {
     }
     donators.reverse();
     setDonators(donators);
-  }, [etherscan.url, id]);
+  }, [
+    availableTokens.address,
+    availableTokens.decimals,
+    availableTokens.icon,
+    etherscan.url,
+    id,
+  ]);
 
   useEffect(() => {
     if (id) {

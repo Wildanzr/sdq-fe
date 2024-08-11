@@ -155,8 +155,9 @@ const FormCampaign = ({
         details: values.details,
         target: values.target,
         images: [...uploadedImages, ...imageList],
-        previous: "",
+        previous: campaign.pastMetadata,
       };
+      console.log("Metadata", metadata);
       const ipfsHash = await handleUploadIPFS(JSON.stringify(metadata));
       const res = await updateCampaign(
         campaign.id,

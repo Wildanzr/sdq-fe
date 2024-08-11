@@ -15,6 +15,23 @@ declare global {
     searchParams: { [key: string]: string | undefined };
   }
 
+  interface CampaignDetails {
+    owner: `0x${string}`;
+    title: string;
+    details: string;
+    target: bigint;
+    donators: bigint;
+    created: bigint;
+    updated: bigint;
+    paused: boolean;
+    claimed: boolean;
+  }
+
+  interface CampaignDonations {
+    address: `0x${string}`[];
+    values: bigint[];
+  }
+
   interface AvailableTokens {
     address: `0x${string}`[];
     coinIds: string[];

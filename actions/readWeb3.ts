@@ -7,24 +7,7 @@ import { getFromIPFS, IPFSResponse } from "./ipfs";
 import { getCoinLatestPrice } from "./coingecko";
 import { countTotalRaised } from "@/lib/utils";
 import { serverConfig } from "@/config/server";
-
-interface CampaignDonations {
-  address: `0x${string}`[];
-  values: bigint[];
-}
-
-interface CampaignDetails {
-  owner: `0x${string}`;
-  title: string;
-  details: string;
-  target: bigint;
-  donators: bigint;
-  created: bigint;
-  updated: bigint;
-  paused: boolean;
-  claimed: boolean;
-}
-
+import { Address, isAddress } from "viem";
 
 export const getNumberOfCampaigns = async () => {
   try {
@@ -109,7 +92,6 @@ export const getAvailableTokens = async () => {
 }
 
 export const paginateCampaigns = async (page: number, limit: number) => {
-  console.log("Limit", limit);
   try {
     const numberOfCampaigns = await getNumberOfCampaigns();
     const campaigns: MinimumCampaign[] = [];
@@ -137,6 +119,48 @@ export const paginateCampaigns = async (page: number, limit: number) => {
       const ipfs = await getFromIPFS(details.details);
       campaigns.push({
         id: i,
+        owner: details.owner,
+        description: ipfs.description,
+        images: ipfs.images,
+        title: ipfs.title,
+        target: Number(details.target),
+        raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
+        updated: new Date(Number(details.updated) * 1000),
+      })
+    }
+
+    return { campaigns };
+  } catch (error) {
+    console.error("Error in paginateCampaigns", error);
+    throw error;
+  }
+}
+
+export const paginateSomeCampaigns = async (ids: number[]) => {
+  console.log("Paginate some campaigns", ids);
+  try {
+    const numberOfCampaigns = await getNumberOfCampaigns();
+    const campaigns: MinimumCampaign[] = [];
+
+    const tokens = await getAvailableTokens() as AvailableTokens;
+    const islm = await getCoinLatestPrice("islamic-coin");
+    tokens.decimals.push(18);
+    tokens.price.push(islm);
+    for (let i = 0; i < ids.length; i++) {
+      if (i > numberOfCampaigns) {
+        break;
+      }
+      const [details, donations] = await Promise.all([
+        getCampaignDetails(ids[i]),
+        getCampaignDonations(ids[i]),
+      ]) as [CampaignDetails, CampaignDonations];
+      if (!details || !donations) {
+        break;
+      }
+
+      const ipfs = await getFromIPFS(details.details);
+      campaigns.push({
+        id: ids[i],
         owner: details.owner,
         description: ipfs.description,
         images: ipfs.images,
@@ -237,11 +261,34 @@ export const getPaginatedCampaignsIndex = async (page: number, limit: number) =>
       functionName: "getPaginatedCampaignsIndex",
       args: [page, limit],
     })
-    const filtered = result.filter((item: number) => item !== 0);
 
+    const filtered = result.filter((item: number) => item !== 0);
     return filtered;
   } catch (error) {
     console.error("Error in getPaginatedCampaignsIndex", error);
+    throw error;
+  }
+}
+
+export const getMyCampaignIndex = async (address: Address, page: number, limit: number) => {
+  const isValidAddress = isAddress(address);
+  if (!isValidAddress) {
+    return [];
+  }
+
+  try {
+    const result = await readContract(serverConfig, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "getMyCampaignIndex",
+      args: [page, limit],
+      account: address,
+    });
+
+    const filtered = result.filter((item: number) => item !== 0);
+    return filtered;
+  } catch (error) {
+    console.error("Error in getMyCampaignIndex", error);
     throw error;
   }
 }

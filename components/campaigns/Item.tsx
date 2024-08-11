@@ -13,9 +13,10 @@ import Creator from "./Creator";
 interface ItemProps {
   campaign: MinimumCampaign;
   showCreator?: boolean;
+  customLink?: string;
 }
 
-const Item = ({ campaign, showCreator }: ItemProps) => {
+const Item = ({ campaign, showCreator, customLink }: ItemProps) => {
   const percentage = Math.floor((campaign.raised / campaign.target) * 100);
   const lastUpdated = getTimestamp(campaign.updated);
   return (
@@ -31,7 +32,7 @@ const Item = ({ campaign, showCreator }: ItemProps) => {
             Last update: {lastUpdated}
           </p>
           <Link
-            href={`/campaigns/${campaign.id}`}
+            href={customLink || `/campaigns/${campaign.id}`}
             className="text-brand-60 m-heading"
           >
             {campaign.title}

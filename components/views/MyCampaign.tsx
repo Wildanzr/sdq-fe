@@ -2,33 +2,16 @@
 
 import { useWalletStore } from "@/store/wallet";
 import Blocker from "../shared/Blocker";
-import { useCallback, useEffect, useState } from "react";
-import Item from "../projects/Item";
-import { CampaignCreatedEvent, getMyCampaigns } from "@/web3/charity";
-import { useAccount } from "wagmi";
+import Item from "../campaigns/Item";
 
-const MyCampaign = () => {
+interface MyCampaignProps {
+  campaigns: MinimumCampaign[];
+}
+
+const MyCampaign = ({ campaigns }: MyCampaignProps) => {
   const { isConnected } = useWalletStore((state) => ({
     isConnected: state.isConnected,
   }));
-  const { address } = useAccount();
-  const [campaigns, setCampaigns] = useState<CampaignCreatedEvent[]>([]);
-
-  const fetchMyCampaigns = useCallback(async () => {
-    try {
-      const res = await getMyCampaigns(address);
-      setCampaigns(res);
-      console.log("My Campaigns", res);
-    } catch (error) {
-      console.error("Error in fetchMyCampaigns", error);
-    }
-  }, [address]);
-
-  useEffect(() => {
-    if (isConnected) {
-      fetchMyCampaigns();
-    }
-  }, [fetchMyCampaigns, isConnected]);
   return (
     <>
       {isConnected ? (
@@ -37,12 +20,19 @@ const MyCampaign = () => {
             My Campaigns
           </h2>
           {campaigns.length === 0 ? (
-            <p>
-              No campaigns found. Create a campaign to get started with your
-            </p>
+            <div className="flex flex-col items-center justify-center">
+              <p className="m-body-base text-neutral-base">
+                No campaigns found
+              </p>
+            </div>
           ) : (
             campaigns.map((item, idx) => (
-              <Item campaignId={Number(item.campaignId)} key={idx} />
+              <Item
+                key={idx}
+                campaign={item}
+                showCreator={false}
+                customLink={`/my-campaigns/${item.id}`}
+              />
             ))
           )}
         </div>

@@ -1,17 +1,38 @@
-import React from "react";
-import { Button } from "../ui/button";
+import NFTItem from "./NFTItem";
 
 const NFTList = () => {
   return (
     <div className="flex flex-col w-full h-full space-y-3">
       <h2 className="text-neutral-base m-subheading">My Soulbond</h2>
-      <div className="flex flex-col space-y-3 items-center justify-center">
-        <p className="w-full text-neutral-base m-body-base text-center bg-primary-100 p-4 rounded-xl shadow-[0px_-2px_2px_0px_#13AE75]">
-          You haven&apos;t proven your heart yet
-        </p>
-        <Button className="flex flex-row space-x-3 text-neutral-base z-10 bg-primary-50/20 border-2 border-brand-70 rounded-xl">
-          <p className="m-body-base">Explore Campaign</p>
-        </Button>
+      <div className="grid grid-cols-3 gap-4 w-full h-full">
+        <NFTItem
+          imageSrc="/images/sbt-campaign-1.png"
+          info="You should create minimum 1 campaign to obtain this NFT."
+          name="Soulbond Campaign 1"
+          isObtained={true}
+          href="/account/my-soulbound/1/0x1234567890abcdef"
+        />
+        <NFTItem
+          imageSrc="/images/sbt-campaign-1.png"
+          info="You should create minimum 1 campaign to obtain this NFT."
+          name="Soulbond Campaign 1"
+          isObtained={false}
+          href="/account/my-soulbound/1/0x1234567890abcdef"
+        />
+        <NFTItem
+          imageSrc="/images/sbt-campaign-1.png"
+          info="You should create minimum 1 campaign to obtain this NFT."
+          name="Soulbond Campaign 1"
+          isObtained={false}
+          href="/account/my-soulbound/1/0x1234567890abcdef"
+        />
+        <NFTItem
+          imageSrc="/images/sbt-campaign-1.png"
+          info="You should create minimum 1 campaign to obtain this NFT."
+          name="Soulbond Campaign 1"
+          isObtained={false}
+          href="/account/my-soulbound/1/0x1234567890abcdef"
+        />
       </div>
     </div>
   );

@@ -1,8 +1,16 @@
+import {
+  getAvailableSpecialAccess,
+  getMySpecialAccess,
+  getPassedSpecialAccess,
+} from "@/actions/access";
 import NavBreadcrumb from "@/components/shared/NavBreadcrumb";
-import HomeTabs from "@/components/special-access/HomeTabs";
+import SpecialAccess from "@/components/views/SpecialAccess";
 import { navigations } from "@/constants/common";
+import { getAddressFromRegex } from "@/lib/utils";
 import { Metadata } from "next";
+import { headers } from "next/headers";
 import React from "react";
+import { Address } from "viem";
 
 export const metadata: Metadata = {
   title: "SDQ | Special Access",
@@ -48,7 +56,13 @@ export const metadata: Metadata = {
   },
 };
 
-const SpecialAccessPage = () => {
+const SpecialAccessPage = async () => {
+  const cookie = headers().get("cookie");
+  const stringified = JSON.stringify(cookie);
+  const address = getAddressFromRegex(stringified) as Address;
+  const ongoing = (await getAvailableSpecialAccess(address)) as Access[];
+  const passed = (await getPassedSpecialAccess(address)) as Access[];
+  const mine = (await getMySpecialAccess(address)) as Access[];
   const nav = {
     label: "Special Access",
     href: "/loyalty-program/special-access",
@@ -58,9 +72,8 @@ const SpecialAccessPage = () => {
       <div className="flex flex-col px-5 w-full items-start justify-start">
         <NavBreadcrumb navigations={[navigations[0], navigations[2], nav]} />
       </div>
-      <div className="flex flex-col w-full h-full items-center justify-center p-5">
-        <h1 className="m-heading text-neutral-base">Special Access</h1>
-        <HomeTabs />
+      <div className="flex flex-col space-y-6 px-5 w-full min-h-screen items-center justify-center bg-meteor-stars bg-no-repeat bg-cover">
+        <SpecialAccess ongoing={ongoing} passed={passed} mine={mine} />
       </div>
     </div>
   );

@@ -68,6 +68,7 @@ const SpecialAccessPage = ({ params, searchParams }: URLProps) => {
           navigations={[navigations[0], navigations[2], ...navs]}
         />
       </div>
+
       <div className="flex flex-col w-full h-full items-start justify-start space-y-3">
         <AccessItem
           id={"1"}

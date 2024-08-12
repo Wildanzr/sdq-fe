@@ -44,7 +44,7 @@ const AccessItem = ({
       {/* Content */}
       <div className="relative flex flex-col w-full h-full z-10">
         <div className="flex absolute inset-0 items-center justify-center">
-          <p className="m-body-strong text-neutral-base">{title}</p>
+          <p className="m-body-strong text-neutral-base text-center">{title}</p>
         </div>
         <div className="flex w-full items-start justify-start mt-2">
           <p className="m-body-link text-neutral-base bg-primary-80 p-1 px-2 rounded-r-3xl">

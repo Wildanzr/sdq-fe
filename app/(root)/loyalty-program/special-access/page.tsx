@@ -1,4 +1,5 @@
 import NavBreadcrumb from "@/components/shared/NavBreadcrumb";
+import HomeTabs from "@/components/special-access/HomeTabs";
 import { navigations } from "@/constants/common";
 import { Metadata } from "next";
 import React from "react";
@@ -57,8 +58,9 @@ const SpecialAccessPage = () => {
       <div className="flex flex-col px-5 w-full items-start justify-start">
         <NavBreadcrumb navigations={[navigations[0], navigations[2], nav]} />
       </div>
-      <div className="flex flex-col w-full h-full items-center justify-center">
-        <h1 className="m-title-hero text-neutral-base">Special Access</h1>
+      <div className="flex flex-col w-full h-full items-center justify-center p-5">
+        <h1 className="m-heading text-neutral-base">Special Access</h1>
+        <HomeTabs />
       </div>
     </div>
   );

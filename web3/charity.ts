@@ -180,7 +180,7 @@ export const getCampaignDonationsLog = async (campaignId: number) => {
       address: CHARITY_ADDRESS,
       abi: charityAbi,
       eventName: "CampaignDonation",
-      fromBlock: CHARITY_FIRST_BLOCK
+      toBlock: "latest"
     })
 
     for (const event of res) {

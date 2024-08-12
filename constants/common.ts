@@ -112,37 +112,37 @@ export const checkInLists: CheckIn[] = [
   {
     amount: 1.25,
     day: 1,
-    image: "/images/coin-1.png",
+    image: "/coins/twemoji_coin-1.svg",
   },
   {
     amount: 1.5,
     day: 2,
-    image: "/images/coin-2.png",
+    image: "/coins/twemoji_coin-2.svg",
   },
   {
     amount: 2,
     day: 3,
-    image: "/images/coin-3.png",
+    image: "/coins/twemoji_coin-3.svg",
   },
   {
     amount: 3,
     day: 4,
-    image: "/images/coin-4.png",
+    image: "/coins/twemoji_coin-4.svg",
   },
   {
     amount: 5,
     day: 5,
-    image: "/images/coin-5.png",
+    image: "/coins/twemoji_coin-5.svg",
   },
   {
     amount: 7,
     day: 6,
-    image: "/images/coin-6.png",
+    image: "/coins/twemoji_coin-6.svg",
   },
   {
     amount: 10,
     day: 7,
-    image: "/images/coin-7.png",
+    image: "/coins/twemoji_coin-7.svg",
   },
 ];
 

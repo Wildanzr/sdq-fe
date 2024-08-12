@@ -7,7 +7,6 @@ import { useState } from "react";
 import FormState, { States } from "@/components/create-a-campaign/FormState";
 import { uploadImage } from "@/actions/bucket";
 import { uploadToIPFS } from "@/actions/ipfs";
-import Footer from "../shared/Footer";
 
 const CreateACampaign = () => {
   const { isConnected } = useWalletStore((state) => ({
@@ -52,7 +51,6 @@ const CreateACampaign = () => {
           >
             <FormState formStates={formStates} />
           </FormCampaign>
-          <Footer />
         </div>
       ) : (
         <Blocker />

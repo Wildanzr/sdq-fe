@@ -1,14 +1,10 @@
-import {
-  getPaginatedCampaignsIndex,
-  paginateCampaigns,
-} from "@/actions/readWeb3";
 import NavBreadcrumb from "@/components/shared/NavBreadcrumb";
-import Campaigns from "@/components/views/Campaigns";
 import { navigations } from "@/constants/common";
 import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-  title: "SDQ | Featured Campaigns",
+  title: "SDQ | Ticket Raffle",
   description:
     "SDQ is a decentralized social network for charity and social good. It is built with Next.js, TypeScript, Tailwind CSS, and Vercel. It is also optimized for SEO and performance.",
   keywords: [
@@ -36,8 +32,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://wildanzr.my.id",
-    siteName: "SDQ | Featured Campaigns",
-    title: "SDQ | Featured Campaigns",
+    siteName: "SDQ | Ticket Raffle",
+    title: "SDQ | Ticket Raffle",
     description:
       "SDQ is a decentralized social network for charity and social good. It is built with Next.js, TypeScript, Tailwind CSS, and Vercel. It is also optimized for SEO and performance.",
     images: [
@@ -51,36 +47,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function AllCampaignsPage({
-  params,
-  searchParams,
-}: URLProps) {
-  const page = searchParams.page ? +searchParams.page : 1;
-  let limit = searchParams.limit ? +searchParams.limit : 10;
-  if (limit > 20) limit = 20;
-
-  const nums = await getPaginatedCampaignsIndex(page, limit);
-  let currentMax =
-    nums[nums.length - 1] === 1
-      ? nums[nums.length - 1] + 1
-      : nums[nums.length - 1];
-
-  if (currentMax < limit) limit = currentMax;
-
-  const { campaigns } = await paginateCampaigns(page, limit);
-
+const TicketRafflePage = () => {
   const nav = {
-    label: "All Campaigns",
-    href: "/campaigns",
+    label: "Ticket Raffle",
+    href: "/loyalty-program/ticket-raffle",
   };
   return (
-    <div className="flex flex-col items-start justify-start space-y-5">
+    <div className="flex flex-col w-full h-full items-start justify-start space-y-5">
       <div className="flex flex-col px-5 w-full items-start justify-start">
-        <NavBreadcrumb navigations={[navigations[0], nav]} />
+        <NavBreadcrumb navigations={[navigations[0], navigations[2], nav]} />
       </div>
-      <div className="flex flex-col space-y-6 px-5 w-full min-h-screen items-start justify-start bg-meteor-stars bg-no-repeat bg-cover">
-        <Campaigns campaigns={campaigns} />
+      <div className="flex flex-col w-full h-full items-center justify-center">
+        <h1 className="m-title-hero text-neutral-base">Ticket Raffle</h1>
       </div>
     </div>
   );
-}
+};
+
+export default TicketRafflePage;

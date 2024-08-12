@@ -9,7 +9,6 @@ import DonateDialog from "@/components/campaigns/DonateDialog";
 import Donator from "@/components/campaigns/Donator";
 import Item from "@/components/campaigns/Item";
 import Overview from "@/components/campaigns/Overview";
-import Footer from "@/components/shared/Footer";
 import NavBreadcrumb from "@/components/shared/NavBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent } from "@/components/ui/popover";
@@ -171,7 +170,6 @@ export default async function CampaignDetailsPage({
         </div>
         <Overview content={campaign.details} />
         <Donator id={campaign.id} availableTokens={availableTokens} />
-        <Footer />
       </div>
     </div>
   );

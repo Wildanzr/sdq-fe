@@ -9,7 +9,6 @@ import { useWalletStore } from "@/store/wallet";
 import { Address } from "viem";
 import { useAccount } from "wagmi";
 import { getMyStats, GetMyStatsResponse } from "@/web3/checkin";
-import Footer from "../shared/Footer";
 
 const Checkin = () => {
   const { isConnected } = useWalletStore((state) => ({
@@ -51,7 +50,6 @@ const Checkin = () => {
                 label={item.label}
               />
             ))}
-            <Footer />
           </div>
         </>
       ) : (

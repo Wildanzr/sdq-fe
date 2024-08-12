@@ -68,4 +68,36 @@ declare global {
     allowance: bigint;
     ticker: string;
   }
+
+  interface Access {
+    _id: string;
+    title: string;
+    image: string;
+    price: number;
+    total: number;
+    sold: number;
+    details: string;
+    privateContent: string;
+    claimers: string[];
+    dueDate: Date;
+  }
+
+  interface Reward {
+    _id: string;
+    year: number;
+    month: number;
+    tasks: string[];
+    winner: string[];
+  }
+
+  interface Ticket {
+    _id: string;
+    type: string;
+    title: string;
+    platform: string;
+    link: string;
+    points: number;
+    finisher: string[];
+  }
+
 }

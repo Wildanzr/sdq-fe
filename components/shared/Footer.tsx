@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col w-full h-full items-start justify-start space-y-5 pt-10">
+    <div className="flex flex-col w-full h-full items-start justify-start space-y-5 py-10 px-5">
       <Link href="/" className="flex items-center gap-1">
         <Image src="/icon.svg" width={30} height={30} alt="Haqq Wallet" />
 

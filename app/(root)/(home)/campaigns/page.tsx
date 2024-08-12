@@ -36,8 +36,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://wildanzr.my.id",
-    siteName: "SDQ | Featured Campaign",
-    title: "SDQ | Featured Campaign",
+    siteName: "SDQ | Featured Campaigns",
+    title: "SDQ | Featured Campaigns",
     description:
       "SDQ is a decentralized social network for charity and social good. It is built with Next.js, TypeScript, Tailwind CSS, and Vercel. It is also optimized for SEO and performance.",
     images: [

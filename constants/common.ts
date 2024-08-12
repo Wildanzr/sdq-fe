@@ -17,6 +17,13 @@ interface Product {
   description: string;
 }
 
+interface Soulbound {
+  image: string;
+  name: string;
+  info: string;
+  isObtained: boolean;
+}
+
 export const SHODAQO_ADDRESS = "0x040EAdcaF7450609358047b7eF3Bef37E45D39D5";
 export const CHECK_IN_ADDRESS = "0xA5bE51D8b8BE47A5517658c3cB401EBeC7C4F086";
 export const CHARITY_ADDRESS = "0xeE69D703b166254313E1B46fdB6a60fda7decd2B";
@@ -112,37 +119,37 @@ export const checkInLists: CheckIn[] = [
   {
     amount: 1.25,
     day: 1,
-    image: "/images/coin-1.png",
+    image: "/coins/twemoji_coin-1.svg",
   },
   {
     amount: 1.5,
     day: 2,
-    image: "/images/coin-2.png",
+    image: "/coins/twemoji_coin-2.svg",
   },
   {
     amount: 2,
     day: 3,
-    image: "/images/coin-3.png",
+    image: "/coins/twemoji_coin-3.svg",
   },
   {
     amount: 3,
     day: 4,
-    image: "/images/coin-4.png",
+    image: "/coins/twemoji_coin-4.svg",
   },
   {
     amount: 5,
     day: 5,
-    image: "/images/coin-5.png",
+    image: "/coins/twemoji_coin-5.svg",
   },
   {
     amount: 7,
     day: 6,
-    image: "/images/coin-6.png",
+    image: "/coins/twemoji_coin-6.svg",
   },
   {
     amount: 10,
     day: 7,
-    image: "/images/coin-7.png",
+    image: "/coins/twemoji_coin-7.svg",
   },
 ];
 
@@ -283,4 +290,111 @@ export const tokenIcon: TokenIcon[] = [
     image: "/coins/dai.png",
   },
 
+]
+
+export const raffleList: Product[] = [
+  {
+    label: "Grand Prize",
+    image: "/images/prize-1.png",
+    description: "Umrah Package for Two",
+  },
+  {
+    label: "2nd Winner",
+    image: "/images/prize-2.png",
+    description: "Islamic Tour"
+  },
+  {
+    label: "3rd Winner",
+    image: "/images/prize-3.png",
+    description: "Luxury Gift Set"
+  },
+  {
+    label: "4th Winner",
+    image: "/images/prize-4.png",
+    description: "Qu'ran Set"
+  },
+  {
+    label: "5th Winner",
+    image: "/images/prize-5.png",
+    description: "Customized Islamic Apparel"
+  },
+  {
+    label: "6th Winner",
+    image: "/images/prize-6.png",
+    description: "Donation Mosque"
+  },
+  {
+    label: "7th Winner",
+    image: "/images/prize-7.png",
+    description: "Library Acces"
+  }
+]
+
+export const soulbounds: Soulbound[] = [
+  {
+    image: "/images/sbt-donation-1.png",
+    info: "You should donate at least 1 time",
+    isObtained: true,
+    name: "SBT Donate 1"
+  },
+  {
+    image: "/images/sbt-checkin-1.png",
+    info: "You should check in at least 1 day",
+    isObtained: true,
+    name: "SBT Check In 1"
+  },
+  {
+    image: "/images/sbt-donation-2.png",
+    info: "You should donate at least 5 times",
+    isObtained: false,
+    name: "SBT Donate 2"
+  },
+  {
+    image: "/images/sbt-donation-3.png",
+    info: "You should donate at least 10 times",
+    isObtained: false,
+    name: "SBT Donate 3"
+  },
+  {
+    image: "/images/sbt-donation-4.png",
+    info: "You should donate at least 50 times",
+    isObtained: false,
+    name: "SBT Donate 4"
+  },
+  {
+    image: "/images/sbt-donation-5.png",
+    info: "You should donate at least 100 times",
+    isObtained: false,
+    name: "SBT Donate 5"
+  },
+  {
+    image: "/images/sbt-checkin-1.png",
+    info: "You should check in at least 1 week",
+    isObtained: false,
+    name: "SBT Check In 2"
+  },
+  {
+    image: "/images/sbt-checkin-1.png",
+    info: "You should check in at least 1 month",
+    isObtained: false,
+    name: "SBT Check In 3"
+  },
+  {
+    image: "/images/sbt-campaign-1.png",
+    info: "You should create campaign at least 1 time",
+    isObtained: false,
+    name: "SBT Campaign 1"
+  },
+  {
+    image: "/images/sbt-campaign-1.png",
+    info: "You should create campaign at least 3 times",
+    isObtained: false,
+    name: "SBT Campaign 2"
+  },
+  {
+    image: "/images/sbt-campaign-1.png",
+    info: "You should create campaign at least 10 times",
+    isObtained: false,
+    name: "SBT Campaign 3"
+  },
 ]

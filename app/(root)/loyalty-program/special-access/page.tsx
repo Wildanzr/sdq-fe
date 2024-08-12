@@ -61,7 +61,7 @@ const SpecialAccessPage = async () => {
   const stringified = JSON.stringify(cookie);
   const address = getAddressFromRegex(stringified) as Address;
   const ongoing = (await getAvailableSpecialAccess(address)) as Access[];
-  const passed = (await getPassedSpecialAccess(address)) as Access[];
+  const passed: Access[] = [];
   const mine = (await getMySpecialAccess(address)) as Access[];
   const nav = {
     label: "Special Access",

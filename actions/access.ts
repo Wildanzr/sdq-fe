@@ -44,7 +44,7 @@ export const claimSpecialAccess = async (id: string, claimer: string) => {
     ticket.claimers.push(claimer);
     await ticket.save();
 
-    return ticket;
+    return JSON.stringify(ticket);
   } catch (error) {
     console.error("Error claiming special access", error);
     return false;
@@ -73,11 +73,15 @@ export const getPassedSpecialAccess = async (claimer?: string) => {
       return []
     }
 
+    const currentDate = new Date();
+    const tickets = await Access.find({ dueDate: { $lt: currentDate } });
 
-    const tickets = await Access.find({ dueDate: { $lt: new Date() } });
-    const filteredTickets = tickets.filter((ticket) => ticket.claimers.includes(claimer));
-
-    return filteredTickets;
+    if (claimer) {
+      const filteredTickets = tickets.filter((ticket) => ticket.claimers.includes(claimer));
+      return filteredTickets;
+    } else {
+      return tickets;
+    }
   } catch (error) {
     console.error("Error getting special access", error);
     return false;
@@ -99,6 +103,21 @@ export const getAvailableSpecialAccess = async (claimer?: string) => {
       return tickets;
     }
 
+  } catch (error) {
+    console.error("Error getting special access", error);
+    return false;
+  }
+}
+
+export const getSpecialAccess = async (id: string) => {
+  try {
+    connectToDatabase();
+
+    const ticket = await Access.findById(id);
+    if (!ticket) {
+      return false;
+    }
+    return ticket;
   } catch (error) {
     console.error("Error getting special access", error);
     return false;

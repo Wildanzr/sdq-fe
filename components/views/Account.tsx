@@ -15,7 +15,7 @@ const Account = () => {
       {isConnected ? (
         <div className="flex flex-col space-y-8 w-full h-full items-start justify-start min-h-screen">
           <WalletInfo />
-          <ParticipatedList />
+          {/* <ParticipatedList /> */}
           <NFTList />
         </div>
       ) : (

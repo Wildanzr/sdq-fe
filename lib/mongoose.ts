@@ -5,8 +5,8 @@ let isConnected: boolean = false;
 export const connectToDatabase = async () => {
   mongoose.set("strictQuery", true);
 
-  if (!process.env.MONGODB_URL) {
-    return console.error("MONGODB_URL is not set");
+  if (!process.env.MONGODB_URI) {
+    return console.error("MONGODB_URI is not set");
   }
 
   if (isConnected) {
@@ -14,7 +14,7 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URL, {
+    await mongoose.connect(process.env.MONGODB_URI, {
       dbName: "sdqcharity",
     });
     isConnected = true;

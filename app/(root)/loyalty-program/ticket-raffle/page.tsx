@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import React from "react";
 import { FaInstagram, FaTwitter } from "react-icons/fa6";
+import { raffleList } from "@/constants/common";
 
 export const metadata: Metadata = {
   title: "SDQ | Ticket Raffle",
@@ -65,21 +66,31 @@ const TicketRafflePage = () => {
           Celebrating your loyalty
         </h1>
         <div className="grid grid-cols-2 gap-4 w-full h-full">
-          <div className="bg-red-500 col-span-2 h-32 rounded-lg items-center justify-center flex">
-            Grand Prize
-          </div>
-          <div className="bg-red-500 h-32 rounded-lg items-center justify-center flex">
-            2nd Winner
-          </div>
-          <div className="bg-red-500 h-32 rounded-lg items-center justify-center flex">
-            3rd Winner
-          </div>
-          <div className="bg-red-500 h-32 rounded-lg items-center justify-center flex">
-            4th Winner
-          </div>
-          <div className="bg-red-500 h-32 rounded-lg items-center justify-center flex">
-            5th Winner
-          </div>
+          {raffleList.map((item, idx) => (
+            <div
+              key={idx}
+              className={`relative h-32 rounded-lg items-center justify-center flex flex-col ${
+                idx === 0 ? "col-span-2" : ""
+              }`}
+            >
+              <div
+                className={"absolute inset-0 rounded-lg object-center"}
+                style={{
+                  backgroundImage: `url("${item.image}")`,
+                  backgroundSize: "cover",
+                  opacity: 0.5,
+                  zIndex: 0,
+                  backdropFilter: "blur(10px)",
+                }}
+              ></div>
+              <p className="m-body-strong text-neutral-base text-center z-10">
+                {item.label}
+              </p>
+              <p className="m-body-link text-neutral-base text-center z-10">
+                {item.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
 

@@ -284,3 +284,41 @@ export const tokenIcon: TokenIcon[] = [
   },
 
 ]
+
+export const raffleList: Product[] = [
+  {
+    label: "Grand Prize",
+    image: "/images/prize-1.png",
+    description: "Umrah Package for Two",
+  },
+  {
+    label: "2nd Winner",
+    image: "/images/prize-2.png",
+    description: "Islamic Tour"
+  },
+  {
+    label: "3rd Winner",
+    image: "/images/prize-3.png",
+    description: "Luxury Gift Set"
+  },
+  {
+    label: "4th Winner",
+    image: "/images/prize-4.png",
+    description: "Qu'ran Set"
+  },
+  {
+    label: "5th Winner",
+    image: "/images/prize-5.png",
+    description: "Customized Islamic Apparel"
+  },
+  {
+    label: "6th Winner",
+    image: "/images/prize-6.png",
+    description: "Donation Mosque"
+  },
+  {
+    label: "7th Winner",
+    image: "/images/prize-7.png",
+    description: "Library Acces"
+  }
+]

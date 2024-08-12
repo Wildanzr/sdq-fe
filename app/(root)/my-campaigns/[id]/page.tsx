@@ -74,7 +74,7 @@ export async function generateMetadata(
 
 const ManageCampaignPage = async ({ params, searchParams }: URLProps) => {
   const isValidId = !isNaN(Number(params.id));
-  const page = searchParams.page ? +searchParams.page : 1;
+  const page = params.id ? +params.id : 1;
   const numberOfCampaigns = await getNumberOfCampaigns();
   const isPageOutOfRange = page > numberOfCampaigns;
   if (!isValidId || isPageOutOfRange) {
@@ -85,6 +85,9 @@ const ManageCampaignPage = async ({ params, searchParams }: URLProps) => {
   const address = getAddressFromRegex(stringified) as Address;
   const campaign = (await getMaximumCampaignDetails(page)) as MaximumCampaign;
   const availableTokens = (await getAvailableTokens()) as AvailableTokens;
+
+  console.log("page", page);
+  console.log("Campaign", campaign);
   if (campaign.owner !== address) {
     return redirect("/not-found");
   }

@@ -14,6 +14,7 @@ export default async function Home({ params, searchParams }: URLProps) {
   if (limit > 20) limit = 10;
 
   const nums = await getPaginatedCampaignsIndex(page, limit);
+  console.log("Nums: ", nums);
   let currentMax =
     nums[nums.length - 1] === 1
       ? nums[nums.length - 1] + 1
@@ -21,7 +22,10 @@ export default async function Home({ params, searchParams }: URLProps) {
 
   if (currentMax < limit) limit = currentMax;
 
+  console.log("Limit: ", limit);
+
   const { campaigns } = await paginateCampaigns(page, limit);
+  console.log("Campaigns: ", campaigns);
   return (
     <div className="flex flex-col space-y-6 w-full h-full bg-meteor-stars">
       <Jumbotron />

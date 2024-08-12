@@ -42,6 +42,7 @@ export const claimSpecialAccess = async (id: string, claimer: string) => {
     }
 
     ticket.claimers.push(claimer);
+    ticket.sold += 1;
     await ticket.save();
 
     return JSON.stringify(ticket);

@@ -95,7 +95,7 @@ export const paginateCampaigns = async (page: number, limit: number) => {
   try {
     const numberOfCampaigns = await getNumberOfCampaigns();
     const campaigns: MinimumCampaign[] = [];
-    const end = page * limit;
+    const end = (page * limit) + 1;
     const start = page * limit - limit === 0
       ? 1
       : page * limit - limit;

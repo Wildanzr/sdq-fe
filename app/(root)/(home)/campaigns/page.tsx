@@ -59,6 +59,8 @@ export default async function AllCampaignsPage({
   let limit = searchParams.limit ? +searchParams.limit : 10;
   if (limit > 20) limit = 20;
 
+  console.log("Limit: ", limit);
+  console.log("Page: ", page);
   const nums = await getPaginatedCampaignsIndex(page, limit);
   let currentMax =
     nums[nums.length - 1] === 1

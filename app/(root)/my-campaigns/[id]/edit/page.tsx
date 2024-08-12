@@ -18,7 +18,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const isValidId = !isNaN(Number(params.id));
-  const page = searchParams.page ? +searchParams.page : 1;
+  const page = params.id ? +params.id : 1;
   const numberOfCampaigns = await getNumberOfCampaigns();
   const isPageOutOfRange = page > numberOfCampaigns;
   if (!isValidId || isPageOutOfRange) {
@@ -29,6 +29,8 @@ export async function generateMetadata(
   }
 
   const campaign = (await getMaximumCampaignDetails(page)) as MaximumCampaign;
+  console.log("Page: ", page);
+  console.log("Campaign: ", campaign);
   return {
     title: `SDQ | ${campaign.title}`,
     description: campaign.description,
@@ -74,7 +76,7 @@ export async function generateMetadata(
 
 const EditMyCampaign = async ({ params, searchParams }: URLProps) => {
   const isValidId = !isNaN(Number(params.id));
-  const page = searchParams.page ? +searchParams.page : 1;
+  const page = params.id ? +params.id : 1;
   const numberOfCampaigns = await getNumberOfCampaigns();
   const isPageOutOfRange = page > numberOfCampaigns;
   if (!isValidId || isPageOutOfRange) {
@@ -84,9 +86,10 @@ const EditMyCampaign = async ({ params, searchParams }: URLProps) => {
   const stringified = JSON.stringify(cookie);
   const address = getAddressFromRegex(stringified) as Address;
   const campaign = (await getMaximumCampaignDetails(page)) as MaximumCampaign;
-  if (campaign.owner !== address) {
-    return redirect("/not-found");
-  }
+  console.log("Will edited", campaign);
+  // if (campaign.owner !== address) {
+  //   return redirect("/not-found");
+  // }
 
   const paths = [
     {

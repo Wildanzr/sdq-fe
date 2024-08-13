@@ -1,8 +1,8 @@
 import { readContract } from "@wagmi/core";
 import { config } from "@/config/wagmi";
-import { Address } from "viem";
+import { Address, parseEther } from "viem";
 import { tokenAbi } from "@/constants/abis/token";
-import { CHARITY_ADDRESS } from "@/constants/common";
+import { CHARITY_ADDRESS, SHODAQO_ADDRESS } from "@/constants/common";
 import { writeContract } from "@wagmi/core";
 
 // Write Contracts
@@ -22,6 +22,24 @@ export const approveSpending = async (token: Address) => {
     throw error;
   }
 };
+
+export const tranferToBuyAccess = async (to: Address, amount: number) => {
+  const parsedAmount = parseEther(amount.toString())
+  console.log("Amount", parsedAmount)
+  try {
+    const tf = await writeContract(config, {
+      abi: tokenAbi,
+      address: SHODAQO_ADDRESS,
+      functionName: "transfer",
+      args: [to, parsedAmount]
+    });
+
+    return tf;
+  } catch (error) {
+    console.error("Error in approveSpending", error);
+    throw error;
+  }
+}
 
 // Read Contracts
 export const getTokenBalance = async (token: Address, owner: Address, spender: Address) => {

@@ -5,20 +5,28 @@ import { useWalletStore } from "@/store/wallet";
 import AccessItem from "@/components/special-access/AccessItem";
 import { Button } from "@/components/ui/button";
 import { useAccount } from "wagmi";
-import { CHARITY_ADDRESS, SHODAQO_ADDRESS } from "@/constants/common";
+import {
+  CHARITY_ADDRESS,
+  CHECK_IN_ADDRESS,
+  SHODAQO_ADDRESS,
+} from "@/constants/common";
 import { useCallback, useEffect, useState } from "react";
-import { getTokenBalance } from "@/web3/token";
+import { getTokenBalance, tranferToBuyAccess } from "@/web3/token";
 import Image from "next/image";
-import { formatUnits } from "viem";
+import { Address, formatUnits } from "viem";
 import { useToast } from "../ui/use-toast";
 import { claimSpecialAccess } from "@/actions/access";
 import { useRouter } from "next/navigation";
+import { getExplorer } from "@/lib/utils";
+import ToastTx from "../shared/ToastTx";
+import useWaitForTxAction from "@/hooks/useWaitForTx";
 
 interface SpecialAccessDetailsProps {
   access: Access;
 }
 
 const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
+  const etherscan = getExplorer();
   const { toast } = useToast();
   const router = useRouter();
   const { isConnected } = useWalletStore((state) => ({
@@ -29,12 +37,40 @@ const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
   const [walletBalance, setWalletBalance] = useState<
     TokenBalance | undefined
   >();
+  const [txHash, setTxHash] = useState<Address | undefined>(undefined);
+
+  const action = async () => {
+    if (txHash !== undefined) {
+      toast({
+        title: "Transaction Done",
+        action: (
+          <ToastTx
+            explorerLink={etherscan.url}
+            explorerName={etherscan.name}
+            txHash={txHash}
+          />
+        ),
+      });
+
+      setTxHash(undefined);
+      const res = (await claimSpecialAccess(access._id, address!)) as string;
+      console.log("res", JSON.parse(res));
+      setTimeout(() => {
+        router.refresh();
+      }, 2000);
+    }
+  };
+
+  useWaitForTxAction({
+    txHash: txHash,
+    action: action,
+  });
 
   const handleClaim = async () => {
     setDisabledButton(true);
     try {
-      const res = (await claimSpecialAccess(access._id, address!)) as string;
-      console.log("res", JSON.parse(res));
+      const txHash = await tranferToBuyAccess(CHECK_IN_ADDRESS, access.price);
+      setTxHash(txHash);
       toast({
         title: "Transaction successful",
         description: "You have successfully claimed the special access",
@@ -42,14 +78,9 @@ const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
       });
 
       setDisabledButton(false);
-
-      setTimeout(() => {
-        router.refresh();
-      }, 2000);
     } catch (error: any) {
       console.error("Error claiming special access", error);
       setDisabledButton(false);
-
       toast({
         title: "Transaction failed",
         description: error.message || "Failed to donate",

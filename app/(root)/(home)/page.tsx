@@ -1,7 +1,4 @@
-import {
-  getPaginatedCampaignsIndex,
-  paginateCampaigns,
-} from "@/actions/readWeb3";
+import { paginateCampaigns } from "@/actions/readWeb3";
 import Item from "@/components/campaigns/Item";
 import Jumbotron from "@/components/home/Jumbotron";
 import Product from "@/components/shared/Product";
@@ -10,22 +7,8 @@ import Link from "next/link";
 
 export default async function Home({ params, searchParams }: URLProps) {
   const page = searchParams.page ? +searchParams.page : 1;
-  let limit = searchParams.limit ? +searchParams.limit : 10;
-  if (limit > 20) limit = 10;
+  const { campaigns } = await paginateCampaigns(page, 10);
 
-  const nums = await getPaginatedCampaignsIndex(page, limit);
-  console.log("Nums: ", nums);
-  let currentMax =
-    nums[nums.length - 1] === 1
-      ? nums[nums.length - 1] + 1
-      : nums[nums.length - 1];
-
-  if (currentMax < limit) limit = currentMax;
-
-  console.log("Limit: ", limit);
-
-  const { campaigns } = await paginateCampaigns(page, limit);
-  console.log("Campaigns: ", campaigns);
   return (
     <div className="flex flex-col space-y-6 w-full h-full bg-meteor-stars">
       <Jumbotron />

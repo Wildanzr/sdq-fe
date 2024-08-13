@@ -18,7 +18,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const isValidId = !isNaN(Number(params.id));
-  const page = searchParams.page ? +searchParams.page : 1;
+  const page = params.id ? +params.id : 1;
   const numberOfCampaigns = await getNumberOfCampaigns();
   const isPageOutOfRange = page > numberOfCampaigns;
   if (!isValidId || isPageOutOfRange) {

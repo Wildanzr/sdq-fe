@@ -1,5 +1,4 @@
 import {
-  getAvailableTokens,
   getMaximumCampaignDetails,
   getNumberOfCampaigns,
 } from "@/actions/readWeb3";

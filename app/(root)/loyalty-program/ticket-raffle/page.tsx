@@ -40,7 +40,7 @@ export const metadata: Metadata = {
       "SDQ is a decentralized social network for charity and social good. It is built with Next.js, TypeScript, Tailwind CSS, and Vercel. It is also optimized for SEO and performance.",
     images: [
       {
-        url: "https://wildanzr.my.id/assets/images/icon.png",
+        url: `${process.env.NEXT_PUBLIC_URL}/images/cover.jpg`,
         width: 1200,
         height: 630,
         alt: "SDQ | Social Good",

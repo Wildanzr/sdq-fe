@@ -104,25 +104,43 @@ export const paginateCampaigns = async (page: number, limit: number) => {
     const islm = await getCoinLatestPrice("islamic-coin");
     tokens.decimals.push(18);
     tokens.price.push(islm);
+
+    const campaignPromises = [];
     for (let i = start; i < end; i++) {
       if (i > numberOfCampaigns) {
         break;
       }
-      const [details, donations] = await Promise.all([
+      const item = Promise.all([
         getCampaignDetails(i),
         getCampaignDonations(i),
-      ]) as [CampaignDetails, CampaignDonations];
+      ]) as Promise<[CampaignDetails, CampaignDonations]>;
+      campaignPromises.push(item);
+    }
+
+    const results = await Promise.all(campaignPromises);
+    console.log("Campaign done")
+    const ipfsPromises: Promise<IPFSResponse>[] = [];
+    for (const [details] of results) {
+      if (!details) {
+        break;
+      }
+      ipfsPromises.push(getFromIPFS(details.details));
+    }
+    const ipfsResults = await Promise.all(ipfsPromises);
+    console.log("IPFS done")
+
+    for (let i = 0; i < results.length; i++) {
+      const [details, donations] = results[i];
       if (!details || !donations) {
         break;
       }
-
-      const ipfs = await getFromIPFS(details.details);
+      console.log("Adding campaign", i + start)
       campaigns.push({
-        id: i,
+        id: i + start,
         owner: details.owner,
-        description: ipfs.description,
-        images: ipfs.images,
-        title: ipfs.title,
+        description: ipfsResults[i].description,
+        images: ipfsResults[i].images,
+        title: ipfsResults[i].title,
         target: Number(details.target),
         raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
         updated: new Date(Number(details.updated) * 1000),

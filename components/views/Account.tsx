@@ -4,7 +4,6 @@ import Blocker from "@/components/shared/Blocker";
 import { useWalletStore } from "@/store/wallet";
 import WalletInfo from "@/components/account/WalletInfo";
 import NFTList from "../account/NFTList";
-import ParticipatedList from "../account/ParticipatedList";
 
 const Account = () => {
   const { isConnected } = useWalletStore((state) => ({

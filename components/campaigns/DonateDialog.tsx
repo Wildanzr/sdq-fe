@@ -14,10 +14,11 @@ import { useAccount, useBalance } from "wagmi";
 import { useCallback, useEffect, useState } from "react";
 import { getAvailableTokens } from "@/actions/readWeb3";
 import { getTokenBalance } from "@/web3/token";
-import { CHARITY_ADDRESS } from "@/constants/common";
+import { CHARITY_ADDRESS, tokenIcon } from "@/constants/common";
 import Loader from "../shared/Loader";
 import { getCoinLatestPrice } from "@/actions/coingecko";
 import { cn } from "@/lib/utils";
+import { useWalletStore } from "@/store/wallet";
 
 interface DonateDialogProps {
   id: number;
@@ -31,6 +32,9 @@ const DonateDialog = ({ id, title, claimed, paused }: DonateDialogProps) => {
   const { data: nativeBalance, isLoading } = useBalance({
     address,
   });
+  const { isConnected } = useWalletStore((state) => ({
+    isConnected: state.isConnected,
+  }));
   const [nativePrice, setNativePrice] = useState<number | undefined>();
   const [availableTokens, setAvailableTokens] = useState<
     AvailableTokens | undefined
@@ -66,16 +70,16 @@ const DonateDialog = ({ id, title, claimed, paused }: DonateDialogProps) => {
   }, [id, fetchAvailableTokens, fetchNativePrice]);
 
   useEffect(() => {
-    if (availableTokens) {
+    if (availableTokens && address !== undefined && isConnected) {
       fetchWalletBalance();
     }
-  }, [availableTokens, fetchWalletBalance]);
+  }, [address, availableTokens, fetchWalletBalance, isConnected]);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          disabled={paused || claimed}
+          disabled={paused || claimed || !isConnected}
           className={cn(
             "flex w-full flex-row space-x-3 text-neutral-base z-10 bg-primary-100 border border-brand-base rounded-lg p-2",
             paused || claimed ? "opacity-50 cursor-not-allowed" : ""
@@ -86,6 +90,8 @@ const DonateDialog = ({ id, title, claimed, paused }: DonateDialogProps) => {
               ? "Campaign done"
               : paused
               ? "Campaign paused"
+              : !isConnected
+              ? "Oops! Connect Wallet"
               : "Donate Now"}
           </p>
         </Button>
@@ -112,7 +118,7 @@ const DonateDialog = ({ id, title, claimed, paused }: DonateDialogProps) => {
                 address: ["0x0000000000000000000000000000000000000000"],
                 coinIds: ["native"],
                 decimals: [18],
-                icon: ["/coins/islamic.png"],
+                icon: [tokenIcon[0].image],
                 price: [nativePrice],
               }}
             />

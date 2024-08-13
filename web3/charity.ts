@@ -174,12 +174,15 @@ export const withdrawCampaign = async (id: number) => {
 // Read Contracts
 export const getCampaignDonationsLog = async (campaignId: number) => {
   try {
+
     const donations: CampaignDonation[] = [];
+    const latestBlock = await publicClient.getBlockNumber();
     // TODO: Should optimize only get the logs for the specific campaignId
     const res = await publicClient.getContractEvents({
       address: CHARITY_ADDRESS,
       abi: charityAbi,
       eventName: "CampaignDonation",
+      fromBlock: latestBlock - BigInt(10000),
       toBlock: "latest"
     })
 

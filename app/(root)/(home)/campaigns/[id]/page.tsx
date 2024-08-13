@@ -84,10 +84,8 @@ export default async function CampaignDetailsPage({
   params,
   searchParams,
 }: URLProps) {
-  console.log(params);
   const isValidId = !isNaN(Number(params.id));
   const page = params.id ? +params.id : 1;
-  console.log("Page", page);
   const numberOfCampaigns = await getNumberOfCampaigns();
   const isPageOutOfRange = page > numberOfCampaigns;
 

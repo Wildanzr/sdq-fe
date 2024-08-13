@@ -1,10 +1,8 @@
 import { readContract, writeContract } from "@wagmi/core";
 import { checkinAbi } from "@/constants/abis/checkin";
-import { CHARITY_ADDRESS, CHARITY_FIRST_BLOCK, CHECK_IN_ADDRESS } from "@/constants/common";
+import { CHECK_IN_ADDRESS } from "@/constants/common";
 import { config } from "@/config/wagmi";
 import { Address } from "viem";
-import { publicClient } from "@/config/viem";
-import { charityAbi } from "@/constants/abis/charity";
 
 export interface GetMyStatsResponse {
   consecutiveDays: number;

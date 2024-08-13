@@ -6,7 +6,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Image from "next/image";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface NFTItemProps {
@@ -14,7 +13,6 @@ interface NFTItemProps {
   imageSrc: string;
   name: string;
   info: string;
-  href?: string;
   className?: string;
 }
 
@@ -24,18 +22,17 @@ const NFTItem = ({
   isObtained,
   name,
   className,
-  href,
 }: NFTItemProps) => {
   if (isObtained) {
     return (
-      <Link href={href as string} className="flex h-40 w-full relative">
+      <div className="flex h-40 w-full relative">
         <Image
-          src="/images/sbt-campaign-1.png"
+          src={imageSrc}
           layout="fill"
           className="rounded-lg object-contain cursor-pointer"
           alt="Soulbond"
         />
-      </Link>
+      </div>
     );
   } else {
     return (

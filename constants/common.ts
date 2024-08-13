@@ -1,29 +1,5 @@
 import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
 
-interface Navigation {
-  label: string;
-  href: string;
-}
-
-interface CheckIn {
-  day: number;
-  amount: number;
-  image: string;
-}
-
-interface Product {
-  image: string;
-  label: string;
-  description: string;
-}
-
-interface Soulbound {
-  image: string;
-  name: string;
-  info: string;
-  isObtained: boolean;
-}
-
 export const SHODAQO_ADDRESS = "0x040EAdcaF7450609358047b7eF3Bef37E45D39D5";
 export const CHECK_IN_ADDRESS = "0xA5bE51D8b8BE47A5517658c3cB401EBeC7C4F086";
 export const CHARITY_ADDRESS = "0xeE69D703b166254313E1B46fdB6a60fda7decd2B";
@@ -332,69 +308,102 @@ export const raffleList: Product[] = [
 
 export const soulbounds: Soulbound[] = [
   {
-    image: "/images/sbt-donation-1.png",
-    info: "You should donate at least 1 time",
-    isObtained: true,
-    name: "SBT Donate 1"
-  },
-  {
+    contract: "0xaeC4DF5f6Ce960e790c3D947EA79c8416533328E",
     image: "/images/sbt-checkin-1.png",
     info: "You should check in at least 1 day",
-    isObtained: true,
+    isObtained: false,
+    isReadyToMint: false,
+    requirement: 1,
     name: "SBT Check In 1"
   },
   {
-    image: "/images/sbt-donation-2.png",
-    info: "You should donate at least 5 times",
-    isObtained: false,
-    name: "SBT Donate 2"
-  },
-  {
-    image: "/images/sbt-donation-3.png",
-    info: "You should donate at least 10 times",
-    isObtained: false,
-    name: "SBT Donate 3"
-  },
-  {
-    image: "/images/sbt-donation-4.png",
-    info: "You should donate at least 50 times",
-    isObtained: false,
-    name: "SBT Donate 4"
-  },
-  {
-    image: "/images/sbt-donation-5.png",
-    info: "You should donate at least 100 times",
-    isObtained: false,
-    name: "SBT Donate 5"
-  },
-  {
-    image: "/images/sbt-checkin-1.png",
+    contract: "0xaA31505BbabED6813f46130c302f9451254e56F6",
+    image: "/images/sbt-checkin-2.png",
     info: "You should check in at least 1 week",
     isObtained: false,
+    isReadyToMint: false,
+    requirement: 7,
     name: "SBT Check In 2"
   },
   {
-    image: "/images/sbt-checkin-1.png",
+    contract: "0xEc399E287c237Ddbb43974200FD7987cB74d45Ad",
+    image: "/images/sbt-checkin-3.png",
     info: "You should check in at least 1 month",
     isObtained: false,
+    isReadyToMint: false,
+    requirement: 30,
     name: "SBT Check In 3"
   },
   {
+    contract: "0xFBAa8FBD196Be84aEe7a441d2E401B5dFD590bC3",
+    image: "/images/sbt-donation-1.png",
+    info: "You should donate at least 1 time",
+    isObtained: false,
+    isReadyToMint: false,
+    requirement: 1,
+    name: "SBT Donate 1"
+  },
+  {
+    contract: "0x38Bca10DC760bA287718Af20B1a663db63d3A4Fa",
+    image: "/images/sbt-donation-2.png",
+    info: "You should donate at least 5 times",
+    isObtained: false,
+    isReadyToMint: false,
+    requirement: 5,
+    name: "SBT Donate 2"
+  },
+  {
+    contract: "0xBbbC242b1bA31F19B834e7035c3A429486dbC6eA",
+    image: "/images/sbt-donation-3.png",
+    info: "You should donate at least 10 times",
+    isObtained: false,
+    isReadyToMint: false,
+    requirement: 10,
+    name: "SBT Donate 3"
+  },
+  {
+    contract: "0x3c8c04f86A0dF859d04C53Dc5c186d743172E2D3",
+    image: "/images/sbt-donation-4.png",
+    info: "You should donate at least 50 times",
+    isObtained: false,
+    isReadyToMint: false,
+    requirement: 50,
+    name: "SBT Donate 4"
+  },
+  {
+    contract: "0x7188A91DA93382a43cB54FaD6Fca9b0345E372CA",
+    image: "/images/sbt-donation-5.png",
+    info: "You should donate at least 100 times",
+    isObtained: false,
+    isReadyToMint: false,
+    requirement: 100,
+    name: "SBT Donate 5"
+  },
+  {
+    contract: "0x91ba4272b7c3f864f1b483C4D0BEd8eC05469262",
     image: "/images/sbt-campaign-1.png",
     info: "You should create campaign at least 1 time",
     isObtained: false,
+    isReadyToMint: false,
+    requirement: 1,
     name: "SBT Campaign 1"
   },
   {
+    contract: "0x1E30fc4e1741E1f4fAb0670B9fe66C529335057f",
     image: "/images/sbt-campaign-1.png",
     info: "You should create campaign at least 3 times",
     isObtained: false,
+    isReadyToMint: false,
+    requirement: 3,
     name: "SBT Campaign 2"
   },
   {
+    contract: "0xDEbbCbc64fDB1223A6f610D669A54C82d1546D6f",
     image: "/images/sbt-campaign-1.png",
     info: "You should create campaign at least 10 times",
     isObtained: false,
+    isReadyToMint: false,
+    requirement: 10,
     name: "SBT Campaign 3"
   },
 ]

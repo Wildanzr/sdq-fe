@@ -8,6 +8,7 @@ import { getCoinLatestPrice } from "./coingecko";
 import { countTotalRaised } from "@/lib/utils";
 import { serverConfig } from "@/config/server";
 import { Address, isAddress } from "viem";
+import { soulboundAbi } from "@/constants/abis/soulbound";
 
 export const getNumberOfCampaigns = async () => {
   try {
@@ -313,5 +314,53 @@ export const getMyCampaignIndex = async (address: Address, page: number, limit: 
   } catch (error) {
     console.error("Error in getMyCampaignIndex", error);
     throw error;
+  }
+}
+
+export const soulboundBalaceOf = async (tokenAddr: Address, owner: Address) => {
+  try {
+    const result = await readContract(serverConfig, {
+      abi: soulboundAbi,
+      address: tokenAddr,
+      functionName: "balanceOf",
+      args: [owner],
+    })
+
+    return Number(result);
+  } catch (error) {
+    console.error("Error in soulboundBalaceOf", error);
+    throw error;
+  }
+}
+
+export const getCampaignCount = async (address: Address) => {
+  try {
+    const result = await readContract(serverConfig, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "campaignCount",
+      args: [address],
+    })
+
+    return Number(result);
+  } catch (error) {
+    console.error("Error in campaignCount", error);
+    throw error
+  }
+}
+
+export const getDonationCount = async (address: Address) => {
+  try {
+    const result = await readContract(serverConfig, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "donationCount",
+      args: [address],
+    })
+
+    return Number(result);
+  } catch (error) {
+    console.error("Error in donationCount", error);
+    throw error
   }
 }

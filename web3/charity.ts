@@ -4,14 +4,6 @@ import { CHARITY_ADDRESS, CHARITY_FIRST_BLOCK } from "@/constants/common";
 import { config } from "@/config/wagmi";
 import { Address } from "viem";
 import { publicClient } from "@/config/viem";
-
-export interface GetMyStatsResponse {
-  consecutiveDays: number;
-  isBlacklisted: boolean;
-  lastClaimed: bigint;
-  totalClaimed: bigint;
-}
-
 export interface CampaignCreatedEvent {
   campaignId: bigint;
   description: string;

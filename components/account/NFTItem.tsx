@@ -13,6 +13,7 @@ interface NFTItemProps {
   imageSrc: string;
   name: string;
   info: string;
+  readyToMint: boolean;
   className?: string;
 }
 
@@ -20,16 +21,29 @@ const NFTItem = ({
   imageSrc,
   info,
   isObtained,
+  readyToMint,
   name,
   className,
 }: NFTItemProps) => {
-  if (isObtained) {
+  if (readyToMint && !isObtained) {
+    // should mint here
+    return (
+      <div className="flex h-40 w-full relative border border-brand-50 rounded-lg">
+        <Image
+          src={imageSrc}
+          layout="fill"
+          className="rounded-lg object-contain cursor-pointer opacity-40"
+          alt="Soulbond"
+        />
+      </div>
+    );
+  } else if (isObtained) {
     return (
       <div className="flex h-40 w-full relative">
         <Image
           src={imageSrc}
           layout="fill"
-          className="rounded-lg object-contain cursor-pointer"
+          className="rounded-lg object-contain opacity-100"
           alt="Soulbond"
         />
       </div>

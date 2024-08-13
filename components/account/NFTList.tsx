@@ -15,24 +15,23 @@ const NFTList = ({
   donationCount,
 }: NFTListProps) => {
   const checkinSoulbounds = soulbounds.slice(0, 3).map((item, idx) => {
-    return { ...item, isReadyToMint: checkinCount < item.requirement };
+    return { ...item, isReadyToMint: checkinCount > item.requirement };
   });
   const donationSoulbounds = soulbounds.slice(3, 8).map((item, idx) => {
-    return { ...item, isReadyToMint: donationCount < item.requirement };
+    return { ...item, isReadyToMint: donationCount > item.requirement };
   });
   const campaignSoulbounds = soulbounds.slice(8, 11).map((item, idx) => {
-    return { ...item, isReadyToMint: campaignCount < item.requirement };
+    return { ...item, isReadyToMint: campaignCount > item.requirement };
   });
+  console.log("campaignSoulbounds", campaignSoulbounds);
 
   const sorted = [
     ...checkinSoulbounds,
     ...donationSoulbounds,
     ...campaignSoulbounds,
-  ]
-    .map((item, idx) => {
-      return { ...item, isObtained: soulboundsBalance[idx] === 1 };
-    })
-    .sort((a, b) => (a.isObtained ? 1 : -1));
+  ].map((item, idx) => {
+    return { ...item, isObtained: soulboundsBalance[idx] === 1 };
+  });
 
   return (
     <div className="flex flex-col w-full h-full space-y-3">
@@ -45,6 +44,7 @@ const NFTList = ({
             info={item.info}
             name={item.name}
             isObtained={soulboundsBalance[idx] === 1}
+            readyToMint={item.isReadyToMint}
           />
         ))}
       </div>

@@ -390,7 +390,7 @@ export const soulbounds: Soulbound[] = [
   },
   {
     contract: "0x1E30fc4e1741E1f4fAb0670B9fe66C529335057f",
-    image: "/images/sbt-campaign-1.png",
+    image: "/images/sbt-campaign-2.png",
     info: "You should create campaign at least 3 times",
     isObtained: false,
     isReadyToMint: false,
@@ -399,7 +399,7 @@ export const soulbounds: Soulbound[] = [
   },
   {
     contract: "0xDEbbCbc64fDB1223A6f610D669A54C82d1546D6f",
-    image: "/images/sbt-campaign-1.png",
+    image: "/images/sbt-campaign-3.png",
     info: "You should create campaign at least 10 times",
     isObtained: false,
     isReadyToMint: false,

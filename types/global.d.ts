@@ -41,6 +41,7 @@ declare global {
     isObtained: boolean;
     isReadyToMint: boolean;
     requirement: number;
+    id: number;
   }
 
   interface CampaignDetails {

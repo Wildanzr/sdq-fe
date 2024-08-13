@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import NFTItem from "./NFTItem";
 import { soulbounds } from "@/constants/common";
 
@@ -6,6 +7,7 @@ interface NFTListProps {
   campaignCount: number;
   donationCount: number;
   checkinCount: number;
+  address: Address;
 }
 
 const NFTList = ({
@@ -13,6 +15,7 @@ const NFTList = ({
   soulboundsBalance,
   campaignCount,
   donationCount,
+  address,
 }: NFTListProps) => {
   const checkinSoulbounds = soulbounds.slice(0, 3).map((item, idx) => {
     return { ...item, isReadyToMint: checkinCount > item.requirement };
@@ -23,7 +26,6 @@ const NFTList = ({
   const campaignSoulbounds = soulbounds.slice(8, 11).map((item, idx) => {
     return { ...item, isReadyToMint: campaignCount > item.requirement };
   });
-  console.log("campaignSoulbounds", campaignSoulbounds);
 
   const sorted = [
     ...checkinSoulbounds,
@@ -39,12 +41,14 @@ const NFTList = ({
       <div className="grid grid-cols-3 gap-4 w-full h-full">
         {sorted.map((item, idx) => (
           <NFTItem
+            id={item.id}
             key={idx}
             imageSrc={item.image}
             info={item.info}
             name={item.name}
             isObtained={soulboundsBalance[idx] === 1}
             readyToMint={item.isReadyToMint}
+            address={address}
           />
         ))}
       </div>

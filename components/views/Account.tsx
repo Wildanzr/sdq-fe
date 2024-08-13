@@ -5,12 +5,12 @@ import { useWalletStore } from "@/store/wallet";
 import WalletInfo from "@/components/account/WalletInfo";
 import NFTList from "../account/NFTList";
 import { useCallback, useEffect, useState } from "react";
-import { GetMyStatsResponse } from "@/web3/checkin";
 import { useAccount } from "wagmi";
 import { Address } from "viem";
 import { getMyStats } from "@/web3/checkin";
 import { soulbounds } from "@/constants/common";
 import { getCampaignCount, soulboundBalaceOf } from "@/actions/readWeb3";
+import Loader from "../shared/Loader";
 
 const Account = () => {
   const { address, status } = useAccount();
@@ -34,7 +34,6 @@ const Account = () => {
 
   const getCheckinStats = useCallback(async (address: Address | undefined) => {
     const result = await getMyStats(address);
-    console.log("Stats", result);
     setCheckinCount(result.consecutiveDays);
   }, []);
 
@@ -67,13 +66,18 @@ const Account = () => {
       {isConnected ? (
         <div className="flex flex-col space-y-8 w-full h-full items-start justify-start min-h-screen">
           <WalletInfo />
-          {soulboundsBalance && (
+          {soulboundsBalance && address !== undefined ? (
             <NFTList
               soulboundsBalance={soulboundsBalance}
               campaignCount={campaignCount}
               donationCount={donationCount}
               checkinCount={checkinCount}
+              address={address}
             />
+          ) : (
+            <div className="flex w-full h-full items-center justify-center">
+              <Loader />
+            </div>
           )}
         </div>
       ) : (

@@ -163,6 +163,135 @@ export const withdrawCampaign = async (id: number) => {
   }
 }
 
+export const mintMyFirstDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFirstDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFirstDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyFifthDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFifthDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFifthDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyTenDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyTenDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyTenDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyFiftyDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFiftyDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFiftyDonationSBT", error);
+    throw error;
+  }
+}
+
+
+export const mintMyHundredDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyHundredDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyHundredDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyFirstCampaignSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFirstCampaignSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFirstCampaignSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyThirdCampaignSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyThirdCampaignSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyThirdCampaignSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyTenCampaignSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyTenCampaignSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyTenCampaignSBT", error);
+    throw error;
+  }
+}
+
 // Read Contracts
 export const getCampaignDonationsLog = async (campaignId: number) => {
   try {

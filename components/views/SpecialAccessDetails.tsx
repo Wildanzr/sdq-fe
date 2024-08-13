@@ -70,36 +70,39 @@ const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
 
   useEffect(() => {
     fetchWalletBalance();
-  }, [address]);
+  }, [address, fetchWalletBalance]);
   return (
     <>
       {isConnected ? (
         <div className="flex flex-col space-y-8 w-full h-full items-start justify-start min-h-screen">
-          {walletBalance !== undefined && (
-            <div className="flex  w-full items-center justify-end text-neutral-base ">
-              <div className="flex flex-row space-x-2 bg-primary-80/80 py-1 px-2 rounded-lg">
-                <Image
-                  src="/coins/twemoji_coin-1.svg"
-                  alt="Coin"
-                  width={20}
-                  height={20}
-                />
-                <p className="font-medium mb-0">
-                  {formatUnits(walletBalance.value, 18)}
-                </p>
+          <div className="flex flex-col w-full h-full">
+            {walletBalance !== undefined && (
+              <div className="flex  w-full items-center justify-end text-neutral-base ">
+                <p className="m-body-base">Your Balance:</p>
+                <div className="flex flex-row space-x-2 py-1 px-2 rounded-l-lg">
+                  <Image
+                    src="/coins/twemoji_coin-1.svg"
+                    alt="Coin"
+                    width={20}
+                    height={20}
+                  />
+                  <p className="font-medium mb-0">
+                    {formatUnits(walletBalance.value, 18)}
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+            <AccessItem
+              id={access._id}
+              image={access.image}
+              price={access.price}
+              sold={access.sold}
+              total={access.total}
+              title={access.title}
+              className="rounded-none border-0"
+            />
+          </div>
 
-          <AccessItem
-            id={access._id}
-            image={access.image}
-            price={access.price}
-            sold={access.sold}
-            total={access.total}
-            title={access.title}
-            className="rounded-none border-0"
-          />
           <div className="flex flex-col w-full h-full items-start justify-start p-5 space-y-5">
             <h1 className="m-heading text-neutral-base">{access.title}</h1>
             <p className="text-neutral-base m-body-small">{access.details}</p>

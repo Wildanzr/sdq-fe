@@ -73,7 +73,11 @@ const SpecialAccessPage = async () => {
         <NavBreadcrumb navigations={[navigations[0], navigations[2], nav]} />
       </div>
       <div className="flex flex-col space-y-6 px-5 w-full min-h-screen items-center justify-center bg-meteor-stars bg-no-repeat bg-cover">
-        <SpecialAccess ongoing={ongoing} passed={passed} mine={mine} />
+        <SpecialAccess
+          ongoing={JSON.parse(JSON.stringify(ongoing))}
+          passed={JSON.parse(JSON.stringify(passed))}
+          mine={JSON.parse(JSON.stringify(mine))}
+        />
       </div>
     </div>
   );

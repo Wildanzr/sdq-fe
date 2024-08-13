@@ -1,9 +1,16 @@
 import { CHAIN_EXPLORERS } from "@/constants/common";
-import axios from "axios";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { formatUnits } from "viem";
 import { haqqMainnet, haqqTestedge2 } from "wagmi/chains";
+import qs from 'query-string'
+
+
+interface UrlQueryProps {
+  params: string;
+  key: string;
+  value: string | null;
+}
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -112,3 +119,13 @@ export const getGCPCredentials = () => {
     // for local development, use gcloud CLI
     : {};
 };
+
+export const formUrlQuery = ({ key, params, value }: UrlQueryProps) => {
+  const currentUrl = qs.parse(params)
+  currentUrl[key] = value;
+
+  return qs.stringifyUrl({
+    url: window.location.pathname,
+    query: currentUrl
+  }, { skipNull: true })
+}

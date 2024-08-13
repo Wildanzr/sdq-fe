@@ -118,7 +118,6 @@ export const paginateCampaigns = async (page: number, limit: number) => {
     }
 
     const results = await Promise.all(campaignPromises);
-    console.log("Campaign done")
     const ipfsPromises: Promise<IPFSResponse>[] = [];
     for (const [details] of results) {
       if (!details) {
@@ -127,14 +126,12 @@ export const paginateCampaigns = async (page: number, limit: number) => {
       ipfsPromises.push(getFromIPFS(details.details));
     }
     const ipfsResults = await Promise.all(ipfsPromises);
-    console.log("IPFS done")
 
     for (let i = 0; i < results.length; i++) {
       const [details, donations] = results[i];
       if (!details || !donations) {
         break;
       }
-      console.log("Adding campaign", i + start)
       campaigns.push({
         id: i + start,
         owner: details.owner,

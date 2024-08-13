@@ -15,6 +15,35 @@ declare global {
     searchParams: { [key: string]: string | undefined };
   }
 
+
+  interface Navigation {
+    label: string;
+    href: string;
+  }
+
+  interface CheckIn {
+    day: number;
+    amount: number;
+    image: string;
+  }
+
+  interface Product {
+    image: string;
+    label: string;
+    description: string;
+  }
+
+  interface Soulbound {
+    contract: Address;
+    image: string;
+    name: string;
+    info: string;
+    isObtained: boolean;
+    isReadyToMint: boolean;
+    requirement: number;
+    id: number;
+  }
+
   interface CampaignDetails {
     owner: `0x${string}`;
     title: string;

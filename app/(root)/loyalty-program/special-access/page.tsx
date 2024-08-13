@@ -47,7 +47,7 @@ export const metadata: Metadata = {
       "SDQ is a decentralized social network for charity and social good. It is built with Next.js, TypeScript, Tailwind CSS, and Vercel. It is also optimized for SEO and performance.",
     images: [
       {
-        url: "https://wildanzr.my.id/assets/images/icon.png",
+        url: `${process.env.NEXT_PUBLIC_URL}/images/cover.jpg`,
         width: 1200,
         height: 630,
         alt: "SDQ | Social Good",
@@ -73,7 +73,11 @@ const SpecialAccessPage = async () => {
         <NavBreadcrumb navigations={[navigations[0], navigations[2], nav]} />
       </div>
       <div className="flex flex-col space-y-6 px-5 w-full min-h-screen items-center justify-center bg-meteor-stars bg-no-repeat bg-cover">
-        <SpecialAccess ongoing={ongoing} passed={passed} mine={mine} />
+        <SpecialAccess
+          ongoing={JSON.parse(JSON.stringify(ongoing))}
+          passed={JSON.parse(JSON.stringify(passed))}
+          mine={JSON.parse(JSON.stringify(mine))}
+        />
       </div>
     </div>
   );

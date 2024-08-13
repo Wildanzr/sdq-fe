@@ -5,20 +5,28 @@ import { useWalletStore } from "@/store/wallet";
 import AccessItem from "@/components/special-access/AccessItem";
 import { Button } from "@/components/ui/button";
 import { useAccount } from "wagmi";
-import { CHARITY_ADDRESS, SHODAQO_ADDRESS } from "@/constants/common";
+import {
+  CHARITY_ADDRESS,
+  CHECK_IN_ADDRESS,
+  SHODAQO_ADDRESS,
+} from "@/constants/common";
 import { useCallback, useEffect, useState } from "react";
-import { getTokenBalance } from "@/web3/token";
+import { getTokenBalance, tranferToBuyAccess } from "@/web3/token";
 import Image from "next/image";
-import { formatUnits } from "viem";
+import { Address, formatUnits } from "viem";
 import { useToast } from "../ui/use-toast";
 import { claimSpecialAccess } from "@/actions/access";
 import { useRouter } from "next/navigation";
+import { getExplorer } from "@/lib/utils";
+import ToastTx from "../shared/ToastTx";
+import useWaitForTxAction from "@/hooks/useWaitForTx";
 
 interface SpecialAccessDetailsProps {
   access: Access;
 }
 
 const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
+  const etherscan = getExplorer();
   const { toast } = useToast();
   const router = useRouter();
   const { isConnected } = useWalletStore((state) => ({
@@ -29,12 +37,40 @@ const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
   const [walletBalance, setWalletBalance] = useState<
     TokenBalance | undefined
   >();
+  const [txHash, setTxHash] = useState<Address | undefined>(undefined);
+
+  const action = async () => {
+    if (txHash !== undefined) {
+      toast({
+        title: "Transaction Done",
+        action: (
+          <ToastTx
+            explorerLink={etherscan.url}
+            explorerName={etherscan.name}
+            txHash={txHash}
+          />
+        ),
+      });
+
+      setTxHash(undefined);
+      const res = (await claimSpecialAccess(access._id, address!)) as string;
+      console.log("res", JSON.parse(res));
+      setTimeout(() => {
+        router.refresh();
+      }, 2000);
+    }
+  };
+
+  useWaitForTxAction({
+    txHash: txHash,
+    action: action,
+  });
 
   const handleClaim = async () => {
     setDisabledButton(true);
     try {
-      const res = (await claimSpecialAccess(access._id, address!)) as string;
-      console.log("res", JSON.parse(res));
+      const txHash = await tranferToBuyAccess(CHECK_IN_ADDRESS, access.price);
+      setTxHash(txHash);
       toast({
         title: "Transaction successful",
         description: "You have successfully claimed the special access",
@@ -42,14 +78,9 @@ const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
       });
 
       setDisabledButton(false);
-
-      setTimeout(() => {
-        router.refresh();
-      }, 2000);
     } catch (error: any) {
       console.error("Error claiming special access", error);
       setDisabledButton(false);
-
       toast({
         title: "Transaction failed",
         description: error.message || "Failed to donate",
@@ -70,36 +101,39 @@ const SpecialAccessDetails = ({ access }: SpecialAccessDetailsProps) => {
 
   useEffect(() => {
     fetchWalletBalance();
-  }, [address]);
+  }, [address, fetchWalletBalance]);
   return (
     <>
       {isConnected ? (
         <div className="flex flex-col space-y-8 w-full h-full items-start justify-start min-h-screen">
-          {walletBalance !== undefined && (
-            <div className="flex  w-full items-center justify-end text-neutral-base ">
-              <div className="flex flex-row space-x-2 bg-primary-80/80 py-1 px-2 rounded-lg">
-                <Image
-                  src="/coins/twemoji_coin-1.svg"
-                  alt="Coin"
-                  width={20}
-                  height={20}
-                />
-                <p className="font-medium mb-0">
-                  {formatUnits(walletBalance.value, 18)}
-                </p>
+          <div className="flex flex-col w-full h-full">
+            {walletBalance !== undefined && (
+              <div className="flex  w-full items-center justify-end text-neutral-base ">
+                <p className="m-body-base">Your Balance:</p>
+                <div className="flex flex-row space-x-2 py-1 px-2 rounded-l-lg">
+                  <Image
+                    src="/coins/twemoji_coin-1.svg"
+                    alt="Coin"
+                    width={20}
+                    height={20}
+                  />
+                  <p className="font-medium mb-0">
+                    {formatUnits(walletBalance.value, 18)}
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+            <AccessItem
+              id={access._id}
+              image={access.image}
+              price={access.price}
+              sold={access.sold}
+              total={access.total}
+              title={access.title}
+              className="rounded-none border-0"
+            />
+          </div>
 
-          <AccessItem
-            id={access._id}
-            image={access.image}
-            price={access.price}
-            sold={access.sold}
-            total={access.total}
-            title={access.title}
-            className="rounded-none border-0"
-          />
           <div className="flex flex-col w-full h-full items-start justify-start p-5 space-y-5">
             <h1 className="m-heading text-neutral-base">{access.title}</h1>
             <p className="text-neutral-base m-body-small">{access.details}</p>

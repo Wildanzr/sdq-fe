@@ -42,7 +42,7 @@ const WalletInfo = () => {
           </p>
         </div>
         <Image
-          src="/images/abstract.png"
+          src={`https://api.dicebear.com/9.x/fun-emoji/webp?seed=${address}`}
           width={100}
           height={100}
           alt="wallet"

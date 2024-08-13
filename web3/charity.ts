@@ -4,14 +4,6 @@ import { CHARITY_ADDRESS, CHARITY_FIRST_BLOCK } from "@/constants/common";
 import { config } from "@/config/wagmi";
 import { Address } from "viem";
 import { publicClient } from "@/config/viem";
-
-export interface GetMyStatsResponse {
-  consecutiveDays: number;
-  isBlacklisted: boolean;
-  lastClaimed: bigint;
-  totalClaimed: bigint;
-}
-
 export interface CampaignCreatedEvent {
   campaignId: bigint;
   description: string;
@@ -171,15 +163,147 @@ export const withdrawCampaign = async (id: number) => {
   }
 }
 
+export const mintMyFirstDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFirstDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFirstDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyFifthDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFifthDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFifthDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyTenDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyTenDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyTenDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyFiftyDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFiftyDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFiftyDonationSBT", error);
+    throw error;
+  }
+}
+
+
+export const mintMyHundredDonationSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyHundredDonationSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyHundredDonationSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyFirstCampaignSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyFirstCampaignSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyFirstCampaignSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyThirdCampaignSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyThirdCampaignSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyThirdCampaignSBT", error);
+    throw error;
+  }
+}
+
+export const mintMyTenCampaignSBT = async (address: Address) => {
+  try {
+    const result = await writeContract(config, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "mintMyTenCampaignSBT",
+      account: address,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error in mintMyTenCampaignSBT", error);
+    throw error;
+  }
+}
+
 // Read Contracts
 export const getCampaignDonationsLog = async (campaignId: number) => {
   try {
+
     const donations: CampaignDonation[] = [];
+    const latestBlock = await publicClient.getBlockNumber();
     // TODO: Should optimize only get the logs for the specific campaignId
     const res = await publicClient.getContractEvents({
       address: CHARITY_ADDRESS,
       abi: charityAbi,
       eventName: "CampaignDonation",
+      fromBlock: latestBlock - BigInt(10000),
       toBlock: "latest"
     })
 

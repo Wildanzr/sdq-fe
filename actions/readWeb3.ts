@@ -8,6 +8,7 @@ import { getCoinLatestPrice } from "./coingecko";
 import { countTotalRaised } from "@/lib/utils";
 import { serverConfig } from "@/config/server";
 import { Address, isAddress } from "viem";
+import { soulboundAbi } from "@/constants/abis/soulbound";
 
 export const getNumberOfCampaigns = async () => {
   try {
@@ -104,25 +105,40 @@ export const paginateCampaigns = async (page: number, limit: number) => {
     const islm = await getCoinLatestPrice("islamic-coin");
     tokens.decimals.push(18);
     tokens.price.push(islm);
+
+    const campaignPromises = [];
     for (let i = start; i < end; i++) {
       if (i > numberOfCampaigns) {
         break;
       }
-      const [details, donations] = await Promise.all([
+      const item = Promise.all([
         getCampaignDetails(i),
         getCampaignDonations(i),
-      ]) as [CampaignDetails, CampaignDonations];
+      ]) as Promise<[CampaignDetails, CampaignDonations]>;
+      campaignPromises.push(item);
+    }
+
+    const results = await Promise.all(campaignPromises);
+    const ipfsPromises: Promise<IPFSResponse>[] = [];
+    for (const [details] of results) {
+      if (!details) {
+        break;
+      }
+      ipfsPromises.push(getFromIPFS(details.details));
+    }
+    const ipfsResults = await Promise.all(ipfsPromises);
+
+    for (let i = 0; i < results.length; i++) {
+      const [details, donations] = results[i];
       if (!details || !donations) {
         break;
       }
-
-      const ipfs = await getFromIPFS(details.details);
       campaigns.push({
-        id: i,
+        id: i + start,
         owner: details.owner,
-        description: ipfs.description,
-        images: ipfs.images,
-        title: ipfs.title,
+        description: ipfsResults[i].description,
+        images: ipfsResults[i].images,
+        title: ipfsResults[i].title,
         target: Number(details.target),
         raised: countTotalRaised(donations.values, tokens.price, tokens.decimals),
         updated: new Date(Number(details.updated) * 1000),
@@ -298,5 +314,53 @@ export const getMyCampaignIndex = async (address: Address, page: number, limit: 
   } catch (error) {
     console.error("Error in getMyCampaignIndex", error);
     throw error;
+  }
+}
+
+export const soulboundBalaceOf = async (tokenAddr: Address, owner: Address) => {
+  try {
+    const result = await readContract(serverConfig, {
+      abi: soulboundAbi,
+      address: tokenAddr,
+      functionName: "balanceOf",
+      args: [owner],
+    })
+
+    return Number(result);
+  } catch (error) {
+    console.error("Error in soulboundBalaceOf", error);
+    throw error;
+  }
+}
+
+export const getCampaignCount = async (address: Address) => {
+  try {
+    const result = await readContract(serverConfig, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "campaignCount",
+      args: [address],
+    })
+
+    return Number(result);
+  } catch (error) {
+    console.error("Error in campaignCount", error);
+    throw error
+  }
+}
+
+export const getDonationCount = async (address: Address) => {
+  try {
+    const result = await readContract(serverConfig, {
+      abi: charityAbi,
+      address: CHARITY_ADDRESS,
+      functionName: "donationCount",
+      args: [address],
+    })
+
+    return Number(result);
+  } catch (error) {
+    console.error("Error in donationCount", error);
+    throw error
   }
 }

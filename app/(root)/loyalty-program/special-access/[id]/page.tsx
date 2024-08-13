@@ -81,7 +81,7 @@ const SpecialAccessPage = async ({ params, searchParams }: URLProps) => {
       </div>
 
       <div className="flex flex-col space-y-6 w-full min-h-screen items-center justify-center bg-meteor-stars bg-no-repeat bg-cover">
-        <SpecialAccessDetails access={access} />
+        <SpecialAccessDetails access={JSON.parse(JSON.stringify(access))} />
       </div>
     </div>
   );

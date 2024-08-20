@@ -9,7 +9,11 @@ import { useAccount } from "wagmi";
 import { Address } from "viem";
 import { getMyStats } from "@/web3/checkin";
 import { soulbounds } from "@/constants/common";
-import { getCampaignCount, soulboundBalaceOf } from "@/actions/readWeb3";
+import {
+  getCampaignCount,
+  getDonationCount,
+  soulboundBalaceOf,
+} from "@/actions/readWeb3";
 import Loader from "../shared/Loader";
 
 const Account = () => {
@@ -37,21 +41,23 @@ const Account = () => {
     setCheckinCount(result.consecutiveDays);
   }, []);
 
-  const getCharityStats = useCallback(async () => {
+  const getCharityStats = useCallback(async (address: Address | undefined) => {
     if (address === undefined) return;
     const [cam, don] = await Promise.all([
       getCampaignCount(address),
-      getCampaignCount(address),
+      getDonationCount(address),
     ]);
+    console.log("cam", cam);
+    console.log("don", don);
     setCampaignCount(cam);
     setDonationCount(don);
-  }, [address]);
+  }, []);
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && address !== undefined) {
       getCheckinStats(address);
+      getCharityStats(address);
       fetchSoulboundsBalance();
-      getCharityStats();
     }
   }, [
     address,

@@ -316,7 +316,7 @@ export const soulbounds: Soulbound[] = [
     info: "You should check in at least 1 day",
     isObtained: false,
     isReadyToMint: false,
-    requirement: 1,
+    requirement: 0,
     name: "SBT Check In 1",
   },
   {
@@ -346,7 +346,7 @@ export const soulbounds: Soulbound[] = [
     info: "You should donate at least 1 time",
     isObtained: false,
     isReadyToMint: false,
-    requirement: 1,
+    requirement: 0,
     name: "SBT Donate 1",
   },
   {
@@ -396,7 +396,7 @@ export const soulbounds: Soulbound[] = [
     info: "You should create campaign at least 1 time",
     isObtained: false,
     isReadyToMint: false,
-    requirement: 1,
+    requirement: 0,
     name: "SBT Campaign 1",
   },
   {

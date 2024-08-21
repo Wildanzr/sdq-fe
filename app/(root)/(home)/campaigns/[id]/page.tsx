@@ -89,10 +89,10 @@ export default async function CampaignDetailsPage({
   const numberOfCampaigns = await getNumberOfCampaigns();
   const isPageOutOfRange = page > numberOfCampaigns;
 
-  if (!isValidId || isPageOutOfRange) {
+  const campaign = await getMaximumCampaignDetails(page);
+  if (campaign === false) {
     return redirect("/not-found");
   }
-  const campaign = (await getMaximumCampaignDetails(page)) as MaximumCampaign;
   const availableTokens = (await getAvailableTokens()) as AvailableTokens;
   const navs = [
     {

@@ -351,12 +351,15 @@ export const getCampaignCount = async (address: Address) => {
 
 export const getDonationCount = async (address: Address) => {
   try {
+    console.log("reading", address);
     const result = await readContract(serverConfig, {
       abi: charityAbi,
       address: CHARITY_ADDRESS,
       functionName: "donationCount",
       args: [address],
     })
+
+    console.log("result", result);
 
     return Number(result);
   } catch (error) {

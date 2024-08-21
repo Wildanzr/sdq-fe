@@ -77,17 +77,14 @@ const ManageCampaignPage = async ({ params, searchParams }: URLProps) => {
   const page = params.id ? +params.id : 1;
   const numberOfCampaigns = await getNumberOfCampaigns();
   const isPageOutOfRange = page > numberOfCampaigns;
-  if (!isValidId || isPageOutOfRange) {
-    return redirect("/not-found");
-  }
   const cookie = headers().get("cookie");
   const stringified = JSON.stringify(cookie);
   const address = getAddressFromRegex(stringified) as Address;
-  const campaign = (await getMaximumCampaignDetails(page)) as MaximumCampaign;
+  const campaign = await getMaximumCampaignDetails(page);
+  if (campaign === false) {
+    return redirect("/not-found");
+  }
   const availableTokens = (await getAvailableTokens()) as AvailableTokens;
-
-  console.log("page", page);
-  console.log("Campaign", campaign);
   if (campaign.owner !== address) {
     return redirect("/not-found");
   }
